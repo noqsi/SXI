@@ -1,4 +1,4 @@
-v 20070216 1
+v 20060123 1
 C 40000 40000 1 0 0 Noqsi-title-B.sym
 {
 T 50000 40500 5 10 1 1 0 0 1
@@ -10,7 +10,7 @@ auth=$Author$
 T 50200 40800 5 8 1 1 0 0 1
 fname=$Source$
 T 53200 41200 5 14 1 1 0 4 1
-title=TITLE
+title=Parallel Driver Test
 }
 C 42900 45000 1 0 0 ParallelRegs.sym
 {
