@@ -1,4 +1,4 @@
-v 20070216 1
+v 20060123 1
 P 0 3300 300 3300 1 0 0
 {
 T 200 3350 5 8 0 1 0 6 1
@@ -133,3 +133,5 @@ T 300 4600 5 10 0 0 0 0 1
 description=Parallel Clock Driver
 T 300 4800 5 10 0 0 0 0 1
 numslots=0
+T 300 5000 8 10 0 0 0 0 1
+source=ParallelDriver.sch
