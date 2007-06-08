@@ -1,0 +1,12 @@
+; $Id$
+
+; For syms and schematics, we can search:
+;
+(component-library "../Components/Symbols")
+(source-library ".")
+;
+; $Log$
+; Revision 1.1  2007-06-08 00:55:28  jpd
+; Initial checkin of NeXT PPM
+;
+;
