@@ -1,0 +1,93 @@
+v 20070216 1
+C 47400 46700 1 180 1 opamp-3.sym
+{
+T 48100 45900 5 10 0 0 180 6 1
+device=OPAMP
+T 48100 46100 5 10 1 1 180 6 1
+refdes=U1
+T 48100 45300 5 10 0 0 180 6 1
+symversion=0.1
+}
+C 39500 40000 1 0 0 Noqsi-title-B.sym
+{
+T 49500 40500 5 10 1 1 0 0 1
+date=$Date$
+T 53400 40500 5 10 1 1 0 0 1
+rev=$Revision$
+T 54900 40200 5 10 1 1 0 0 1
+auth=$Author$
+T 49700 40800 5 8 1 1 0 0 1
+fname=$Source$
+T 52700 41200 5 14 1 1 0 4 1
+title=Band limited amplifier
+}
+C 49000 46200 1 0 0 resistor-1.sym
+{
+T 49300 46600 5 10 0 0 0 0 1
+device=RESISTOR
+T 49200 46500 5 10 1 1 0 0 1
+refdes=R3
+}
+C 47400 47900 1 0 0 resistor-1.sym
+{
+T 47700 48300 5 10 0 0 0 0 1
+device=RESISTOR
+T 47600 48200 5 10 1 1 0 0 1
+refdes=R2
+}
+C 45600 46400 1 0 0 resistor-1.sym
+{
+T 45900 46800 5 10 0 0 0 0 1
+device=RESISTOR
+T 45800 46700 5 10 1 1 0 0 1
+refdes=R1
+}
+C 47400 47000 1 0 0 capacitor-1.sym
+{
+T 47600 47700 5 10 0 0 0 0 1
+device=CAPACITOR
+T 47600 47500 5 10 1 1 0 0 1
+refdes=C1
+T 47600 47900 5 10 0 0 0 0 1
+symversion=0.1
+}
+C 49000 45200 1 0 0 capacitor-1.sym
+{
+T 49200 45900 5 10 0 0 0 0 1
+device=CAPACITOR
+T 49200 45700 5 10 1 1 0 0 1
+refdes=C2
+T 49200 46100 5 10 0 0 0 0 1
+symversion=0.1
+}
+C 48900 45100 1 0 0 gnd-1.sym
+C 47300 45800 1 0 0 gnd-1.sym
+N 47400 48000 47400 46500 4
+N 47400 46500 46500 46500 4
+N 48300 47200 48400 47200 4
+N 48400 47200 48400 46300 4
+N 48400 46300 49000 46300 4
+N 49900 45400 49900 48000 4
+N 49900 48000 48300 48000 4
+C 50800 46900 1 0 1 terminal-1.sym
+{
+T 50490 47650 5 10 0 0 0 6 1
+device=testpoint
+T 50490 47500 5 10 0 0 0 6 1
+footprint=CONNECTOR 1 1
+T 50550 46950 5 10 1 1 0 0 1
+refdes=out
+}
+C 44700 46400 1 0 0 terminal-1.sym
+{
+T 45010 47150 5 10 0 0 0 0 1
+device=voltage
+T 45010 47000 5 10 0 0 0 0 1
+footprint=CONNECTOR 1 1
+T 44950 46450 5 10 1 1 0 6 1
+refdes=in
+}
+T 50100 40200 9 10 1 0 0 0 1
+1
+T 51700 40200 9 10 1 0 0 0 1
+1
