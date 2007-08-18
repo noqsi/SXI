@@ -1,4 +1,4 @@
-v 20070626 1
+v 20070216 1
 C 40000 42000 0 0 0 Noqsi-title-B.sym
 {
 T 50000 42500 5 10 1 1 0 0 1
@@ -15,14 +15,14 @@ title=Driver Board
 C 46800 47400 1 0 0 SerialDrivers.sym
 {
 T 48500 50300 5 10 1 1 0 6 1
-refdes=X10
+refdes=X12
 T 47100 50600 5 10 0 0 0 0 1
 device=SerialDrivers
 }
 C 42100 47900 1 0 0 DACtoClock.sym
 {
 T 43800 50300 5 10 1 1 0 6 1
-refdes=X9
+refdes=X13
 T 42200 50000 5 10 0 0 0 0 1
 device=DACtoClock
 }
