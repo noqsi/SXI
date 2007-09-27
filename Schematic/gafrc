@@ -4,9 +4,13 @@
 ;
 (component-library "../Components/Symbols")
 (source-library ".")
+(define default-titleblock "Noqsi-title-B.sym")
 ;
 ; $Log$
-; Revision 1.1  2007-06-08 00:55:28  jpd
+; Revision 1.2  2007-09-27 20:58:43  jpd
+; Back bias, static gate drivers, DACs, start on HK.
+;
+; Revision 1.1  2007/06/08 00:55:28  jpd
 ; Initial checkin of NeXT PPM
 ;
 ;

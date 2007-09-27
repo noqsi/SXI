@@ -382,7 +382,7 @@ netname=+12
 N 53200 46500 52800 46500 4
 {
 T 52200 46500 5 10 1 1 0 0 1
-netname=DVBB
+netname=DBB
 }
 T 41000 51300 9 30 1 0 0 0 1
 VBB Generator and Regulator
