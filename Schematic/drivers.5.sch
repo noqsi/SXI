@@ -1,4 +1,4 @@
-v 20070902 1
+v 20070626 1
 C 40000 42000 0 0 0 Noqsi-title-B.sym
 {
 T 50000 42500 5 10 1 1 0 0 1
@@ -138,7 +138,7 @@ refdes=U1
 T 47500 47100 5 10 0 0 0 6 1
 device=DG403
 T 47500 47300 5 10 0 0 0 6 1
-footprint=DIP16
+footprint=SO16
 }
 C 43600 44100 1 0 0 capacitor-1.sym
 {
@@ -347,7 +347,7 @@ symversion=0.1
 T 54800 47700 5 10 1 1 0 0 1
 value=0.1uF
 T 54800 48000 5 10 0 0 0 0 1
-footprint=0603
+footprint=1210
 }
 C 53300 45100 1 0 0 capacitor-1.sym
 {
