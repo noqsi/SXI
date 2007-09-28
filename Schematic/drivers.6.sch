@@ -282,9 +282,9 @@ refdes=C16
 T 54700 46000 5 10 0 0 0 0 1
 symversion=0.1
 T 55100 45100 5 10 1 1 0 0 1
-value=1uF
+value=0.1uF
 T 54500 45100 5 10 0 1 0 0 1
-footprint=0805
+footprint=0603
 }
 C 55600 45200 1 0 0 resistor-1.sym
 {
@@ -313,9 +313,9 @@ refdes=C17
 T 54600 43900 5 10 0 0 0 0 1
 symversion=0.1
 T 55000 43000 5 10 1 1 0 0 1
-value=1uF
+value=0.1uF
 T 54400 43000 5 10 0 1 0 0 1
-footprint=0805
+footprint=0603
 }
 C 55600 43100 1 0 0 resistor-1.sym
 {
@@ -359,7 +359,7 @@ symversion=0.1
 T 48200 40700 5 10 1 1 0 0 1
 value=0.1uF
 T 47600 40700 5 10 0 1 0 0 1
-footprint=0805
+footprint=0603
 }
 C 47600 42000 1 0 0 resistor-1.sym
 {
@@ -384,7 +384,7 @@ symversion=0.1
 T 52400 45300 5 10 1 1 0 0 1
 value=0.1uF
 T 51800 45300 5 10 0 1 0 0 1
-footprint=0805
+footprint=0603
 }
 C 51800 46600 1 0 0 resistor-1.sym
 {
@@ -451,7 +451,7 @@ C 46300 48600 1 0 0 FX2-100-pin.sym
 T 46900 48500 5 10 1 1 0 0 1
 refdes=J1
 T 47000 49200 5 10 0 1 0 0 1
-device=FX2
+device=FX2-100P-1.27DS
 T 46300 48600 5 10 0 0 0 0 1
 slot=89
 }
@@ -460,7 +460,7 @@ C 49000 43900 1 0 0 FX2-100-pin.sym
 T 49600 43800 5 10 1 1 0 0 1
 refdes=J1
 T 49700 44500 5 10 0 1 0 0 1
-device=FX2
+device=FX2-100P-1.27DS
 T 49000 43900 5 10 0 0 0 0 1
 slot=39
 }
@@ -469,7 +469,7 @@ C 53200 48500 1 0 0 FX2-100-pin.sym
 T 53800 48400 5 10 1 1 0 0 1
 refdes=J1
 T 53900 49100 5 10 0 1 0 0 1
-device=FX2
+device=FX2-100P-1.27DS
 T 53200 48500 5 10 0 0 0 0 1
 slot=88
 }
@@ -478,7 +478,7 @@ C 52500 43300 1 0 1 FX2-100-pin.sym
 T 52100 43800 5 10 1 1 0 6 1
 refdes=J1
 T 51800 43900 5 10 0 1 0 6 1
-device=FX2
+device=FX2-100P-1.27DS
 T 52500 43300 5 10 0 0 0 0 1
 slot=40
 }

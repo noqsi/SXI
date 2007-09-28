@@ -48,7 +48,9 @@ device=CAPACITOR
 T 44900 48100 5 10 0 0 0 6 1
 symversion=0.1
 T 44500 47200 5 10 1 1 0 6 1
-value=47nF
+value=0.1uF
+T 45100 47200 5 10 0 1 0 0 1
+footprint=0603
 }
 C 45100 48200 1 0 1 resistor-1.sym
 {
@@ -57,7 +59,9 @@ device=RESISTOR
 T 44900 48500 5 10 1 1 0 6 1
 refdes=R45
 T 44800 48000 5 10 1 1 0 6 1
-value=470
+value=300
+T 45100 48200 5 10 0 1 0 0 1
+footprint=2512
 }
 C 45200 47100 1 0 1 gnd-1.sym
 N 44200 48300 44200 47400 4
@@ -70,7 +74,9 @@ device=CAPACITOR
 T 42800 48200 5 10 0 0 0 0 1
 symversion=0.1
 T 42800 47100 5 10 1 1 0 0 1
-value=47nF
+value=0.1uF
+T 42600 47300 5 10 0 1 0 0 1
+footprint=0603
 }
 C 42600 48300 1 0 0 resistor-1.sym
 {
@@ -79,7 +85,9 @@ device=RESISTOR
 T 42800 48600 5 10 1 1 0 0 1
 refdes=R46
 T 42900 48100 5 10 1 1 0 0 1
-value=470
+value=300
+T 42600 48300 5 10 0 1 0 0 1
+footprint=2512
 }
 C 42500 47200 1 0 0 gnd-1.sym
 N 44200 47400 43900 47400 4
@@ -96,7 +104,9 @@ device=CAPACITOR
 T 49000 48100 5 10 0 0 0 6 1
 symversion=0.1
 T 48600 47200 5 10 1 1 0 6 1
-value=47nF
+value=0.1uF
+T 49200 47200 5 10 0 1 0 0 1
+footprint=0603
 }
 C 49200 48200 1 0 1 resistor-1.sym
 {
@@ -105,7 +115,9 @@ device=RESISTOR
 T 49000 48500 5 10 1 1 0 6 1
 refdes=R47
 T 48900 48000 5 10 1 1 0 6 1
-value=470
+value=300
+T 49200 48200 5 10 0 1 0 0 1
+footprint=2512
 }
 C 49300 47100 1 0 1 gnd-1.sym
 N 48300 48300 48300 47400 4
@@ -118,7 +130,9 @@ device=CAPACITOR
 T 46900 48200 5 10 0 0 0 0 1
 symversion=0.1
 T 46900 47100 5 10 1 1 0 0 1
-value=47nF
+value=0.1uF
+T 46700 47300 5 10 0 1 0 0 1
+footprint=0603
 }
 C 46700 48300 1 0 0 resistor-1.sym
 {
@@ -127,7 +141,9 @@ device=RESISTOR
 T 46900 48600 5 10 1 1 0 0 1
 refdes=R48
 T 47000 48100 5 10 1 1 0 0 1
-value=470
+value=300
+T 46700 48300 5 10 0 1 0 0 1
+footprint=2512
 }
 C 46600 47200 1 0 0 gnd-1.sym
 N 48300 47400 48000 47400 4
@@ -144,7 +160,9 @@ device=CAPACITOR
 T 53000 48100 5 10 0 0 0 6 1
 symversion=0.1
 T 52600 47200 5 10 1 1 0 6 1
-value=47nF
+value=0.1uF
+T 53200 47200 5 10 0 1 0 0 1
+footprint=0603
 }
 C 53200 48200 1 0 1 resistor-1.sym
 {
@@ -153,7 +171,9 @@ device=RESISTOR
 T 53000 48500 5 10 1 1 0 6 1
 refdes=R49
 T 52900 48000 5 10 1 1 0 6 1
-value=470
+value=300
+T 53200 48200 5 10 0 1 0 0 1
+footprint=2512
 }
 C 53300 47100 1 0 1 gnd-1.sym
 N 52300 48300 52300 47400 4
@@ -166,7 +186,9 @@ device=CAPACITOR
 T 50900 48200 5 10 0 0 0 0 1
 symversion=0.1
 T 50900 47100 5 10 1 1 0 0 1
-value=47nF
+value=0.1uF
+T 50700 47300 5 10 0 1 0 0 1
+footprint=0603
 }
 C 50700 48300 1 0 0 resistor-1.sym
 {
@@ -175,7 +197,9 @@ device=RESISTOR
 T 50900 48600 5 10 1 1 0 0 1
 refdes=R50
 T 51000 48100 5 10 1 1 0 0 1
-value=470
+value=300
+T 50700 48300 5 10 0 1 0 0 1
+footprint=2512
 }
 C 50600 47200 1 0 0 gnd-1.sym
 N 52300 47400 52000 47400 4
@@ -383,7 +407,7 @@ C 42100 43000 1 0 1 FX2-100-pin.sym
 T 41400 43200 5 10 1 1 0 6 1
 refdes=J1
 T 41400 43600 5 10 0 1 0 6 1
-device=FX2
+device=FX2-100P-1.27DS
 T 42100 43000 5 10 0 0 0 0 1
 slot=18
 }
@@ -392,7 +416,7 @@ C 41500 42700 1 0 1 FX2-100-pin.sym
 T 40800 42900 5 10 1 1 0 6 1
 refdes=J1
 T 40800 43300 5 10 0 1 0 6 1
-device=FX2
+device=FX2-100P-1.27DS
 T 41500 42700 5 10 0 0 0 0 1
 slot=19
 }
@@ -401,7 +425,7 @@ C 42100 42400 1 0 1 FX2-100-pin.sym
 T 41400 42600 5 10 1 1 0 6 1
 refdes=J1
 T 41400 43000 5 10 0 1 0 6 1
-device=FX2
+device=FX2-100P-1.27DS
 T 42100 42400 5 10 0 0 0 0 1
 slot=68
 }
@@ -410,7 +434,7 @@ C 41500 42100 1 0 1 FX2-100-pin.sym
 T 40800 42300 5 10 1 1 0 6 1
 refdes=J1
 T 40800 42700 5 10 0 1 0 6 1
-device=FX2
+device=FX2-100P-1.27DS
 T 41500 42100 5 10 0 0 0 0 1
 slot=69
 }
@@ -419,7 +443,7 @@ C 42100 41800 1 0 1 FX2-100-pin.sym
 T 41400 42000 5 10 1 1 0 6 1
 refdes=J1
 T 41400 42400 5 10 0 1 0 6 1
-device=FX2
+device=FX2-100P-1.27DS
 T 42100 41800 5 10 0 0 0 0 1
 slot=20
 }
@@ -428,7 +452,7 @@ C 41500 41500 1 0 1 FX2-100-pin.sym
 T 40800 41700 5 10 1 1 0 6 1
 refdes=J1
 T 40800 42100 5 10 0 1 0 6 1
-device=FX2
+device=FX2-100P-1.27DS
 T 41500 41500 5 10 0 0 0 0 1
 slot=70
 }
@@ -437,7 +461,7 @@ C 53500 45000 1 0 0 FX2-100-pin.sym
 T 54200 45200 5 10 1 1 0 0 1
 refdes=J1
 T 54200 45600 5 10 0 1 0 0 1
-device=FX2
+device=FX2-100P-1.27DS
 T 53500 45000 5 10 0 0 0 6 1
 slot=17
 }
@@ -446,7 +470,7 @@ C 41500 40700 1 0 1 FX2-100-pin.sym
 T 41100 41200 5 10 1 1 0 6 1
 refdes=J1
 T 40800 41300 5 10 0 1 0 6 1
-device=FX2
+device=FX2-100P-1.27DS
 T 41500 40700 5 10 0 0 0 0 1
 slot=21
 }

@@ -246,9 +246,9 @@ refdes=C5
 T 54700 47900 5 10 0 0 0 0 1
 symversion=0.1
 T 55100 47000 5 10 1 1 0 0 1
-value=1uF
+value=0.1uF
 T 54500 47000 5 10 0 1 0 0 1
-footprint=0805
+footprint=0603
 }
 C 55600 47100 1 0 0 resistor-1.sym
 {
@@ -280,9 +280,9 @@ refdes=C6
 T 54600 45800 5 10 0 0 0 0 1
 symversion=0.1
 T 55000 44900 5 10 1 1 0 0 1
-value=1uF
+value=0.1uF
 T 54400 44900 5 10 0 1 0 0 1
-footprint=0805
+footprint=0603
 }
 C 55600 45000 1 0 0 resistor-1.sym
 {
