@@ -1,4 +1,4 @@
-v 20070902 1
+v 20070626 1
 C 40000 39900 0 0 0 Noqsi-title-B.sym
 {
 T 50000 40400 5 10 1 1 0 0 1
@@ -209,9 +209,11 @@ device=RESISTOR
 T 54400 43700 5 10 1 1 0 0 1
 refdes=R1
 T 54500 43200 5 10 1 1 0 0 1
-value=100k
+value=300
 T 54200 43400 5 10 0 1 0 0 1
-footprint=0603
+footprint=2512
+T 54200 43400 5 10 0 1 0 0 1
+spec=5%
 }
 C 54200 42600 1 0 0 resistor-1.sym
 {
@@ -220,9 +222,11 @@ device=RESISTOR
 T 54400 42900 5 10 1 1 0 0 1
 refdes=R2
 T 54500 42400 5 10 1 1 0 0 1
-value=100k
+value=300
 T 54200 42600 5 10 0 1 0 0 1
-footprint=0603
+footprint=2512
+T 54200 42600 5 10 0 1 0 0 1
+spec=5%
 }
 C 54200 41800 1 0 0 resistor-1.sym
 {
@@ -231,9 +235,11 @@ device=RESISTOR
 T 54400 42100 5 10 1 1 0 0 1
 refdes=R3
 T 54500 41600 5 10 1 1 0 0 1
-value=100k
+value=300
 T 54200 41800 5 10 0 1 0 0 1
-footprint=0603
+footprint=2512
+T 54200 41800 5 10 0 1 0 0 1
+spec=5%
 }
 C 55000 44000 1 0 0 resistor-1.sym
 {
@@ -242,9 +248,11 @@ device=RESISTOR
 T 55200 44300 5 10 1 1 0 0 1
 refdes=R4
 T 55300 43800 5 10 1 1 0 0 1
-value=100k
+value=300
 T 55000 44000 5 10 0 1 0 0 1
-footprint=0603
+footprint=2512
+T 57600 42500 5 10 0 1 0 0 1
+spec=5%
 }
 N 55100 43500 56300 43500 4
 {
@@ -389,3 +397,5 @@ T 41200 45200 5 10 0 0 0 0 1
 slot=1
 }
 C 41100 45100 1 0 0 gnd-1.sym
+T 52000 40100 9 10 1 0 0 0 1
+8
