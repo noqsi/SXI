@@ -1,0 +1,226 @@
+
+9/29/07 Driver Board first Release
+
+Maybe I should call this the "Gate Driver Board": I'm currently planning
+to put the various drain drivers and "vertical input source" driver on
+the "video" board.
+
+There is no digital logic on this board: the "sequencer" and "controller"
+boards will provide the necessary digital inputs.
+
+There are almost 400 components with almost 1200 connections on this
+board. This is about the same count as the HETE CCD "driver" board. That
+board, designed in 1992, was ~300 cm^2. The majority of the components on
+it were not surface mount devices, while the only "through hole" device
+in this design is the connector, J1. So, it seems to me that 100-150 cm^2
+of board area should be adequate for this design. My experience suggests
+that the driver board is usually the most crowded one in these systems,
+so whatever we decide for board size here should suffice for the other
+boards in the system. That's one reason why I designed this board first.
+
+The board provides the following clocks, with high levels adjustable
+0-10V and low levels adjustable -10V-0. These should be sufficient to
+clock either our P channel or N channel CCD with all sections operating
+synchronously.
+
+P1VI
+P2VI
+P3VI
+
+These are the vertical imaging area clocks.
+
+P1VS
+P2VS
+P3VS
+
+These are the vertical storage area clocks.
+
+P1H
+P2H
+P3H
+P4H
+
+These are the horizontal clocks.
+
+TG
+SG
+RG
+
+Transfer gate, summing gate, reset gate.
+
+The board also provides the following DC biases:
+
+OG
+IG1
+IG2
+
+Output and input gates, range -10V to 10V.
+
+BB
+
+P-channel back bias, range 0-50V.
+
+J1 provides power and inputs to the board, and delivers its outputs to
+the AE backplane.
+
+Pin	Name	Function
+A1	Gnd
+A2	+5	Logic and low voltage power
+B3	Gnd
+A4	HP1VI	Logic: drive P1V1 high
+B4	HP1VS	Logic: drive P1VS high
+A5	LP1VI	Logic: drive P1V1 low
+B5	LP1VS	Logic: drive P1VS low
+A6	HP2VI	Logic: drive P2VI high
+B6	HP2VS	Logic: drive P2VS high
+A7	LP2VI	Logic: drive P2VI low
+B7	LP2VS	Logic: drive P2VS low
+A8	HP3VI	Logic: drive P3VI high
+B8	HP3VS	Logic: drive P3VS high
+A9	LP3VI	Logic: drive P3VI low
+B9	LP3VS	Logic: drive P3VS low
+A10	SP1H	Logic: drive P1H
+B10	SP3H	Logic: drive P3H
+A11	SP2H	Logic: drive P2H
+B11	SP4H	Logic: drive P4H
+A12	Gnd
+B12	1MHz	Logic: 1MHz clock
+A13	DCK	Logic: DAC data clock
+B13	DS0/	Logic: Select DACs 0-7
+A14	DS8/	Logic: Select DACs 8-15
+B14	DD	Logic: DAC serial data
+B16	Gnd
+A17	AHK	Analog housekeeping bus
+A18	HA0	Logic: housekeeping address bit 0 (LSB)
+B18	HA2	Logic: housekeeping address bit 2
+A19	HA1	Logic: housekeeping address bit 1
+B19	HEN16	Logic: enable housekeeping channels 0-7
+A20	HEN8	Logic: enable housekeeping channels 8-15
+B20	HEN0	Logic: enable housekeeping channels 16-23
+A21	Gnd
+A22	SSG	Logic: drive SG
+B22	STG	Logic: drive TG
+A23	SRG	Logic: drive RG
+A30	Gnd
+B38	IG1	Bias out to IG1
+A39	IG2	Bias out to IG2
+B39	OG	Bias out to OG
+A40	Gnd
+B40	P1VI	Clock out to P1VI
+A41	P2VI	Clock out to P2VI
+B41	P3VI	Clock out to P3VI
+A42	P1VS	Clock out to P1VS
+B42	P2VS	Clock out to P2VS
+A43	P3VS	Clock out to P3VS
+B43	P1H	Clock out to P1H
+A44	P2H	Clock out to P2H
+B44	P3H	Clock out to P3H
+A45	P4H	Clock out to P4H
+B45	TG	Clock out to TG
+A46	SG	Clock out to SG
+B46	RG	Clock out to RG
+A47	Gnd
+A48	BB	Back bias out
+A49	+12	Driver power
+B49	Gnd
+A50	-12	Driver power
+
+Board details:
+
+drivers.1.sch and drivers.2.sch
+
+These are the parallel clock drivers, composed mainly of subcircuits
+(details in other drawings).
+
+Resistors R1-R4 isolate the high impedance housekeeping system from
+the voltages it measures.  Similar 100k resistors are present on all
+housekeeping test points on the board.
+
+ParallelDriver.sch
+
+This is the high curent/high voltage driver for the parallel clocks. Vps
+is a high current input at the clock high level, nominally 0-10V DC. Vpg
+is gate drive power for the P channel switch, nominally 5V below Vps. Vns
+and Vng are similar for the N-channel negative level, nominally -10V-0.
+
+GoHi drives the output high when asserted to logic high. GoLo drives
+the output low when asserted to logic high.
+
+R6 and R7 are "brute force" current limiters: they protect Q1 and Q2
+against latchup of U1, sequencer microcode errors, and output short
+circuits. They also dissipate the bulk of the capacitive switching
+energy, keeping the transistors cool. I suggest Ohmite TDH35P5R00JE,
+rated at 35W at 25C case temperature. Whether this is sufficient needs
+attention: for example, a latchup or microcode error could turn on both
+Q1 and Q2, allowing as much as 1.8A (the LM317 regulator's current limit)
+to flow. That's 16W per resistor. Short circuit is worse: the LM337 on
+the negative supply has a higher limit (3.7A). But, I don't know what
+the power supply will provide, and I don't know what we consider "worst
+case". I believe in most cases the regulators will thermally limit before
+the resistors overheat, but that depends on clock voltage settings. Clever
+layout could help (put the regulator chips where the resistor heat will
+put them into thermal shutdown). I think this is good for a lab prototype,
+but for flight we may want thermistors and a shutdown circuit.
+
+The 300 ohm resistors are latchup protection for U1: they're 1W SMT
+(2512). 12V power limits their dissipation to <0.5W. However, they only
+limit current to 40 mA, exceeding the 20-30 mA limits (depending on
+manufacturer) of U1. It's not clear that those limits apply to latchup
+conditions, though. Increasing the resistance will slow the driver down,
+but perhaps that's acceptable. Another thing to consider in the flight
+design, after we get some lab experience.
+
+ParallelRegs.sch
+
+In this design, I've chosen to use LM317/337 regulators for their
+ruggedness. Their current limiting should be effective protection against
+short circuits, and help protect against latchup too. They're not as
+efficient as some more modern designs, so if we need to trim some power
+we can revisit this choice.
+
+DACtoClock.sch
+
+This circuit translates 0 to 3.3V DAC outputs to 8.75 to -1.25V (for
+10V to 0 clock high levels) and 1.25 to -8.75V (for 0 to -10V clock low
+levels), compensating for the 1.25V offset of the voltage regulator chips.
+
+drivers.3.sch and drivers.4.sch
+
+These are the low capacitance clock drivers.
+
+TG, SG, and RG drivers are just doubled-up serial clock drivers. We
+could save a few parts by making up a single channel driver subcircuit.
+
+SerialDrivers.sch
+
+See above about 300 ohm limiting resistors.
+
+drivers.5.sch
+
+This is the high voltage generator and regulator for the 12-50V back bias.
+
+I had previously chosen 220 pF as optimum for C1-C6, but upon
+more reflection, it's silly to optimize this circuit for minimum
+capacitance. Increasing the capacitance in the Cockroft Walton circuit
+will decrease the ripple without significant cost. We can get 47nF 50V in
+an 0603 package. Leave C4 at 220 pF to limit current under short circuit
+conditions. The maximum dissipation in the DG403 will then be f*C*V^2,
+or 127 mW for 24V swing, 1 MHz.
+
+drivers.6.sch
+
+These are just simple filtered amplifiers to convert 0 to 3.3V DAC
+outputs to 10V to -10V low current biases.
+
+drivers.7.sch
+
+A pair of AD5308 octal DAC chips provide the 16 control voltages required
+for the drivers. Note that the regulators invert, so a code of 0xff sets
+the corresponding driver voltage to its most negative, while a code of
+0x00 sets it to the most positive.
+
+drivers.8.sch
+
+These are the housekeeping multiplexors. As on ASCA and Suzaku, the
+approach is to feed an analog voltage to a line on the backplane. An
+ADC on the "controller" board will handle housekeeping.
