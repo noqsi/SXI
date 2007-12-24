@@ -1,6 +1,7 @@
 # $Id$
 
-all : drivers.pdf drivers.net.txt
+all : drivers.pdf drivers.net.txt \
+	video.pdf video.net.txt 
 
 # "Standard Boilerplate"
 # Definitions to generate the drawings
@@ -71,7 +72,43 @@ drivers.net.txt : $(DRIVERSCH)
 drivers.bom.txt : $(DRIVERSCH) attribs
 	gnetlist -g bom -o $@ $(DRIVERTOP)
 
+# Video board
+
+VIDEODOCS= \
+video.txt \
+video.1.ps \
+video.2.ps \
+video.3.ps \
+video.4.ps \
+video.5.ps \
+video.bom.txt
+
+video.ps : $(VIDEODOCS)
+	$(A2PS)
+
+VIDEOTOP= \
+video.1.sch \
+video.2.sch \
+video.3.sch \
+video.4.sch \
+video.5.sch 
+
+VIDEOSUB=	# no subcircuits at this time
+
+VIDEOSCH= $(VIDEOTOP) $(VIDEOSUB)
+
+video.net.txt : $(VIDEOSCH)
+	gnetlist -g calay -o $@ $(VIDEOTOP)
+
+video.bom.txt : $(VIDEOSCH) attribs
+	gnetlist -g bom -o $@ $(VIDEOTOP)
+
+
+
 # $Log$
-# Revision 1.1  2007-09-30 20:11:10  jpd
+# Revision 1.2  2007-12-24 19:01:21  jpd
+# Check in after long CVS outage
+#
+# Revision 1.1  2007/09/30 20:11:10  jpd
 # Automatically generate netlist, doc.
 #
