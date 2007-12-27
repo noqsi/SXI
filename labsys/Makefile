@@ -2,7 +2,7 @@
 
 all : drivers.pdf drivers.net.txt \
 	DrainDrive.pdf DrainDrive.net.txt \
-	Interface.pdf Video.pdf Video.net.txt
+	Interface.pdf Interface.net.txt Video.pdf Video.net.txt
 
 # "Standard Boilerplate"
 # Definitions to generate the drawings
@@ -145,6 +145,9 @@ Interface.ps : $(INTERDOCS)
 Interface.bom.txt : $(INTERSCH) attribs
 	gnetlist -g bom -o $@ $(INTERTOP)
 
+Interface.net.txt: $(INTERSCH)
+	gnetlist -g calay -o $@ $(INTERTOP)
+
 VIDEODOCS= \
 	Video.1.ps \
 	Video.2.ps \
@@ -172,6 +175,9 @@ Video.ps : $(VIDEODOCS)
 
 
 # $Log$
+# Revision 1.2  2007-12-27 18:48:17  jpd
+# Add resistors at flex connector for testing.
+#
 # Revision 1.1  2007-12-24 19:15:35  jpd
 # Check in of laboratory preprototype
 #

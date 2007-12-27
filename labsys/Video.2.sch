@@ -180,7 +180,7 @@ title=Video Board
 T 50700 40200 9 10 1 0 0 0 1
 2
 T 52000 40200 9 10 1 0 0 0 1
-3
+4
 T 43100 48600 9 30 1 0 0 0 3
 Digital Interface to
 Measurement Chains
