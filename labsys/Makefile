@@ -152,12 +152,14 @@ VIDEODOCS= \
 	Video.1.ps \
 	Video.2.ps \
 	Video.3.ps \
+	Video.4.ps \
 	Video.bom.txt
 
 VIDEOTOP= \
 	Video.1.sch \
 	Video.2.sch \
-	Video.3.sch
+	Video.3.sch \
+	Video.4.sch
 
 VIDEOSUB=
 
@@ -175,6 +177,9 @@ Video.ps : $(VIDEODOCS)
 
 
 # $Log$
+# Revision 1.3  2008-01-04 20:18:17  jpd
+# Video.4 was left out.
+#
 # Revision 1.2  2007-12-27 18:48:17  jpd
 # Add resistors at flex connector for testing.
 #
