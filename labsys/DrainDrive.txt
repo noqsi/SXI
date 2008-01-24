@@ -1,0 +1,24 @@
+11/30/07 Drain Driver Board
+
+This board is designed to handle either P channel or N channel CCD's. The
+backplane should supply the appropriate voltages on +DR and -DR for the CCD
+type:
+
+Type	+DR	-DR
+P	0V	-28V
+N	+30V	0V
+
+DrainDrive.1.sch
+
+This provides individually adjustable drive for the output and reset drains. The
+voltage range is 0-28V, relative to -DR.
+
+DrainDrive.2.sch
+
+This provides DAC circuitry.
+
+DrainDrive.3.sch
+
+This provides external connections for power, DAC control, and clock timing for this board and also the mother board it serves.
+
+
