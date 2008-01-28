@@ -48,7 +48,7 @@ netname=Deintu
 N 49000 46500 48700 46500 4
 {
 T 48500 46600 5 10 1 1 0 0 1
-netname=Clampbu
+netname=Clampu
 }
 N 53000 46500 52700 46500 4
 {
@@ -74,7 +74,7 @@ netname=Deint
 N 51900 46500 52200 46500 4
 {
 T 52400 46600 5 10 1 1 0 6 1
-netname=Clampb
+netname=Clamp
 }
 N 55900 46500 56200 46500 4
 {
