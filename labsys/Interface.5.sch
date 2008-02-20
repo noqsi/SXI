@@ -35,13 +35,13 @@ spec=10WVDC X5R
 C 44900 47800 1 0 0 inductor-1.sym
 {
 T 45100 48300 5 10 0 0 0 0 1
-device=CDR125-220MC
+device=744777122
 T 45100 48100 5 10 1 1 0 0 1
 refdes=L5
 T 45100 48500 5 10 0 0 0 0 1
 symversion=0.1
 T 44900 47800 5 10 0 1 0 0 1
-footprint=CDR125
+footprint=744777122
 T 45100 47700 5 10 1 1 0 0 1
 value=22uF
 }
@@ -88,13 +88,13 @@ spec=50WVDC X7R
 C 42900 49100 1 0 0 inductor-1.sym
 {
 T 43100 49600 5 10 0 0 0 0 1
-device=CDR125-220MC
+device=744777122
 T 43100 49400 5 10 1 1 0 0 1
 refdes=L7
 T 43100 49800 5 10 0 0 0 0 1
 symversion=0.1
 T 42900 49100 5 10 0 1 0 0 1
-footprint=CDR125
+footprint=744777122
 T 43000 49000 5 10 1 1 0 0 1
 value=22uF
 }
