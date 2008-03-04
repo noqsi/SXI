@@ -1,0 +1,111 @@
+Using GNU C Toolchain for the AT91EB40A Board on Linux
+
+Copyright 2005-2008 John P. Doty and Matthew P. Wampler-Doty
+
+This document describes how to set up a Linux workstation as a software
+development platform for the AT91EB40A ARM7 development board.
+
+These instructions assume a Linux computer, x86_64 architecture, with a serial
+port to follow these instructions. For 32 bit x86, substitute the GCC-3.4
+toolchain. In other cases, beware that support for the Angel (RDI) dbugger was
+removed in gdb/Insight 6.5, so get an earlier version.
+
+Go to http://www.gnuarm.com/. Click on FILES at the top. Download the binaries
+for the GCC-4.0.2 toochain. Decide where you're going to put them (mine are in
+~/Development/tools). Move the file you just downloaded
+(bu-2.16.1_gcc-4.0.2-c-c++_nl-1.14.0_gi-6.4_x86-64.tar.bz2) to that directory.
+In that directory,
+'tar xjf bu-2.16.1_gcc-4.0.2-c-c++_nl-1.14.0_gi-6.4_x86-64.tar.bz2'.
+
+Put the ARM toolchain binaries in your path with something like 'export
+PATH=~/Development/tools/gnuarm-4.0.2/bin/:$PATH'.
+
+Type 'ls -l /dev/ttyS0'. If you don't have read/write access, you'll need to
+type something like 'chmod 666 /dev/ttyS0' as root.
+
+Connect SERIAL A on the board to serial port 0 on the workstation
+
+JP1 on the board should be in the SDT (not USER) position to boot into Angel.
+
+Doing the deed:
+
+Boot the board, either by connecting power or, if power is already on, by
+depressing RESET. Don't push other buttons (SW1 will take you to self test
+rather than Angel).
+
+Type 'arm-elf-gdb'. At the (gdb) prompt, type 'target rdi /dev/ttyS0'. If all
+is well, you'll see:
+
+Angel Debug Monitor (serial) 1.04 (Advanced RISC Machines SDT 2.5) for
+AT91EB40A (1.00) Angel Debug Monitor rebuilt on Feb 03 2002 at 16:09:59 Serial
+Rate:   9600 Connected to ARM RDI target.
+
+A good place to start is experimenting is to make one of the LEDs blink. Page 78
+in at91x408xx_full.pdf has a controller memory map, for "setting the output data
+register" and "clearing the output data register".
+
+The address to write to to set a data register is 0xffff0030
+the address to write to to clear a data register is 0xffff0034
+
+Diodes are numbered D1 through D8,they have the following memory addresses:
+
+D1      0x10000
+D2      0x20000
+D3      0x40000
+D4      0x80000
+D5      0x8
+D6      0x10
+D7      0x20
+D8      0x40
+
+Setting a diode data register turns it off, clearing it turns it on.  The
+following GDB command will turn on D4
+
+set *0xffff0034=0x80000
+
+turning it off is 
+
+set *0xffff0030=0x80000
+
+I (Matt) have created the directories "blink" and "blink_c" in "projects" which
+are assembly and C programs for the ARM, respectively.  This code has been
+adapted  from the "Embedded System Design on a Shoestring" book.
+
+The only notable changes are that the author of the Shoestring has different
+addresses for his diodes, and the address of the SRAM, along with the SRAM's
+length, on the chip is different than his.  For the addresses of the diodes, 
+refer to above; set and clear addresses appear to be the same. The correct 
+SRAM address is 0x00000100 and it's correct length is 256K, or 0x00040000.
+
+This means that the "blink" and "blink_c" adaptations have the line
+
+sram    : org = 0x00000100, len = 0x00040000    /* 256KBytes of SRAM */
+
+instead of
+
+sram    : org = 0x02000000, len = 0x00080000    /* 512KBytes of SRAM */
+
+for more information refer to page 3-2 of the AT91EB40A Evaluation Board User
+Guide (AT91EB40A.pdf). Look at section 3.4 ("SRAM Downloader").
+
+So if you want to get started *right away* on the ARM, go to "blink" or
+"blink_c" and type "make clean; make".  After the program is done compiling,
+type in that directory "arm-elf-gdb example?.elf".  At the (gdb) prompt, type 
+'target rdi /dev/ttyS0', then 'load'.  It should say something like:
+
+Loading section .text, size 0xcc lma 0x100
+Start address 0x100, load size 204
+Transfer rate: 1632 bits in <1 sec, 204 bytes/write.
+
+then type "run", and "y" to "Start it from the beginning".  D5 should blink like
+crazy.
+
+Random JTAG Notes
+
+I (Matt) think we'd eventually like to be playing with JTAG with this thing. 
+Here is one website with circuit designs for the adapters:
+http://wiki.openwrt.org/OpenWrtDocs/Customizing/Hardware/JTAG_Cable
+
+and here another with specs for the 20 pin connector
+http://hri.sourceforge.net/tools/jtag_faq_org.html#_Toc63218717
+
