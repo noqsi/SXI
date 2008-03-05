@@ -35,9 +35,12 @@ static inline void seq_clear( unsigned bits ) {
 	clearbits |= bits;
 }
 
+
 static inline void pstep( void ) {
+#ifndef NO_PCLK			/* For test without clock */
 	while( pio->pdr & PCLK );
 	while( !( pio->pdr & PCLK ));
+#endif
 	pio->sodr = setbits;
 	pio->codr = clearbits;
 	setbits = clearbits = 0;
@@ -94,6 +97,9 @@ void readout( void ) {
 
 /*
  * $Log$
+ * Revision 1.3  2008-03-05 00:47:21  jpd
+ * Fix const declarations, first version for bench test.
+ *
  * Revision 1.2  2008-03-05 00:35:06  jpd
  * Row down, row transfer.
  *

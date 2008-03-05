@@ -15,8 +15,8 @@ struct usart {
 	volatile unsigned tcr;
 };
 
-const struct usart *usart0 = (struct usart *) 0xfffd0000;
-const struct usart *usart1 = (struct usart *) 0xfffcc000;
+struct usart * const usart0 = (struct usart *) 0xfffd0000;
+struct usart * const usart1 = (struct usart *) 0xfffcc000;
 
 /* PIO bits */
 
@@ -31,6 +31,9 @@ const struct usart *usart1 = (struct usart *) 0xfffcc000;
 
 /*
  * $Log$
+ * Revision 1.3  2008-03-05 00:47:21  jpd
+ * Fix const declarations, first version for bench test.
+ *
  * Revision 1.2  2008-02-28 01:54:29  jpd
  * Continue capture of EB40A board properties.
  *
