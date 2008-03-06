@@ -18,9 +18,9 @@
 /* DAC control outputs */
 
 #define DS0	bit(16)
-#define DS1	bit(17)
-#define DS2	bit(18)
-#define DS3	bit(19)
+#define DS8	bit(17)
+#define DS16	bit(18)
+#define DS24	bit(19)
 #define Dclk	bit(20)
 #define Ddata	bit(23)
 #define Dload	bit(24)
@@ -39,6 +39,9 @@
 
 /*
  * $Log$
+ * Revision 1.2  2008-03-06 20:06:06  jpd
+ * Low level DAC control functions.
+ *
  * Revision 1.1  2008-02-28 01:54:29  jpd
  * Continue capture of EB40A board properties.
  *
