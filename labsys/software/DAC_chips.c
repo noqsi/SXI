@@ -1,5 +1,8 @@
 /* $Id$ */
 
+#include "interface.h"
+#include "DAC_chips.h"
+
 /*
  * Functions for commanding the AD5308 DAC chips in the lab system.
  */
@@ -10,7 +13,7 @@
  * For when you don't want to command a DAC chip.
  */
 
-void deselect_all_DAC_chips( void ) {
+static void deselect_all_DAC_chips( void ) {
 	pio->sodr = ALLDAC;
 }
 
@@ -18,7 +21,7 @@ void deselect_all_DAC_chips( void ) {
  * For when you want to command all DAC chips at once
  */
 
-void select_all_DAC_chips( void ) {
+static void select_all_DAC_chips( void ) {
 	pio->codr = ALLDAC;
 }
 
@@ -29,7 +32,7 @@ void select_all_DAC_chips( void ) {
  * The next 2 bits are the chip identifier.
  */
 
-void select_DAC_chip( unsigned n ) {
+static void select_DAC_chip( unsigned n ) {
 	static unsigned dsbits[] = { DS0, DS8, DS16, DS24 };
 	pio-sodr = dsbits[ 3 & (n>>3) ];
 }
@@ -47,7 +50,7 @@ void pulse_DAC_clock( void ) {
  * Send n bits from word w to the selected DAC chip(s)
  */
 
-void to_DAC( unsigned w, unsigned n ) {
+static void to_DAC( unsigned w, unsigned n ) {
 	while( n > 0 ) {	/* send LSBs, MSB first */
 		if( w & bit(--n)) pio->sodr = Ddata;
 		else pio->codr = Ddata;
@@ -83,6 +86,9 @@ void set_DAC( unsigned n, unsigned d ) {
 
 /*
  * $Log$
+ * Revision 1.2  2008-03-07 02:42:13  jpd
+ * DACs and headers.
+ *
  * Revision 1.1  2008-03-06 20:06:06  jpd
  * Low level DAC control functions.
  *

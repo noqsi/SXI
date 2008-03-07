@@ -1,6 +1,7 @@
 /* $Id$ */
 
 #include "interface.h"
+#include "raster.h"
 
 /*
  * Physical CCD characteristics - Pch2k4kBICCD
@@ -97,6 +98,9 @@ void readout( void ) {
 
 /*
  * $Log$
+ * Revision 1.4  2008-03-07 02:42:13  jpd
+ * DACs and headers.
+ *
  * Revision 1.3  2008-03-05 00:47:21  jpd
  * Fix const declarations, first version for bench test.
  *
