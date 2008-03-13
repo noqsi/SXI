@@ -1,3 +1,5 @@
+/* $Id$ */
+
 /*
  * Synchronous read and write.
  */
@@ -56,4 +58,10 @@ void usart_set_tx_buffer( struct usart *u, char *b, int n )
 }
 
 
+/*
+ * $Log$
+ * Revision 1.2  2008-03-13 20:15:38  jpd
+ * Beginnings of a parser.
+ *
+ */
 
