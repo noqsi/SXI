@@ -58,12 +58,18 @@ SECTIONS
 		__rodata_start__ = . ;
 		*(.rodata)
         	. = ALIGN(4);
+	}
+	
+	.rodata.str1.4 ADDR(.rodata) + SIZEOF(.rodata) :
+	{
+		*(.rodata.str1.4)
+        	. = ALIGN(4);
         	__rodata_end__ = . ;
         	erodata  =  .;
         	_erodata  =  .;
 	}
 
-	.bss ADDR(.rodata) + SIZEOF(.rodata) :
+	.bss ADDR(.rodata.str1.4) + SIZEOF(.rodata.str1.4) :
 	{
 		__bss_start__ = . ;
 		*(.bss); *(COMMON)
@@ -92,6 +98,9 @@ SECTIONS
 
 /*
  * $Log$
+ * Revision 1.2  2008-03-18 22:03:21  jpd
+ * First version that builds.
+ *
  * Revision 1.1  2008-03-05 00:49:06  jpd
  * Bench test version.
  *

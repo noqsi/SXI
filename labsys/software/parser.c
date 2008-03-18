@@ -2,6 +2,11 @@
 
 #include "parser.h"
 #include "usart.h"
+#include "stdio.h"
+#include "string.h"
+#include "bias_DAC.h"
+#include "DAC_chips.h"
+#include "raster.h"
 
 static char name[] = "LabSXI";
 
@@ -96,7 +101,7 @@ static void do_DAC( void ) {
 static void do_readout( void ) {
 	unsigned i;				/* count of readouts */
 	
-	if( sscanf( &cmdbuf[cbx], "%u %u", &i ) != 1 ) {
+	if( sscanf( &cmdbuf[cbx], "%u", &i ) != 1 ) {
 		bad_args( 1 );
 		return;
 	}
@@ -137,6 +142,9 @@ void dispatch_command( void ) {
 
 /*
  * $Log$
+ * Revision 1.3  2008-03-18 22:03:21  jpd
+ * First version that builds.
+ *
  * Revision 1.2  2008-03-18 17:09:31  jpd
  * More details.
  *

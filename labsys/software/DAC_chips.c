@@ -34,7 +34,7 @@ static void select_all_DAC_chips( void ) {
 
 static void select_DAC_chip( unsigned n ) {
 	static unsigned dsbits[] = { DS0, DS8, DS16, DS24 };
-	pio-sodr = dsbits[ 3 & (n>>3) ];
+	pio->sodr = dsbits[ 3 & (n>>3) ];
 }
 
 /*
@@ -86,6 +86,9 @@ void set_DAC( unsigned n, unsigned d ) {
 
 /*
  * $Log$
+ * Revision 1.3  2008-03-18 22:03:21  jpd
+ * First version that builds.
+ *
  * Revision 1.2  2008-03-07 02:42:13  jpd
  * DACs and headers.
  *

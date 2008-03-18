@@ -30,8 +30,8 @@
 
 #define Dout	bit(13)
 
-#define PIO_OUTPUTS ( P1V | P2V | P3V | VIEN | HEN | SGEN | DS0 | DS1 | \
-		DS2 | DS3 | Dclk | Ddata | Dload | DRST )
+#define PIO_OUTPUTS ( P1V | P2V | P3V | VIEN | HEN | SGEN | DS0 | DS8 | \
+		DS16 | DS24 | Dclk | Ddata | Dload | DRST )
 
 #define PIO_INPUTS ( PCLK | Dout )
 
@@ -39,6 +39,9 @@
 
 /*
  * $Log$
+ * Revision 1.3  2008-03-18 22:03:21  jpd
+ * First version that builds.
+ *
  * Revision 1.2  2008-03-06 20:06:06  jpd
  * Low level DAC control functions.
  *

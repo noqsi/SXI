@@ -15,22 +15,22 @@ struct usart {
 	volatile unsigned tcr;
 };
 
-struct usart * const usart0 = (struct usart *) 0xfffd0000;
-struct usart * const usart1 = (struct usart *) 0xfffcc000;
+#define usart0 ((struct usart *) 0xfffd0000)
+#define usart1 ((struct usart *) 0xfffcc000)
 
-/* PIO bits */
-
-#define SCK0	bit(13)
-#define TXD0	bit(14)
-#define RXD0	bit(15)
-
-#define SCK1	bit(16)
-#define TXD1	bit(17)
-#define RXD1	bit(18)
+extern void usart_init( struct usart *u );
+extern char usart_getc( struct usart *u );
+extern void usart_putc( struct usart *u, char c );
+extern void usart_set_rx_buffer( struct usart *u, char *b, int len );
+extern int usart_get_rx_buffer( struct usart *u, char *b );
+extern void usart_set_tx_buffer( struct usart *u, char *b, int n );
 
 
 /*
  * $Log$
+ * Revision 1.4  2008-03-18 22:03:21  jpd
+ * First version that builds.
+ *
  * Revision 1.3  2008-03-05 00:47:21  jpd
  * Fix const declarations, first version for bench test.
  *

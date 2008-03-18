@@ -1,18 +1,37 @@
 /* $Id$ */
 
+#include "usart.h"
+
+/*
+ * Status bits
+ */
+
+#define RXRDY	bit(0)
+#define	TXRDY	bit(1)
+
+/*
+ * Init USART using constants cribbed from Angel.
+ * Should make this more flexible sometime.
+ */
+
+void usart_init( struct usart *u ) {
+	u->mr = 0x8c0;	/* 8 bits, no parity */
+	u->brgr = 429;	/* 9600 baud */
+}
+
 /*
  * Synchronous read and write.
  */
 
 char usart_getc( struct usart *u )
 {
-	while( !(u->csr & US_RXRDY )) ;		/* Spin */
+	while( !(u->csr & RXRDY )) ;		/* Spin */
 	return u->rhr;
 }
 
-usart_putc( struct usart *u, char c ))
+void usart_putc( struct usart *u, char c )
 {
-	while( !(u->csr & US_TXRDY )) ;		/* Spin */
+	while( !(u->csr & TXRDY )) ;		/* Spin */
 	u->thr = c;
 }
 
@@ -30,7 +49,7 @@ void usart_set_rx_buffer( struct usart *u, char *b, int len )
 	
 	u->rpr = b;
 	u->rcr = len;
-	return b;
+	return;
 }
 
 /*
@@ -60,6 +79,9 @@ void usart_set_tx_buffer( struct usart *u, char *b, int n )
 
 /*
  * $Log$
+ * Revision 1.3  2008-03-18 22:03:21  jpd
+ * First version that builds.
+ *
  * Revision 1.2  2008-03-13 20:15:38  jpd
  * Beginnings of a parser.
  *

@@ -23,7 +23,7 @@ static void to_bias( unsigned w, unsigned n ) {
  
 static void reset_bias( void ) {
 	pio->sodr = DRST;
-	pio->codr = DCLK | Dload | DRST;	/* Also fix clock phase, load bit */
+	pio->codr = Dclk | Dload | DRST;	/* Also fix clock phase, load bit */
 }
 
 /*
@@ -59,9 +59,11 @@ unsigned get_bias( void ) {
 
 /*
  * $Log$
+ * Revision 1.2  2008-03-18 22:03:21  jpd
+ * First version that builds.
+ *
  * Revision 1.1  2008-03-07 02:42:13  jpd
  * DACs and headers.
  *
  */
-
 	
