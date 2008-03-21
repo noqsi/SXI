@@ -1,0 +1,83 @@
+$Id$
+
+Some quick notes on the C-link lab SXI code.
+
+"make" should build "labsxi.elf", assuming you have the gnuarm tools from
+gnuarm.org installed and in your PATH.
+
+To load the program, connect an M-F serial cable from SERIAL A on the EB40A
+board to the Linux PC that will do the code upload. Check .gdbinit for the
+configuration used at Noqsi. You might have to edit .gdbinit if your serial port
+configuration is different. Angel can do auto baud rate detection, so you can
+change the rate if necessary, and you may also choose a different PC serial
+port.
+
+For initial testing, connect an F-F "null modem" serial cable from SERIAL B on
+the EB40A board to the serial port you will use for camera control. The
+following instructions assume you're using "cu" on a Linux system to operate
+this port, and that the port is /dev/ttyS0. The software currently sets SERIAL B
+to 9600 baud (the default for "cu").
+
+In the camera control window, type:
+
+cu -l /dev/ttyS0
+
+It should respond with "Connected."
+
+In the upload window, type:
+
+arm-elf-gdb labsxi.elf
+
+This should give you a bunch of information about gdb, and then:
+
+Serial Rate: 115200
+Connected to ARM RDI target.
+Loading section .text, size 0xc608 lma 0x100
+Loading section .data, size 0x844 lma 0xc708
+Loading section .rodata, size 0x404 lma 0xcf4c
+Loading section .rodata.str1.4, size 0xb0 lma 0xd350
+Start address 0x100, load size 54016
+Transfer rate: 72773 bits/sec, 495 bytes/write.
+
+(the size/lma will change as we revise software)
+
+At this point, you should see the prompt:
+
+C-link LabSXI> 
+
+in the camera control window.
+
+Type "help". You shold see:
+
+C-link LabSXI> help
+Commands:
+bias bias0 bias1 bias2 bias3
+dac number value
+readout count
+status
+no_pclk
+use_pclk
+sum hsum vsum
+
+C-link LabSXI> 
+
+For testing without the interface board, be sure to issue the no_pclk command
+before attempting to use the readout command. Otherwise, the program will wait
+indefinitely for a pixel clock.
+
+More to come...
+
+$Log$
+Revision 1.1  2008-03-21 18:37:06  jpd
+Recovered CVS archive after disk failure: some recent revisions lost.
+Beware of revision number reset!
+Cleaned up load map.
+
+Revision 1.2  2008-03-20 22:00:22  jpd
+Optimize raster generator.
+Async testing via command, not compile switch.
+Pixel summation.
+
+Revision 1.1  2008-03-20 18:23:26  jpd
+README with some instructions.
+

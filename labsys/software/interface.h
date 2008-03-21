@@ -26,9 +26,11 @@
 #define Dload	bit(24)
 #define DRST	bit(8)
 
-/* MND01 DAC monitor input */
+/* MD01 DAC monitor input */
 
 #define Dout	bit(13)
+
+/* Bit masks for PIO control registers */
 
 #define PIO_OUTPUTS ( P1V | P2V | P3V | VIEN | HEN | SGEN | DS0 | DS8 | \
 		DS16 | DS24 | Dclk | Ddata | Dload | DRST )
@@ -39,6 +41,15 @@
 
 /*
  * $Log$
+ * Revision 1.4  2008-03-21 18:37:06  jpd
+ * Recovered CVS archive after disk failure: some recent revisions lost.
+ * Beware of revision number reset!
+ * Cleaned up load map.
+ *
+ * Revision 1.4  2008-03-20 17:02:28  jpd
+ * Tell gdb to automatically load and run.
+ * Add comments.
+ *
  * Revision 1.3  2008-03-18 22:03:21  jpd
  * First version that builds.
  *

@@ -27,7 +27,7 @@ static void reset_bias( void ) {
 }
 
 /*
- * Set the bias DACs
+ * Set the bias DACs (MD01 only: MND01 needs different code)
  */
 
 void set_bias( unsigned n0, unsigned n1, unsigned n2, unsigned n3 ) {
@@ -59,6 +59,15 @@ unsigned get_bias( void ) {
 
 /*
  * $Log$
+ * Revision 1.3  2008-03-21 18:37:06  jpd
+ * Recovered CVS archive after disk failure: some recent revisions lost.
+ * Beware of revision number reset!
+ * Cleaned up load map.
+ *
+ * Revision 1.3  2008-03-20 17:02:28  jpd
+ * Tell gdb to automatically load and run.
+ * Add comments.
+ *
  * Revision 1.2  2008-03-18 22:03:21  jpd
  * First version that builds.
  *

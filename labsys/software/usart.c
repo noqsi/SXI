@@ -10,13 +10,24 @@
 #define	TXRDY	bit(1)
 
 /*
+ * Control bits
+ */
+
+#define RSTRX	bit(2)
+#define RSTTX	bit(3)
+#define RXEN	bit(4)
+#define TXEN	bit(6)
+
+/*
  * Init USART using constants cribbed from Angel.
  * Should make this more flexible sometime.
  */
 
 void usart_init( struct usart *u ) {
+	u->cr = RSTRX | RSTTX;	/* reset RX/TX */
 	u->mr = 0x8c0;	/* 8 bits, no parity */
 	u->brgr = 429;	/* 9600 baud */
+	u->cr = RXEN | TXEN;	/* enable RX/TX */
 }
 
 /*
@@ -79,6 +90,15 @@ void usart_set_tx_buffer( struct usart *u, char *b, int n )
 
 /*
  * $Log$
+ * Revision 1.4  2008-03-21 18:37:06  jpd
+ * Recovered CVS archive after disk failure: some recent revisions lost.
+ * Beware of revision number reset!
+ * Cleaned up load map.
+ *
+ * Revision 1.4  2008-03-19 23:43:01  jpd
+ * Lots of little bug fixes.
+ * This version runs, on the processor board with interface hardware.
+ *
  * Revision 1.3  2008-03-18 22:03:21  jpd
  * First version that builds.
  *
