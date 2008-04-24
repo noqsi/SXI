@@ -1,0 +1,63 @@
+4/24/08 Laboratory SXI Video Board for Pch Chip
+
+This board supports an MD01 or MND01 quad video chain chip (U1), and also
+serves to connect CCD signals to the other boards in the system.
+
+Beware that U1 is broken into several symbols, representing different
+parts of the chip.
+
+J1 provides driver signals from the Drain Driver board, and through
+it, the driver board. J2 connects to the CCD via flexprint. JF1 and
+JF2 connect to the Interface board.
+
+Video.1.sch
+
+This provides input coupling for the four video chains along with
+power and regulated reference voltages. Reference voltages are
+relative to VL (output from U1). DR (the bias DAC reference) is 1.2V
+above VL, while AR (the video reference) is 0.2V above VL.
+
+Video.2.sch
+
+This provides connections with the interface board, mainly digital
+I/O. Schmitt trigger U2 receives low speed single-ended digital
+inputs. High speed digital inputs are LVDS and go straight to U1.
+
+Video.3.sch
+
+This provides all of the CCD connections except for video signals and
+horizontal clocks.
+
+Video.4.sch
+
+This provides horizontal clocks and back bias.
+
+The horizontal clock phases may be adjusted by jumpers. Refer to the
+document HPK_2kx4k_Timing_Diagram_20051207_rev1.pdf for diagrams. In
+the following, "1-3" means to connect pin 1 to pin 3.
+
+For Timing1 (four output mode):
+
+JS1: 1-3, 2-4
+JS2: 1-3, 2-4
+JS3: 1-3, 2-4
+JS4: 1-3, 2-4
+
+
+For Timing2 (OUT1, OUT3 mode):
+
+JS1: 1-3, 2-4
+JS2: 1-2, 3-4
+JS3: 1-3, 2-4
+JS4: 1-2, 3-4
+
+For Timing3 (OUT2, OUT4 mode):
+
+JS1: 1-2, 3-4
+JS2: 1-3, 2-4
+JS3: 1-2, 3-4
+JS4: 1-3, 2-4
+
+
+For internal back bias, connect JS5 2-4. For external back bias,
+connect JS5 1-2.

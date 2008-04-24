@@ -1,0 +1,107 @@
+4/24/08 Laboratory SXI Interface Board
+
+This board provide digital support and interfaces for the system:
+video filtering and decimation, power conditioning, Camera Link
+interface, and clock sequencing.
+
+SeqCell.sch
+
+This sequencer building block implements two finite state machine
+bits. U1 decodes the conditions under which the corresponding bit
+will change on the falling edge of CLK/:
+
+J1A/	J1B/	K1A/	K1B/	Q1 becomes
+0	0	0	0	~Q1
+0	0	X	1	1
+0	0	1	X	1
+X	1	0	0	0
+1	X	0	0	0
+Any other			Q1
+
+J2A/ etc. behave similarly.
+
+DigitalDelay.sch
+
+This building block delays a signal, In, by up to 7 cycles of Clk.
+The delay isselected by D0-D3 (D0 is the least significant). It is
+used to adjust the digital timing for the CCD clock driver
+propagation delay.
+
+decimator,sch
+
+This is the decimation filter FPGA alog with its support circuitry.
+
+Interface.1.sch
+
+This circuit employs the decimator block to turn video chip outputs
+into Camera Link video, and sequencer timing signals into video chip
+timing signals.
+
+Interface.2.sch
+
+This provides 3.3V power conditioning, other power connections, and
+digital connections from the video board.
+
+Interface.3.sch
+
+This provides digital output connections to the video board, external
+back bias, and connects to the temperature sensor on the CCD.
+
+Interface.4.sch
+
+This delivers sequencer outputs and filtered 12V power to the driver
+board.
+
+Interface.5.sch
+
+This delivers DAC control signals and power to the Drain Driver
+board. For a P-channel CCD, DRV (from J3 on page 2) should be -30V,
+and JS1 should be connected 1-2, 3-4. For an N channel CCD, DRV
+should be +30V and JS1 should be connected 1-3, 2-4.
+
+Interface.6.sch
+
+This connects Camera Link with the decimator and with serial
+port 1 on the EB40A microcontroller board. The connections to J1 here
+can interfere with the operation of the microcontroller board. There
+are several possibilities to avoid this:
+
+1. Omit U13 here and use the SERIAL B connector on the
+microcontroller board to control the camera instead of the Camera
+Link serial interface. This is probably the best way to operate when
+debugging.
+
+2. Disable the serial connectors on the microcontroller board by
+connecting jumper CB7. Control the camera through the Camera Link
+serial connection. Unfortunately, this disables program loading
+and debugging via SERIAL A, so it's not useful unless the SXI control
+program has been placed in flash memory on the board.
+
+3. Disconnect pin 10 of U10 on the microcontroller board. This
+disables serial input from SERIAL B, but leaves other serial
+functions intact. Control the camera through the Camera Link board.
+Load and debug software through SERIAL A.
+
+StateSeq.1.sch
+
+This counts Sclk cycles within a pixel, and decodes them in octal.
+If, for example, S1X/ and SX3/ are both low, the sequencer is in
+state 13 (octal) or 11 (decimal). The count resets to zero following
+state 23 (octal) or 19 (decimal). There are thus 20 (decimal) states
+in a pixel, numbered 00 to 23 (octal).
+
+Note that the counters are triggered on the positive edge of Sclk,
+while the SeqCell blocks that use this information are triggered on
+the negative edge. These outputs may thus be considered to anticipate
+the states by 1/2 cycle if we consider the state to begin on the
+falling edge of Sclk, which seems the most natural.
+
+StateSeq.2.sch
+
+
+serial connection.
+
+
+
+
+
