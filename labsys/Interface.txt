@@ -27,7 +27,7 @@ The delay isselected by D0-D3 (D0 is the least significant). It is
 used to adjust the digital timing for the CCD clock driver
 propagation delay.
 
-decimator,sch
+decimator.sch
 
 This is the decimation filter FPGA alog with its support circuitry.
 
@@ -86,9 +86,9 @@ StateSeq.1.sch
 
 This counts Sclk cycles within a pixel, and decodes them in octal.
 If, for example, S1X/ and SX3/ are both low, the sequencer is in
-state 13 (octal) or 11 (decimal). The count resets to zero following
-state 23 (octal) or 19 (decimal). There are thus 20 (decimal) states
-in a pixel, numbered 00 to 23 (octal).
+state 013 (octal) or 11 (decimal). The count resets to zero following
+state 023 (octal) or 19 (decimal). There are thus 20 (decimal) states
+in a pixel, numbered 000 to 023 (octal).
 
 Note that the counters are triggered on the positive edge of Sclk,
 while the SeqCell blocks that use this information are triggered on
@@ -98,10 +98,65 @@ falling edge of Sclk, which seems the most natural.
 
 StateSeq.2.sch
 
+This controls the timing of the following signals:
 
-serial connection.
+Name	Set	Clear	Purpose
+Intu	015	000	Integrate to MD01 (undelayed)
+Deintu	006	015	Deintegrate to MD01 (undelayed)
+Clampu	005	006	Clamp to MD01 (undelayed)
+Oddu	000	000	Odd to MD01 (undelayed)
+SRG	002	022	Reset gate
+Pdelay	005	001	For break-before make on vertical drivers
+SPH	006	015	Horizontal clocks
 
+The "Set" and "Clear" colums indicate the (octal) state at which the
+signal is set to 1 or cleared to zero. Oddu toggles every 000 state
+as long as VIEN is low, otherwise it is low: this logic assure that
+the first pixel in a row is processed by the even modulators in the
+MD01.
 
+StateSeq.3.sch
+
+U5 receives the clock control signals from the microcontroller and
+synchronizes their changes with sequencer state 000. The signals P1V,
+P2V, and P3V control the vertical clocks. VIEN determines whether
+these drive the imaging area and frame store, or just the frame
+store. PHEN enables the horizontal clocks, and SGEN enables the
+summing gate clock.
+
+StateSeq.4.sch
+
+This combines Pdelay from page 2 with the parallel clock controls
+from page three to create the logic drive for the parallel clock
+drivers on the driver board.
+
+StateSeq.5.sch
+
+The horizontal clock drivers on the driver board have propagation
+delays of ~200 ns. The digital delay blocks here allow the user to
+delay the MD01 control signals to compensate, by using jumper block
+J4 as follows:
+
+Delay	J4(5-6)	J4(3-4) J4(1-2)
+0	open	open	open
+1	open	open	closed
+2	open	closed	open
+3	open	closed	closed
+4	closed	open	open
+5	closed	open	closed
+6	closed	closed	open
+7	closed	closed	closed
+
+Delay is in units of Sclk cycles here. J4 also controls the pixel and
+clock rates, as follows:
+
+kpix/s	Sclk	Cclk	J4(7-8)	J4(9-10)
+1000	20	100	open	open
+500	10	50	closed	open
+250	5	25	open	closed
+125	2.5	12.5	closed	closed
+
+Clock rates in MHz.
 
 
 

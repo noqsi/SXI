@@ -2,7 +2,8 @@
 
 all : drivers.pdf drivers.net.txt \
 	DrainDrive.pdf DrainDrive.net.txt \
-	Interface.pdf Interface.net.txt Video.pdf Video.net.txt
+	Interface.pdf Interface.net.txt Video.pdf Video.net.txt \
+	Connectors.pdf Programming.pdf
 
 # "Standard Boilerplate"
 # Definitions to generate the drawings
@@ -103,6 +104,7 @@ DrainDrive.bom.txt : $(DRAINSCH) attribs
 # Interface board
 
 INTERDOCS= \
+	Interface.txt \
 	SeqCell.ps \
 	DigitalDelay.ps \
 	decimator.ps \
@@ -149,6 +151,7 @@ Interface.net.txt: $(INTERSCH)
 	gnetlist -g calay -o $@ $(INTERTOP)
 
 VIDEODOCS= \
+	Video.txt \
 	Video.1.ps \
 	Video.2.ps \
 	Video.3.ps \
@@ -175,8 +178,45 @@ Video.bom.txt : $(VIDEOSCH) attribs
 Video.ps : $(VIDEODOCS)
 	$(A2PS)
 
+CONNECTORDOCS= \
+	IO-connectors.txt \
+	JF1.tsv \
+	JF2.tsv \
+	JF3.tsv \
+	JF4.tsv \
+	Video-J1.tsv \
+	driver-J1.tsv \
+	Interface-J3.tsv
+
+Connectors.ps : $(CONNECTORDOCS)
+	$(A2PS)
+
+PROGDOCS= \
+	software/README \
+	DACs.txt \
+	software/bias_DAC.h \
+	software/DAC_chips.h \
+	software/interface.h \
+	software/parser.h \
+	software/pio.h \
+	software/raster.h \
+	software/usart.h \
+	software/labsxi_main.c \
+	software/bias_DAC.c \
+	software/DAC_chips.c \
+	software/parser.c \
+	software/raster.c \
+	software/tryreadout.c \
+	software/usart.c
+
+Programming.ps : $(PROGDOCS)
+	$(A2PS)
+
 
 # $Log$
+# Revision 1.4  2008-04-27 20:18:45  jpd
+# New documentation release.
+#
 # Revision 1.3  2008-01-04 20:18:17  jpd
 # Video.4 was left out.
 #
