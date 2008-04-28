@@ -29,7 +29,7 @@ propagation delay.
 
 decimator.sch
 
-This is the decimation filter FPGA alog with its support circuitry.
+This is the decimation filter FPGA and with its support circuitry.
 
 Interface.1.sch
 
@@ -45,7 +45,9 @@ digital connections from the video board.
 Interface.3.sch
 
 This provides digital output connections to the video board, external
-back bias, and connects to the temperature sensor on the CCD.
+back bias, and connects to the temperature sensor on the CCD. Note
+that "temp" and "temp2" connect directly to the sensor: there is no
+circuitry in this system for measuring temperature.
 
 Interface.4.sch
 

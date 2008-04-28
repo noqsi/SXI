@@ -186,6 +186,7 @@ CONNECTORDOCS= \
 	JF4.tsv \
 	Video-J1.tsv \
 	driver-J1.tsv \
+	Interface-J1.tsv \
 	Interface-J3.tsv
 
 Connectors.ps : $(CONNECTORDOCS)
@@ -214,6 +215,9 @@ Programming.ps : $(PROGDOCS)
 
 
 # $Log$
+# Revision 1.5  2008-04-28 00:10:05  jpd
+# Improve documentation, consistency.
+#
 # Revision 1.4  2008-04-27 20:18:45  jpd
 # New documentation release.
 #

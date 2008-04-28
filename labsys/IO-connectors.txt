@@ -45,11 +45,11 @@ JF3	DB25		JF3.tsv
 JF4	DB25		JF4.tsv
 	To JF4 on drain driver board
 
-J1	64 pin header	
+J1	64 pin header	Interface-J1.tsv
 	To EB40A processor board
 	
 J2	MDR26		CameraLinkSPEC.pdf
 	Camera Link
 
-J3	DA15P		
+J3	DA15P		Interface-J3.tsv
 	Power in/temperature sensor
