@@ -13,14 +13,13 @@
 
 /* Pixel clock input */
 
-#define PCLK	bit(11)
+#define PCLK	bit(11)		/* Also known as S0X/*/
 
 /* DAC control outputs */
 
 #define DS0	bit(16)
 #define DS8	bit(17)
-#define DS16	bit(18)
-#define DS24	bit(19)
+#define DS16	bit(19)
 #define Dclk	bit(20)
 #define Ddata	bit(23)
 #define Dload	bit(24)
@@ -33,7 +32,7 @@
 /* Bit masks for PIO control registers */
 
 #define PIO_OUTPUTS ( P1V | P2V | P3V | VIEN | HEN | SGEN | DS0 | DS8 | \
-		DS16 | DS24 | Dclk | Ddata | Dload | DRST )
+		DS16 | Dclk | Ddata | Dload | DRST )
 
 #define PIO_INPUTS ( PCLK | Dout )
 
@@ -41,6 +40,10 @@
 
 /*
  * $Log$
+ * Revision 1.5  2008-04-28 00:10:53  jpd
+ * Improve documentation, consistency.
+ * There are only 24 clock/bias DACs.
+ *
  * Revision 1.4  2008-03-21 18:37:06  jpd
  * Recovered CVS archive after disk failure: some recent revisions lost.
  * Beware of revision number reset!

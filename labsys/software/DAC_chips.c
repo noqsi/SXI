@@ -7,10 +7,12 @@
  * Functions for commanding the AD5308 DAC chips in the lab system.
  */
 
-#define ALLDAC	( DS0 | DS8 | DS16 | DS24 )
+#define ALLDAC	( DS0 | DS8 | DS16 )
 
 /*
  * For when you don't want to command a DAC chip.
+ * Be sure to do this when programming the MD01/MND01 bias DACs
+ * and gain, since the serial clock and data lines are shared.
  */
 
 static void deselect_all_DAC_chips( void ) {
@@ -18,7 +20,8 @@ static void deselect_all_DAC_chips( void ) {
 }
 
 /*
- * For when you want to command all DAC chips at once
+ * For when you want to command all DAC chips at once, as
+ * when resetting them during initialization.
  */
 
 static void select_all_DAC_chips( void ) {
@@ -33,12 +36,12 @@ static void select_all_DAC_chips( void ) {
  */
 
 static void select_DAC_chip( unsigned n ) {
-	static unsigned dsbits[] = { DS0, DS8, DS16, DS24 };
+	static unsigned dsbits[] = { DS0, DS8, DS16, 0 };
 	pio->sodr = dsbits[ 3 & (n>>3) ];
 }
 
 /*
- * Clock a bit into a DAC
+ * Clock a bit into a DAC. Also used for MD01/MND01 serial bias/gain.
  */
 
 void pulse_DAC_clock( void ) {
@@ -86,6 +89,10 @@ void set_DAC( unsigned n, unsigned d ) {
 
 /*
  * $Log$
+ * Revision 1.4  2008-04-28 00:10:53  jpd
+ * Improve documentation, consistency.
+ * There are only 24 clock/bias DACs.
+ *
  * Revision 1.3  2008-03-18 22:03:21  jpd
  * First version that builds.
  *

@@ -4,6 +4,18 @@
 #include "bias_DAC.h"
 #include "DAC_chips.h"		/* to pick up pulse_DAC_clock */
 
+/* 
+ * Note that this interface shares the DAC clock and data serial
+ * lines with the clock and bias DAC chips. The code that operates
+ * those deselects them all when it is not loading them. The code
+ * here will therefore not change them.
+ * The MD01 DACs, on the other hand, are alwas selected but
+ * they won't change state until a clock pulse with Dload asserted.
+ * That should only happen in set_bias() below, so there should be
+ * no interference beween the clock/bias DAC operations and the MD01
+ * DAC operations.
+ */
+
 /*
  * Send n bits from word w to the bias DAC input
  */
@@ -59,6 +71,10 @@ unsigned get_bias( void ) {
 
 /*
  * $Log$
+ * Revision 1.4  2008-04-28 00:10:53  jpd
+ * Improve documentation, consistency.
+ * There are only 24 clock/bias DACs.
+ *
  * Revision 1.3  2008-03-21 18:37:06  jpd
  * Recovered CVS archive after disk failure: some recent revisions lost.
  * Beware of revision number reset!

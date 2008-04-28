@@ -129,7 +129,7 @@ static void do_bias( void ) {
 	}
 }
 
-static unsigned dacv[32];	/* remember the DAC settings here */
+static unsigned dacv[24];	/* remember the DAC settings here */
 
 /*
  * Parse a dac command and set the DAC.
@@ -187,7 +187,7 @@ static void show_status( void ) {
 		put( outbuf );
 	}
 	
-	for( i = 0; i < 32; i += 1 ) {
+	for( i = 0; i < 24; i += 1 ) {
 		snprintf( outbuf, sizeof(outbuf), "DAC[%d] = %d\r\n", i, dacv[i] );
 		put( outbuf );
 	}
@@ -236,6 +236,10 @@ void dispatch_command( void ) {
 
 /*
  * $Log$
+ * Revision 1.5  2008-04-28 00:10:53  jpd
+ * Improve documentation, consistency.
+ * There are only 24 clock/bias DACs.
+ *
  * Revision 1.4  2008-03-21 18:37:06  jpd
  * Recovered CVS archive after disk failure: some recent revisions lost.
  * Beware of revision number reset!
