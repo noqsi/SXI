@@ -13,12 +13,13 @@
 #include "bias_DAC.h"
 #include "DAC_chips.h"
 #include "raster.h"
+#include "ctype.h"
 
 static char name[] = "LabSXI";
 
-static char cmdbuf[100];		/* Input line */
+static char cmdbuf[64];		/* Input line */
 static unsigned cbx;			/* index of current char in cmdbuf */
-static char outbuf[100];		/* Place to construct output */
+static char outbuf[80];		/* Place to construct output */
 
 /*
  * Put a string out to the C-link USART
@@ -65,30 +66,53 @@ static void bad_key( void ) {
 	type_help();
 }
 
+
 /*
  * Get a line of input into cmdbuf.
- * Assumes line ends with carriage return.
+ * Assumes line ends with carriage return or linefeed.
+ * Either DEL or backspace erases.
+ * Other controls beep.
+ * Buffer overflows beep.
  */
 
 static void getline( void ) {
-	unsigned i;
+	unsigned i = 0;
 	char c;
 	
 	cbx = 0;
-	for( i = 0; i < sizeof( cmdbuf); i += 1 ) {
+	for( ; ; ) {
 		c = usart_getc( usart1 );
-		usart_putc( usart1, c );	/* echo back */
-		if( c == '\r' ) {
+		
+		if( c == '\r' || c == '\n' ) {	/* end of line */
 			cmdbuf[i] = 0;
-			usart_putc( usart1, '\n' );	/* need a linefeed, too */
+			put( "\r\n" );	/* echo as CRLF */
 			return;
 		}
-		cmdbuf[i] = c;
+		
+		if( c == '\b' || c == 0177 ) {	/* backspace/DEL */
+			if( i == 0 ) {		/* nothing to erase */
+				put( "\a" ); 	/* ring the bell */
+			}
+			else {
+				put( "\b \b" );	/* wipe it out on screen */
+				i -= 1;		/* and in the buffer */
+			}
+			continue;		/* Done with this keystroke */
+		}
+		
+		if( iscntrl( c )) {		/* Not a printing char */
+			put( "\a" ); 		/* ring the bell */
+			continue;		/* ignore it */
+		}
+
+		if( i + 1 < sizeof( cmdbuf )) {	/* There's room */
+			usart_putc( usart1, c );	/* echo back */
+			cmdbuf[i++] = c;
+			continue;
+		}
+		
+		put( "\a" );			/* No room: ring the bell */
 	}
-	
-	cmdbuf[0] = 0;								/* kill line */
-	while( usart_getc( usart1 ) != '\r' ) ;		/* drop characters to end of line */
-	put( "Command too long\r\n" );
 }
 
 /*
@@ -97,11 +121,16 @@ static void getline( void ) {
  */
 
 static int key( char *k ) {
-	if( strncmp( k, &cmdbuf[cbx], strlen( k ) ) == 0 ) {
-		cbx += strlen( k );
-		return 1;
+	int len = strlen( k );
+	char next = cmdbuf[cbx + len];
+	
+	if( strncmp( k, &cmdbuf[cbx], len ) == 0 ) {	/* head matches */
+		if( isspace( next ) || next == 0 ){	/* followed by delimiter */
+			cbx += len;
+			return 1;			/* Success */
+		}
 	}
-	return 0;
+	return 0;					/* No match */
 }
 
 static unsigned bias[4];	/* remember the biases here */
@@ -130,6 +159,48 @@ static void do_bias( void ) {
 }
 
 static unsigned dacv[24];	/* remember the DAC settings here */
+
+typedef struct {
+	const float code0, code255;
+} dac_scale;
+
+static const dac_scale
+	clock_hi = { 10.0, 0.2 },
+	clock_lo = { 0.0, -9.8 },
+	back_bias = { 0.0, 51.6 },
+	output_gate = { 10.3, -10.0},
+	drain = { -30.0, -2.3 };		/* assume -DR is -30V */
+
+static struct {					/* See DACs.txt */
+	const dac_scale	*scale;
+	const char const *name;
+} dacs[24] = {
+	{ &clock_hi, "VIHI" },
+	{ &clock_lo, "VILO" },
+	{ &clock_hi, "VSHI" },
+	{ &clock_lo, "VSLO" },
+	{ &clock_hi, "HHI" },
+	{ &clock_lo, "HLO" },
+	{ 0, 0 },		/* 6 unused */
+	{ 0, 0 },		/* 7 unused */
+	{ &clock_hi, "RGHI" },
+	{ &clock_lo, "RGLO" },
+	{ &clock_hi, "SGHI" },
+	{ &clock_lo, "SGLO" },
+	{ &back_bias, "BB" },
+	{ &output_gate, "OG" },
+	{ 0, 0 },		/* 14 unused */
+	{ 0, 0 },		/* 15 unused */
+	{ &drain, "OD" },
+	{ &drain, "RD" }
+};				/* 18-23 unused, implicitly null */
+
+static float dn2volts( unsigned n, unsigned dn ) {	/* DAC number, digital value */
+	const dac_scale *s = dacs[n].scale;
+	float frac = (float) dn / 255.;
+	float cfrac = 1.0 - frac;
+	return cfrac * s->code0 + frac * s->code255;
+}
 
 /*
  * Parse a dac command and set the DAC.
@@ -188,8 +259,16 @@ static void show_status( void ) {
 	}
 	
 	for( i = 0; i < 24; i += 1 ) {
-		snprintf( outbuf, sizeof(outbuf), "DAC[%d] = %d\r\n", i, dacv[i] );
+		snprintf( outbuf, sizeof(outbuf), "DAC[%d] = %d", i, dacv[i] );
 		put( outbuf );
+
+		if( dacs[i].name ) {
+			snprintf( outbuf, sizeof(outbuf), ",\t%s = %.2f volts", 
+				dacs[i].name, dn2volts( i, dacv[i] ));
+			put( outbuf );
+		}
+		
+		put( "\r\n" );
 	}
 	
 	if( use_pclk ) put( "Clocking synchronous with PCLK\r\n" );
@@ -236,6 +315,11 @@ void dispatch_command( void ) {
 
 /*
  * $Log$
+ * Revision 1.6  2008-04-29 22:53:31  jpd
+ * Usability improvements to command input.
+ * DAC calibration table.
+ * Fix to PCLK bug found by H. Nakajima.
+ *
  * Revision 1.5  2008-04-28 00:10:53  jpd
  * Improve documentation, consistency.
  * There are only 24 clock/bias DACs.

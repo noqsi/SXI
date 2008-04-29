@@ -57,8 +57,8 @@ int use_pclk = 1;	/* set to zero to test without a pixel clock input */
 static inline void pstep( void ) {
 
 	if( use_pclk ) {		/* wait for the right moment */
-		while( pio->pdr & PCLK );
-		while( !( pio->pdr & PCLK )); /* low->high transition */
+		while( pio->pdsr & PCLK );
+		while( !( pio->pdsr & PCLK )); /* low->high transition */
 	}
 
 	pio->sodr = setbits;
@@ -172,6 +172,11 @@ void readout( void ) {
 
 /*
  * $Log$
+ * Revision 1.6  2008-04-29 22:53:31  jpd
+ * Usability improvements to command input.
+ * DAC calibration table.
+ * Fix to PCLK bug found by H. Nakajima.
+ *
  * Revision 1.5  2008-03-21 18:37:06  jpd
  * Recovered CVS archive after disk failure: some recent revisions lost.
  * Beware of revision number reset!

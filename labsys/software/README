@@ -47,7 +47,7 @@ C-link LabSXI>
 
 in the camera control window.
 
-Type "help". You shold see:
+Type "help". You should see:
 
 C-link LabSXI> help
 Commands:
@@ -61,6 +61,10 @@ sum hsum vsum
 
 C-link LabSXI> 
 
+The command interface erases the last character typed if you hit "Backspace". For unrecognized,
+non-printing characters it beeps and ignores the character. It also beeps if you overflow the
+input buffer or type "Backspace" at an empty buffer.
+
 For testing without the interface board, be sure to issue the no_pclk command
 before attempting to use the readout command. Otherwise, the program will wait
 indefinitely for a pixel clock.
@@ -68,6 +72,11 @@ indefinitely for a pixel clock.
 More to come...
 
 $Log$
+Revision 1.2  2008-04-29 22:53:31  jpd
+Usability improvements to command input.
+DAC calibration table.
+Fix to PCLK bug found by H. Nakajima.
+
 Revision 1.1  2008-03-21 18:37:06  jpd
 Recovered CVS archive after disk failure: some recent revisions lost.
 Beware of revision number reset!
