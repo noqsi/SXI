@@ -66,13 +66,15 @@ For unrecognized, non-printing characters it beeps and ignores the character. It
 also beeps if you overflow the input buffer or type "Backspace" at an empty
 buffer.
 
-For testing without the interface board, be sure to issue the no_pclk command
-before attempting to use the readout command. Otherwise, the program will wait
-indefinitely for a pixel clock.
+For testing without the interface board, use the no_pclk command before using
+the readout command.
 
 More to come...
 
 $Log$
+Revision 1.4  2008-04-30 23:09:58  jpd
+Get docs in sync
+
 Revision 1.3  2008-04-30 23:03:15  jpd
 Finished symbolic DAC stuff
 Man page for LabSXI
