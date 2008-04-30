@@ -14,6 +14,7 @@
 #include "DAC_chips.h"
 #include "raster.h"
 #include "ctype.h"
+#include "math.h"
 
 static char name[] = "LabSXI";
 
@@ -52,17 +53,17 @@ static void type_help( void ) {
 
 static void bad_args( int n ) {
 	if( n == 1 ) {
-		put( "Expected an argument\r\n" );
+		put( "Expected an argument\a\r\n" );
 		type_help();
 		return;
 	}
-	snprintf( outbuf, sizeof(outbuf), "Expected %d arguments\r\n", n );
+	snprintf( outbuf, sizeof(outbuf), "Expected %d arguments\a\r\n", n );
 	put( outbuf );
 	type_help();
 }
 
 static void bad_key( void ) {
-	put( "Unknown command\r\n" );
+	put( "Unknown command\a\r\n" );
 	type_help();
 }
 
@@ -122,9 +123,12 @@ static void getline( void ) {
 
 static int key( char *k ) {
 	int len = strlen( k );
-	char next = cmdbuf[cbx + len];
+	char next;
+	
+	while( isspace( cmdbuf[cbx] ) cbx += 1;			/* ignore leading space */
 	
 	if( strncmp( k, &cmdbuf[cbx], len ) == 0 ) {	/* head matches */
+		next = cmdbuf[cbx + len];
 		if( isspace( next ) || next == 0 ){	/* followed by delimiter */
 			cbx += len;
 			return 1;			/* Success */
@@ -164,6 +168,10 @@ typedef struct {
 	const float code0, code255;
 } dac_scale;
 
+/*
+ * Scale constants for DACs
+ */
+
 static const dac_scale
 	clock_hi = { 10.0, 0.2 },
 	clock_lo = { 0.0, -9.8 },
@@ -171,7 +179,12 @@ static const dac_scale
 	output_gate = { 10.3, -10.0},
 	drain = { -30.0, -2.3 };		/* assume -DR is -30V */
 
-static struct {					/* See DACs.txt */
+/*
+ * Table of DAC-controlled voltages.
+ * See DACs.txt
+ */
+ 
+static struct {	
 	const dac_scale	*scale;
 	const char const *name;
 } dacs[24] = {
@@ -195,6 +208,10 @@ static struct {					/* See DACs.txt */
 	{ &drain, "RD" }
 };				/* 18-23 unused, implicitly null */
 
+/*
+ * Convert DAC number and digital value to volts.
+ */
+ 
 static float dn2volts( unsigned n, unsigned dn ) {	/* DAC number, digital value */
 	const dac_scale *s = dacs[n].scale;
 	float frac = (float) dn / 255.;
@@ -203,13 +220,69 @@ static float dn2volts( unsigned n, unsigned dn ) {	/* DAC number, digital value 
 }
 
 /*
- * Parse a dac command and set the DAC.
+ * Report value out of range.
+ */
+
+void report_clip( float v ) {
+	snprintf( outbuf, sizeof(outbuf), "Value out of range, substituting limit %.2f\r\n", v );
+	put( outbuf );
+}
+
+/*
+ * Convert DAC number and voltage to digital number.
+ */
+
+static unsigned volts2dn( unsigned n, float v ) {
+	const dac_scale *s = dacs[n].scale;
+	float dn = 255. * ( v - s->code0 ) / ( s->code255 - s->code0 );
+	
+	if( dn < 0. ) {
+		report_clip( s->code0 );
+		return 0;
+	}
+	
+	if( dn > 255. ) {
+		report_clip( s->code255 );
+		return 255;
+	}
+	
+	return (unsigned) fround( dn );
+}
+
+/*
+ * Parse a DAC command of the form "dac name volts"
+ */
+
+static void do_DAC_volts( void ) {
+	float volts;
+	int i;
+	
+	
+	for( i = 0; i < 24; i += 1 ) {
+		if( dacs[i].name && key( dacs[i].name ) {		/* Match the name, avoiding the nameless */
+		
+			if( sscanf( &cmdbuf[cbx], "%f", &volts ) != 1 ) {
+				bad_args( 2 );
+				return;
+			}
+			
+			set_DAC( i, volts2dn( i, volts ));
+			return;
+		}
+	}
+	
+	put( "Unknown DAC name.\a\r\n" );
+}
+
+
+/*
+ * Parse a numeric dac command and set the DAC.
  */
 
 static void do_DAC( void ) {
 	unsigned n, v;		/* DAC number, value */
 	if( sscanf( &cmdbuf[cbx], "%u %u", &n, &v ) != 2 ) {
-		bad_args( 2 );
+		do_DAC_volts();		/* Try the other form */
 		return;
 	}
 	set_DAC( n, v );
@@ -315,6 +388,10 @@ void dispatch_command( void ) {
 
 /*
  * $Log$
+ * Revision 1.7  2008-04-30 17:31:07  jpd
+ * More named DAC support.
+ * Beep more on errors.
+ *
  * Revision 1.6  2008-04-29 22:53:31  jpd
  * Usability improvements to command input.
  * DAC calibration table.
