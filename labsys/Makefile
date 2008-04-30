@@ -20,9 +20,13 @@ S2PS=gschem -p -o $@ -s print.scm $<
 
 A2PS=a2ps -1 --medium=A4 --toc -o $@ $^
 PS2PDF=ps2pdf -sPAPERSIZE=a4
+MAN=man -Tps -l
 
 %.pdf : %.ps
 	$(PS2PDF) $<
+
+%.ps : %.man
+	$(MAN) $< >$@
 
 # Project specific definitions
 
@@ -194,6 +198,7 @@ Connectors.ps : $(CONNECTORDOCS)
 
 PROGDOCS= \
 	software/README \
+	software/labsxi.ps \
 	DACs.txt \
 	software/bias_DAC.h \
 	software/DAC_chips.h \
@@ -215,6 +220,9 @@ Programming.ps : $(PROGDOCS)
 
 
 # $Log$
+# Revision 1.6  2008-04-30 23:00:45  jpd
+# Man page for LabSXI
+#
 # Revision 1.5  2008-04-28 00:10:05  jpd
 # Improve documentation, consistency.
 #
