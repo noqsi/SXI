@@ -33,13 +33,17 @@ SECTIONS
 {
 	.angel (NOLOAD) :
 	{
-		. += 0x100;	/* reserve low RAM for Angel */
+		. += 0x10000;	/* reserve low RAM for Angel */
 	} > sram
+	
+	.glue :
+	{
+		*(.glue*);	/* The mysterious "glue" sections */
+	} >sram
 	
 	.text : 		/* Code and read-only data */
 	{
         	*(.text);	/* Machine code */
-		*(.glue*);	/* The mysterious "glue" sections */
 		*(.rodata*);	/* Read-only data */
 	} >sram
 	
@@ -59,6 +63,12 @@ SECTIONS
 
 /*
  * $Log$
+ * Revision 1.4  2008-04-30 23:03:15  jpd
+ * Finished symbolic DAC stuff
+ * Man page for LabSXI
+ * Check for pixel clock
+ * Changed memory layout to avoid crash. What memory does Angel really use?
+ *
  * Revision 1.3  2008-03-21 18:37:06  jpd
  * Recovered CVS archive after disk failure: some recent revisions lost.
  * Beware of revision number reset!

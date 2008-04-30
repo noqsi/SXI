@@ -11,7 +11,7 @@ int main( void ) {
 	/*
 	 * First, put all the interface hardware into a known state.
 	 */
-	
+
 	pio->pdr = TXD1 | RXD1;		/* enable USART 1 T/R pins */
 	usart_init( usart1 );
 	
@@ -28,6 +28,12 @@ int main( void ) {
 
 /*
  * $Log$
+ * Revision 1.2  2008-04-30 23:03:15  jpd
+ * Finished symbolic DAC stuff
+ * Man page for LabSXI
+ * Check for pixel clock
+ * Changed memory layout to avoid crash. What memory does Angel really use?
+ *
  * Revision 1.1  2008-03-21 18:37:06  jpd
  * Recovered CVS archive after disk failure: some recent revisions lost.
  * Beware of revision number reset!

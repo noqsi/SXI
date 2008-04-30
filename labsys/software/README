@@ -61,9 +61,10 @@ sum hsum vsum
 
 C-link LabSXI> 
 
-The command interface erases the last character typed if you hit "Backspace". For unrecognized,
-non-printing characters it beeps and ignores the character. It also beeps if you overflow the
-input buffer or type "Backspace" at an empty buffer.
+The command interface erases the last character typed if you hit "Backspace".
+For unrecognized, non-printing characters it beeps and ignores the character. It
+also beeps if you overflow the input buffer or type "Backspace" at an empty
+buffer.
 
 For testing without the interface board, be sure to issue the no_pclk command
 before attempting to use the readout command. Otherwise, the program will wait
@@ -72,6 +73,12 @@ indefinitely for a pixel clock.
 More to come...
 
 $Log$
+Revision 1.3  2008-04-30 23:03:15  jpd
+Finished symbolic DAC stuff
+Man page for LabSXI
+Check for pixel clock
+Changed memory layout to avoid crash. What memory does Angel really use?
+
 Revision 1.2  2008-04-29 22:53:31  jpd
 Usability improvements to command input.
 DAC calibration table.

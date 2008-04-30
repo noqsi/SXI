@@ -3,7 +3,6 @@
 
 /*
  * Handle commands from the C-link serial interface
- * Crude first implementation.
  */
 
 #include "parser.h"
@@ -14,19 +13,18 @@
 #include "DAC_chips.h"
 #include "raster.h"
 #include "ctype.h"
-#include "math.h"
 
 static char name[] = "LabSXI";
 
 static char cmdbuf[64];		/* Input line */
-static unsigned cbx;			/* index of current char in cmdbuf */
+static unsigned cbx;		/* index of current char in cmdbuf */
 static char outbuf[80];		/* Place to construct output */
 
 /*
  * Put a string out to the C-link USART
  */
 
-static void put( char *s ) {
+static void put( const char *s ) {
 /*	usart_set_tx_buffer( usart1, s, strlen( s )); */
 	
 	while( *s != 0 ) usart_putc( usart1, *s++ );
@@ -51,14 +49,17 @@ static void type_help( void ) {
 	put( "Type \"help\" for more information\r\n" );
 }
 
-static void bad_args( int n ) {
+static void bad_args( int n, const char *form ) {
 	if( n == 1 ) {
-		put( "Expected an argument\a\r\n" );
-		type_help();
-		return;
+		put( "Expected an argument" );
 	}
-	snprintf( outbuf, sizeof(outbuf), "Expected %d arguments\a\r\n", n );
-	put( outbuf );
+	else {
+		snprintf( outbuf, sizeof(outbuf), "Expected %d arguments", n );
+		put( outbuf );
+	}
+	put( " of the form: " );
+	put( form );
+	put( "\a\r\n" );
 	type_help();
 }
 
@@ -121,11 +122,11 @@ static void getline( void ) {
  * Return 1 and advance the pointer on a match.
  */
 
-static int key( char *k ) {
+static int key( const char *k ) {
 	int len = strlen( k );
 	char next;
 	
-	while( isspace( cmdbuf[cbx] ) cbx += 1;			/* ignore leading space */
+	while( isspace( cmdbuf[cbx] )) cbx += 1;	/* ignore leading space */
 	
 	if( strncmp( k, &cmdbuf[cbx], len ) == 0 ) {	/* head matches */
 		next = cmdbuf[cbx + len];
@@ -149,7 +150,7 @@ static void do_bias( void ) {
 	unsigned r;
 		
 	if( sscanf( &cmdbuf[cbx], "%u %u %u %u", &bias[0], &bias[1], &bias[2], &bias[3] ) != 4 ) {
-		bad_args( 4 );
+		bad_args( 4, "numbers 0<=n<32" );
 		return;
 	}
 		
@@ -157,7 +158,7 @@ static void do_bias( void ) {
 	for( i = 3; i >= 0; i -= 1 ) {
 		r = get_bias();
 		if( r != bias[i] ) {
-			put( "Bias readback error\r\n" );
+			put( "Bias readback error\a\r\n" );
 		}
 	}
 }
@@ -186,8 +187,8 @@ static const dac_scale
  
 static struct {	
 	const dac_scale	*scale;
-	const char const *name;
-} dacs[24] = {
+	const char  *name;
+} const dacs[24] = {
 	{ &clock_hi, "VIHI" },
 	{ &clock_lo, "VILO" },
 	{ &clock_hi, "VSHI" },
@@ -246,7 +247,7 @@ static unsigned volts2dn( unsigned n, float v ) {
 		return 255;
 	}
 	
-	return (unsigned) fround( dn );
+	return (unsigned) dn + 0.5;	/* round */
 }
 
 /*
@@ -256,17 +257,20 @@ static unsigned volts2dn( unsigned n, float v ) {
 static void do_DAC_volts( void ) {
 	float volts;
 	int i;
+	unsigned v;
 	
 	
 	for( i = 0; i < 24; i += 1 ) {
-		if( dacs[i].name && key( dacs[i].name ) {		/* Match the name, avoiding the nameless */
+		if( dacs[i].name && key( dacs[i].name )) {		/* Match the name, avoiding the nameless */
 		
 			if( sscanf( &cmdbuf[cbx], "%f", &volts ) != 1 ) {
-				bad_args( 2 );
+				bad_args( 2, "name voltage" );
 				return;
 			}
 			
-			set_DAC( i, volts2dn( i, volts ));
+			v = volts2dn( i, volts );
+			set_DAC( i, v );
+			dacv[ i ] = v;			/* remember what we set */
 			return;
 		}
 	}
@@ -295,7 +299,7 @@ static void do_DAC( void ) {
  
 static void set_sums( void ) {
 	if( sscanf( &cmdbuf[cbx], "%u %u", &hsum, &vsum ) != 2 ) {
-		bad_args( 2 );
+		bad_args( 2, "positive integers" );
 		return;
 	}
 }
@@ -308,7 +312,13 @@ static void do_readout( void ) {
 	unsigned i;				/* count of readouts */
 	
 	if( sscanf( &cmdbuf[cbx], "%u", &i ) != 1 ) {
-		bad_args( 1 );
+		bad_args( 1, "positive integer" );
+		return;
+	}
+	
+	if( use_pclk && ! have_pclk() ) {
+		put( "There is no pixel clock: check hardware!\a\r\n" );
+		put( "If this is intentional, use the no_pclk command.\r\n" );
 		return;
 	}
 	
@@ -323,7 +333,7 @@ static void do_readout( void ) {
  * Shows bias, DAC settings, synchronization, and summation parameters.
  */
 
-static void show_status( void ) {
+void show_status( void ) {
 	int i;
 	
 	for( i = 0; i < 4; i += 1 ) {
@@ -357,6 +367,7 @@ static void show_status( void ) {
 static void show_help( void ) {
 	put( "Commands:\r\n" );
 	put( "bias bias0 bias1 bias2 bias3\r\n" );
+	put( "dac name volts\r\n" );
 	put( "dac number value\r\n" );
 	put( "readout count\r\n" );
 	put( "status\r\n" );
@@ -388,6 +399,12 @@ void dispatch_command( void ) {
 
 /*
  * $Log$
+ * Revision 1.8  2008-04-30 23:03:15  jpd
+ * Finished symbolic DAC stuff
+ * Man page for LabSXI
+ * Check for pixel clock
+ * Changed memory layout to avoid crash. What memory does Angel really use?
+ *
  * Revision 1.7  2008-04-30 17:31:07  jpd
  * More named DAC support.
  * Beep more on errors.

@@ -51,6 +51,21 @@ static inline void seq_clear( unsigned bits ) {
 int use_pclk = 1;	/* set to zero to test without a pixel clock input */
 
 /*
+ * Check for PCLK presence
+ */
+
+int have_pclk( void ) {
+	int i;
+	int s = pio->pdsr & PCLK;
+	
+	for( i = 0; i < 10000; i += 1 ) {
+		if( (pio->pdsr & PCLK) != s ) return 1;
+	}
+	
+	return 0;	/* timed out with no change */
+}
+
+/*
  * Change sequencer command bits synchronously with PCLK.
  */
 
@@ -172,6 +187,12 @@ void readout( void ) {
 
 /*
  * $Log$
+ * Revision 1.7  2008-04-30 23:03:15  jpd
+ * Finished symbolic DAC stuff
+ * Man page for LabSXI
+ * Check for pixel clock
+ * Changed memory layout to avoid crash. What memory does Angel really use?
+ *
  * Revision 1.6  2008-04-29 22:53:31  jpd
  * Usability improvements to command input.
  * DAC calibration table.
