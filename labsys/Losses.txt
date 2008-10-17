@@ -5,7 +5,7 @@ are (potentially) different for positive and negative levels. In the following t
 
 R+	is the regulated DC positive level.
 S+	is the output of the positive switch
-R-	is the regulated DC nrgative level.
+R-	is the regulated DC negative level.
 S-	is the output of the negative switch.
 
 Signal		R+		S+		R-		S-		Output
@@ -19,7 +19,7 @@ P3VS		X9/Q1-3		X9/Q1-4		X9/Q2-3		X9/Q2-4		J1-A43
 So, for example, (X3/Q1-3)-(X3/Q1-4) is the drop through the positive switch for P1VI, and
 (X3/Q1-4)-(J1-B40) will be the drop through the positive current limiting resistor for
 P1VI.
-
+
 Horizontal clocks, summing gate, reset gate (driver board)
 
 These clocks have their current limiting resistors ahead of the switches, so S+
