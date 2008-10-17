@@ -1,0 +1,88 @@
+Vertical clocks (driver board)
+
+The easiest place to probe, I think, will be the switch transistors. The resistive losses
+are (potentially) different for positive and negative levels. In the following table:
+
+R+	is the regulated DC positive level.
+S+	is the output of the positive switch
+R-	is the regulated DC nrgative level.
+S-	is the output of the negative switch.
+
+Signal		R+		S+		R-		S-		Output
+P1VI		X3/Q1-3		X3/Q1-4		X3/Q2-3		X3/Q2-4		J1-B40
+P2VI		X2/Q1-3		X2/Q1-4		X2/Q2-3		X2/Q2-4		J1-A41
+P3VI		X4/Q1-3		X4/Q1-4		X4/Q2-3		X4/Q2-4		J1-B41
+P1VS		X8/Q1-3		X8/Q1-4		X8/Q2-3		X8/Q2-4		J1-A42
+P2VS		X7/Q1-3		X7/Q1-4		X7/Q2-3		X7/Q2-4		J1-B42
+P3VS		X9/Q1-3		X9/Q1-4		X9/Q2-3		X9/Q2-4		J1-A43
+
+So, for example, (X3/Q1-3)-(X3/Q1-4) is the drop through the positive switch for P1VI, and
+(X3/Q1-4)-(J1-B40) will be the drop through the positive current limiting resistor for
+P1VI.
+
+Horizontal clocks, summing gate, reset gate (driver board)
+
+These clocks have their current limiting resistors ahead of the switches, so S+
+and S- are the inputs of the switches rather than the outputs. Otherwise, the circuit is
+similar to the vertical clock circuit.
+
+Signal		R+		S+		R-		S-		Output
+P1H		X10/U1-2	X10/U3-16	X10/U2-1	X10/U3-4	X10/U3-1
+P3H		X10/U1-2	X10/U3-9	X10/U2-1	X10/U3-5	X10/U3-8
+SG		X14/U1-2	X14/U3-16	X14/U2-1	X14/U3-4	X14/U3-1
+RG		X15/U1-2	X15/U3-16	X15/U2-1	X15/U3-4	X15/U3-1
+
+So, for example, (X10/U1-2)-(X10/U3-16) is the drop through the positive current limiting
+resistor for P1H, and (X10/U3-16)-(X10/U3-1) will be the drop through the positive switch
+for P1H.
+
+BB, OG (driver board)
+OD, RD (drain driver board)
+
+These are DC bias signals. The regulators for these get DC feedback from the outputs, so
+there should be no measurable resistive drop on the board unless the load exceeds the
+current drive capability, in which case the drop is very nonlinear.
+
+There are also small resistors on the drive signals where they pass through the video
+board. The drops across these shoukd be very small, but I list them here to allow checking.
+
+Signal		Resistor	Driver
+OD1		R4		OD
+OD2		R5		OD
+OD3		R7		OD
+OD4		R6		OD
+RG		R8		RG
+SG1		R9		SG
+SG2		R10		SG
+SG3		R12		SG
+SG4		R11		SG
+TG		R16		P2VS
+P1VS		R15		P1VS
+P2VS		R17		P2VS
+P3VS		R18		P3VS
+OG		R1		OG
+RD		R2		RD
+ISV		R19		RD
+P1VI		R3		P1VI
+P2VI		R13		P2VI
+P3VI		R14		P3VI
+P1H1		R20		P1H
+P1H2		R22		P1H
+P1H3		R23		P1H
+P1H4		R21		P1H
+P2H1		R28		P1H or P3H
+P2H2		R29		P1H or P3H
+P2H3		R30		P1H or P3H
+P2H4		R31		P1H or P3H
+P3H1		R33		P3H
+P3H2		R34		P3H
+P3H3		R36		P3H
+P3H4		R35		P3H
+P4H1		R24		P1H or P3H
+P4H2		R25		P1H or P3H
+P4H3		R26		P1H or P3H
+P4H4		R27		P1H or P3H
+VBB		R32		XBB or BB
+
+Is some cases, the driver depends on the settings of jumper blocks JS1-JS5.
+
