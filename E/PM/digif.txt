@@ -21,14 +21,14 @@ Oddp Oddm
 
 Video chain setup inputs:
 
-Dload/
-DCK/
-DRST
-DD/
+Dload
+DCLK
+DRST/
+DD
 
 Video chain setup output:
 
-Dout/
+Dout
 
 CCD clock driver timing inputs:
 
@@ -49,8 +49,8 @@ Pclk
 
 DAC control inputs:
 
-DCK/
-DD/
+DCK
+DD
 DS0/
 DS8/
 DS16/
@@ -80,6 +80,9 @@ HKS16/
 HKS24/
 
 $Log$
+Revision 1.2  2008-10-29 21:10:14  jpd
+Fixed polarities to match unbuffered internal polarities.
+
 Revision 1.1  2008-10-29 21:04:26  jpd
 Internal digital ICD
 
