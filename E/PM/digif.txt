@@ -1,0 +1,85 @@
+$Id$
+
+Video Chain outputs (LVDS pairs):
+
+Bep0 Bem0
+Bdp0 Bdm0
+Bep1 Bem1
+Bdp1 Bdm1
+Bep2 Bem2
+Bdp2 Bdm2
+Bep3 Bem3
+Bdp3 Bdm3
+
+Video Chain control inputs (LVDS pairs):
+
+Cclkp Cclkm
+Clampp Clampm
+Intp Intm
+Deintp Deintm
+Oddp Oddm
+
+Video chain setup inputs:
+
+Dload/
+DCK/
+DRST
+DD/
+
+Video chain setup output:
+
+Dout/
+
+CCD clock driver timing inputs:
+
+SP1VS
+SP2VS
+SP3VS
+SP1VI
+SP2VI
+SP3VI
+SRG
+SSG
+SP1H
+SP3H
+
+Clock input for back bias charge pump (1 MHz nominal):
+
+Pclk
+
+DAC control inputs:
+
+DCK/
+DD/
+DS0/
+DS8/
+DS16/
+
+Housekeeping ADC (CS5507) controls. HKSAMP is the oversampling clock, nominally
+32.768 kHz: the allowed range is 30-163 kHz (XIN on the CS5507).
+
+HKSAMP
+HKCAL
+HKCONV
+HKCS/
+HKSCLK
+
+Housekeeping ADC outputs:
+
+HKDRDY/
+HKDATA
+
+Housekeeping multiplexor controls:
+
+HKA0
+HKA1
+HKA2
+HKS0/
+HKS8/
+HKS16/
+HKS24/
+
+$Log$
+Revision 1.1  2008-10-29 21:04:26  jpd
+Internal digital ICD
+
