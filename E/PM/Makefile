@@ -22,8 +22,16 @@ MAN=man -Tps -l
 
 %.ps : %.man
 	$(MAN) $< >$@
+
+%.bom.txt : %.sch
+	gnetlist -g bom $<
+	grep -v INPUT <output.net | grep -v OUTPUT >$@
+	rm output.net
 	
 # $Log$
+# Revision 1.2  2009-08-03 16:34:12  jpd
+# Add some overlooked files.
+#
 # Revision 1.1  2008-10-22 20:57:56  jpd
 # The usual infrastructure
 #
