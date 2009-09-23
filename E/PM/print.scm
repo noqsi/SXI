@@ -9,9 +9,11 @@
 
 ;; Uncomment these to override defaults when printing from the command line
 ;(output-orientation "portrait")
-;(output-type "limits")
+(output-orientation "landscape")
+(output-type "extents no margins")
 ;(output-color "enabled")
 ;(output-text "ps")
+(setpagedevice-orientation "enabled")
 
 ; You need call this after you call any rc file function
 (gschem-use-rc-values)

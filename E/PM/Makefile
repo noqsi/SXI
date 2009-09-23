@@ -27,8 +27,31 @@ MAN=man -Tps -l
 	gnetlist -g bom $<
 	grep -v INPUT <output.net | grep -v OUTPUT >$@
 	rm output.net
+
+pdf_schematics: \
+BBOG.pdf\
+DAC.pdf\
+DACtoClock.pdf\
+DC-driver.pdf\
+hkadc.pdf\
+OD-driver.pdf\
+ParallelPair.pdf\
+ParallelReg.pdf\
+REF.pdf\
+SerialDrivers.pdf\
+SerialMatrix.pdf\
+TCE.pdf\
+TempControl.pdf\
+Temperature.pdf\
+TempMeasure-1.pdf\
+TempMeasure-2.pdf\
+VideoChain.pdf
+
 	
 # $Log$
+# Revision 1.3  2009-09-23 22:53:35  jpd
+# Make PDFs
+#
 # Revision 1.2  2009-08-03 16:34:12  jpd
 # Add some overlooked files.
 #
