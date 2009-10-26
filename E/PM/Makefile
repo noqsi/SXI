@@ -40,7 +40,6 @@ ParallelReg.pdf\
 REF.pdf\
 SerialDrivers.pdf\
 SerialMatrix.pdf\
-TCE.pdf\
 TempControl.pdf\
 Temperature.pdf\
 TempMeasure-1.pdf\
@@ -49,6 +48,10 @@ VideoChain.pdf
 
 	
 # $Log$
+# Revision 1.4  2009-10-26 17:48:25  jpd
+# Added DriverBoard doc.
+# Small fix to damping in DADtoClock
+#
 # Revision 1.3  2009-09-23 22:53:35  jpd
 # Make PDFs
 #

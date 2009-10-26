@@ -1,0 +1,149 @@
+\documentclass[a4paper,10pt]{report}
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+\usepackage{fontenc}
+\usepackage{graphicx}
+\usepackage[hmargin=3cm,vmargin=3.5cm]{geometry}
+
+\usepackage[dvips]{hyperref}
+
+\author{John P. Doty}
+\date{2009-09-23}
+\title{SXI Building Blocks}
+
+\begin{document}
+\begin{titlepage}
+\maketitle
+\end{titlepage} 
+
+\chapter{INTRODUCTION}
+This document describes the circuits on the driver board for the Soft X-ray Imager under development for the ASTRO-H high energy astronomy mission.
+
+In the SXI focal plane, there will be four Hamamatsu P-channel CCD chips. Each chip will have its own driver board
+
+This version of the design is intended for resource estimation and preliminary review. This document will evolve as the design evolves.
+
+\chapter{Building Block Details}
+\section{REF}
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=15cm,angle=90,keepaspectratio=true]{REF.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+
+The REF block provides a 3.3V reference voltage for the DAC and driver circuits. The capacitors implement the recommended bypassing for the REF196.
+
+Issues:
+\begin{enumerate}
+\item
+Is there a preferred part for this other than the REF196?
+\item
+There is no current limit on VL. Should there be one here, or should it be handled at a higher level?
+\end{enumerate}
+
+\section{DAC}
+% Needed: 2? per CCD, 8? per SXI
+%Two blocks gives us 16 DAC's, enough for (OD*4,RD,RG+-,OG,BB,H+-,V+-,IG+-,ISV). Is that enough, 
+% or do we need three?
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=15cm,angle=90,keepaspectratio=true]{DAC.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+The AD5308 DAC chip provides a buffered output from 0V to (255/256) of the reference voltage. R1 provides decoupling and current limiting in case of latchup.
+
+Issues:
+\begin{enumerate}
+\item
+CMOS DAC chips tend to be sensitive to radiation dose. The radiation environment for ASTRO-H is not severe, so I do not expect a problem. However, I have no radiation data on this device, so I have a small concern.
+\end{enumerate}
+
+\section{BBOG}
+
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=15cm,angle=90,keepaspectratio=true]{BBOG.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+%Needed: 1 per CCD, 4 per SXI
+U1 and its associated components form the driver for the output gate (OG) electrodes. These require almost no current, only leakage, but they are adjacent to the charge sense nodes, so they are sensitive to noise. The filter formed by R6 and C6 is intended to strongly attenuate noise at the video frequency. However, this filter potentially destabilizes the driver circuit: C3 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R5\times C3$ is four times the output time constant $R6\times C6$, the circuit is critically damped. This approach to noise reduction and stabilization is employed in several other driver blocks below.
+Minimum output voltage is $-3.3\times(R5/R7)$ or $-9.9V$ when the DACOG DAC is set to zero. Maximum is $3.3\times(1+R5/R4)$ or $9.9V$ when DACOG is set to $255$.
+
+\section{DACtoClock}
+
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=15cm,angle=90,keepaspectratio=true]{DACtoClock.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+
+%Needed: 4? per CCD, 16? per SXI
+%Translates DAC voltages to clock voltages. I assume we need:
+%Reset Gate
+%Horizontal
+%Vertical
+%Input Gate
+%But there are questions:
+%I assume voltages for VI==VS==TG. Is this true?
+%I assume voltages for horizantal==SG. Is this true?
+%I assume charge injection voltages for IG1==IG2. Is this true?
+
+Block: DC-driver
+Needed: 1 per CCD, 4 per SXI
+Drives ID and ISV.
+
+Block: OD-Driver
+Needed: 2 per CCD, 8 per SXI
+Drives OD for each output.
+
+Block: ParallelPair
+Needed: 2 per CCD, 8 per SXI
+Drives P(1,2)(VI,VS)
+
+Block: ParallelReg
+Needed: 1? per CCD, 4? per SXI
+Regulates vertical clock voltages. VI==VS?
+
+Block: SerialDrivers
+Needed: 4? per CCD, 16? per SXI
+Drives RG, SG, P1H, P3H, IG1V, IG2V, TG. Is this the right list?
+
+Block: SerialMatrix
+Needed: 1 per CCD, 4 per SXI
+Connects the various P2H and P4H to the correct P1H and P3H for the desired clocking mode.
+
+Block: VideoChain
+Needed: 4 per CCD, 16 per SXI
+This is the MND01 version. MND02 would allow some simplification.
+
+Block: DAC
+Needed: 2? per CCD, 8? per SXI
+Two blocks gives us 16 DAC's, enough for (OD*4,RD,RG+-,OG,BB,H+-,V+-,IG+-,ISV). Is that enough, or do we need three?
+
+
+Block: TempControl
+Needed: 1? per SXI
+Controls the focal plane heater. Do we need more than one?
+
+Block: Temperature
+Needed: 8 per SXI
+Temperature sensor digitizer.
+
+\begin{center}
+% Alternately:
+% \includegraphics[height=15 cm,angle=90,keepaspectratio=true]{../ParallelPair.pdf}
+\includegraphics[width=15 cm]{ParallelPair.pdf}
+\end{center}
+
+
+\end{document}

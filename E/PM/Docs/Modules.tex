@@ -18,6 +18,77 @@
 \maketitle
 \end{titlepage} 
 
+\section{INTRODUCTION}
+
+\section{Building Block Details}
+\subsection{BBOG}
+
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=5cm]{BBOG.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+Needed: 1 per CCD, 4 per SXI
+Drives back bias and output gate
+
+Block: DACtoClock
+Needed: 4? per CCD, 16? per SXI
+Translates DAC voltages to clock voltages. I assume we need:
+Reset Gate
+Horizontal
+Vertical
+Input Gate
+But there are questions:
+I assume voltages for VI==VS==TG. Is this true?
+I assume voltages for horizantal==SG. Is this true?
+I assume charge injection voltages for IG1==IG2. Is this true?
+
+Block: DC-driver
+Needed: 1 per CCD, 4 per SXI
+Drives ID and ISV.
+
+Block: OD-Driver
+Needed: 2 per CCD, 8 per SXI
+Drives OD for each output.
+
+Block: ParallelPair
+Needed: 2 per CCD, 8 per SXI
+Drives P(1,2)(VI,VS)
+
+Block: ParallelReg
+Needed: 1? per CCD, 4? per SXI
+Regulates vertical clock voltages. VI==VS?
+
+Block: SerialDrivers
+Needed: 4? per CCD, 16? per SXI
+Drives RG, SG, P1H, P3H, IG1V, IG2V, TG. Is this the right list?
+
+Block: SerialMatrix
+Needed: 1 per CCD, 4 per SXI
+Connects the various P2H and P4H to the correct P1H and P3H for the desired clocking mode.
+
+Block: VideoChain
+Needed: 4 per CCD, 16 per SXI
+This is the MND01 version. MND02 would allow some simplification.
+
+Block: DAC
+Needed: 2? per CCD, 8? per SXI
+Two blocks gives us 16 DAC's, enough for (OD*4,RD,RG+-,OG,BB,H+-,V+-,IG+-,ISV). Is that enough, or do we need three?
+
+Block: REF
+Needed: 1 per CCD, 4 per SXI
+Provides reference voltage.
+
+Block: TempControl
+Needed: 1? per SXI
+Controls the focal plane heater. Do we need more than one?
+
+Block: Temperature
+Needed: 8 per SXI
+Temperature sensor digitizer.
+
 \begin{center}
 % Alternately:
 % \includegraphics[height=15 cm,angle=90,keepaspectratio=true]{../ParallelPair.pdf}
