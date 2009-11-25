@@ -1,36 +1,66 @@
-\documentclass[a4paper,10pt]{report}
+\documentclass[a4paper,12pt]{article}
+%\documentclass[letterpaper,12pt]{report}
 
 \usepackage{ucs}
 \usepackage[utf8x]{inputenc}
 \usepackage[english]{babel}
 \usepackage{fontenc}
 \usepackage{graphicx}
-\usepackage[hmargin=3cm,vmargin=3.5cm]{geometry}
+\usepackage[hmargin=2cm,vmargin=2.5cm]{geometry}
+
+% Space out paragraphs, don't indent
+ \setlength{\parindent}{0.0in}
+ \setlength{\parskip}{0.1in}
+
+
 
 \usepackage[dvips]{hyperref}
 
 \author{John P. Doty}
-\date{2009-09-23}
-\title{SXI Building Blocks}
+\date{\today}
+\title{SXI Driver Board Design}
 
 \begin{document}
 \begin{titlepage}
 \maketitle
 \end{titlepage} 
 
-\chapter{INTRODUCTION}
+\section{INTRODUCTION}
 This document describes the circuits on the driver board for the Soft X-ray Imager under development for the ASTRO-H high energy astronomy mission.
-
-In the SXI focal plane, there will be four Hamamatsu P-channel CCD chips. Each chip will have its own driver board
 
 This version of the design is intended for resource estimation and preliminary review. This document will evolve as the design evolves.
 
-\chapter{Building Block Details}
-\section{REF}
+In the SXI focal plane, there will be four Hamamatsu P-channel CCD chips. Each chip will have its own driver board. 
+
+Horizontal clock rate is assumed to be 132 kHz. Vertical clock rate is assumed to be 32 kHz. Available regulated voltages will be +15V, -15V, and +3.3V. These parameters were established after many of these circuits were first drawn, so they should be checked, particularly for adequate voltage breakdown margin.
+
+\subsection{Requirements}
+%I've pulled these together from a variety of documents: they need verification. The clock requirements  %are much less challenging than I assumed when I designed these blocks.
+
+%Vertical clock voltages: (+2,-6) nominal, high level adjustable (0 to +10), low level adjustable (-10 to 0).
+
+%Two vertical phases, two sections (imaging and storage). Total vertical clock capacitance 20nF. Clock rate 32 kHz. Nominal clock current, derived from the numbers above, is 5 mA.
+%Horizontal clock voltages:  (+6,-5) nominal, high level adjustable (0 to +10), low level adjustable (-10 to 0).
+
+%Three horizontal phases, four sections. Total horizontal clock capacitance 1.28nF. Clock rate 136 kHz. Nominal clock current, derived from the numbers above, is 2 mA.
+
+%Four output drains, operating range -18V to -22V, 1.2mA nominal each. Absolute maximum voltage -25V. Independently adjustable.
+
+%Output gate voltage range -10V to 0, nominal -5.
+
+%Drivers should have capacity of at least twice nominal current.
+
+%ISV, ID: what are current requirements?
+
+This entire section needs to be redone in light of the new CCD data sheet. Much of what I had assumed is wrong.
+
+
+\section{Building Block Details}
+\subsection{REF}
    \begin{figure}
    \begin{center}
    \begin{tabular}{c}
-   \includegraphics[height=15cm,angle=90,keepaspectratio=true]{REF.pdf}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{REF.pdf}
    \end{tabular}
    \end{center}
    \end{figure}
@@ -45,14 +75,14 @@ Is there a preferred part for this other than the REF196?
 There is no current limit on VL. Should there be one here, or should it be handled at a higher level?
 \end{enumerate}
 
-\section{DAC}
+\subsection{DAC}
 % Needed: 2? per CCD, 8? per SXI
 %Two blocks gives us 16 DAC's, enough for (OD*4,RD,RG+-,OG,BB,H+-,V+-,IG+-,ISV). Is that enough, 
 % or do we need three?
    \begin{figure}
    \begin{center}
    \begin{tabular}{c}
-   \includegraphics[height=15cm,angle=90,keepaspectratio=true]{DAC.pdf}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{DAC.pdf}
    \end{tabular}
    \end{center}
    \end{figure}
@@ -64,25 +94,42 @@ Issues:
 CMOS DAC chips tend to be sensitive to radiation dose. The radiation environment for ASTRO-H is not severe, so I do not expect a problem. However, I have no radiation data on this device, so I have a small concern.
 \end{enumerate}
 
-\section{BBOG}
+\subsection{BBOG}
 
    \begin{figure}
    \begin{center}
    \begin{tabular}{c}
-   \includegraphics[height=15cm,angle=90,keepaspectratio=true]{BBOG.pdf}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{BBOG.pdf}
    \end{tabular}
    \end{center}
    \end{figure}
 %Needed: 1 per CCD, 4 per SXI
-U1 and its associated components form the driver for the output gate (OG) electrodes. These require almost no current, only leakage, but they are adjacent to the charge sense nodes, so they are sensitive to noise. The filter formed by R6 and C6 is intended to strongly attenuate noise at the video frequency. However, this filter potentially destabilizes the driver circuit: C3 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R5\times C3$ is four times the output time constant $R6\times C6$, the circuit is critically damped. This approach to noise reduction and stabilization is employed in several other driver blocks below.
+Half of U1 and its associated components form the driver for the output gate (OG) electrodes. These require almost no current, only leakage, but they are adjacent to the charge sense nodes, so they are sensitive to noise. The filter formed by R6 and C6 is intended to strongly attenuate noise at the video frequency. However, this filter potentially destabilizes the driver circuit: C3 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R5\times C3$ is four times the output time constant $R6\times C6$, the circuit is critically damped, assuming that this time constant is also large compared to the amplifier's unity gain small signal response time. This approach to noise reduction and stabilization is employed in several other driver blocks below.
+
 Minimum output voltage is $-3.3\times(R5/R7)$ or $-9.9V$ when the DACOG DAC is set to zero. Maximum is $3.3\times(1+R5/R4)$ or $9.9V$ when DACOG is set to $255$.
 
-\section{DACtoClock}
+U2 switches between $Vp$ and $Vm$ $(\pm15V)$, creating 30V square-wave drive for a charge pump. The switching frequency, applied to PCLK, should be at the pixel rate to minimize the effect of crosstalk and ripple on the video signal. D1, D2, and their associated capacitors form a two stage charge pump, nominally capable of 60V output if losses are ignored. C4 is intentionally fairly small to minimize surge current at startup and under fault conditions, although there is little quantitative reasoning behind this specific value. The other capacitors in the pump (C1, C2, C5) are larger to minimize ripple and loss.
+
+Q1 and Q2 are high voltage transistors making a voltage translation amplifier with gain of about 4.5 (set by $R11/R10$)and an offset roughly equal to the pump output voltage. Applying a negative voltage to R10 thus reduces the output voltage (BB). Half of U1 provides this negative drive. R9 and R10 set the gain at 11, so the maximum output voltage is 36V. The output time constant is $R12\times C10$, or about 1.2 ms. In this case, the damping effect of C11 is reduced by the gain of the voltage translation stage, so for critical damping the $R9\times C11$ time constant should be $(4.5\times4\times1.2)$ or 22 ms. As drawn, this circuit is a bit underdamped, but not seriously, I think. With 15V supplies, R10 could be increased to 330k, reducing the translation gain and improving the damping.
+
+R1, R2, and R3 limit current to U2, protecting it in case of latchup. R13 and R14 limit current to U1, although that's less of a concern: U1 is not CMOS so it should be more resistant to latchup. These resistors also help decouple chip power from power supply noise and ripple.
+
+Issues:
+\begin{enumerate}
+\item
+OG output range doesn't match requirement.
+\item
+C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
+\item
+With $\pm15V$ supplies now specified, R10 could be increased to 330k, reducing the translation gain and improving the damping.
+\end{enumerate}
+
+\subsection{DACtoClock}
 
    \begin{figure}
    \begin{center}
    \begin{tabular}{c}
-   \includegraphics[height=15cm,angle=90,keepaspectratio=true]{DACtoClock.pdf}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{DACtoClock.pdf}
    \end{tabular}
    \end{center}
    \end{figure}
@@ -98,52 +145,148 @@ Minimum output voltage is $-3.3\times(R5/R7)$ or $-9.9V$ when the DACOG DAC is s
 %I assume voltages for horizantal==SG. Is this true?
 %I assume charge injection voltages for IG1==IG2. Is this true?
 
-Block: DC-driver
-Needed: 1 per CCD, 4 per SXI
-Drives ID and ISV.
+This is a pair of amplifiers with gains of $\pm3$ yielding outputs of 0 to 9.9V and -9.9V to 0 for drivers. Noise filtering and damping are similar to the blocks above.
 
-Block: OD-Driver
-Needed: 2 per CCD, 8 per SXI
-Drives OD for each output.
+Issues:
+\begin{enumerate}
+\item
+Drive from the OP220 opamp specified is only $\pm1 mA$. This is inadequate for the parallel regulators, and serial clocks. Either a higher current opamp should be selected, or a current boost amplifier should be added. We may also want to reduce the current drive required by the parallel regulators.
+\end{enumerate}
 
-Block: ParallelPair
-Needed: 2 per CCD, 8 per SXI
-Drives P(1,2)(VI,VS)
-
-Block: ParallelReg
-Needed: 1? per CCD, 4? per SXI
-Regulates vertical clock voltages. VI==VS?
-
-Block: SerialDrivers
-Needed: 4? per CCD, 16? per SXI
-Drives RG, SG, P1H, P3H, IG1V, IG2V, TG. Is this the right list?
-
-Block: SerialMatrix
-Needed: 1 per CCD, 4 per SXI
-Connects the various P2H and P4H to the correct P1H and P3H for the desired clocking mode.
-
-Block: VideoChain
-Needed: 4 per CCD, 16 per SXI
-This is the MND01 version. MND02 would allow some simplification.
-
-Block: DAC
-Needed: 2? per CCD, 8? per SXI
-Two blocks gives us 16 DAC's, enough for (OD*4,RD,RG+-,OG,BB,H+-,V+-,IG+-,ISV). Is that enough, or do we need three?
+Issues:
+\begin{enumerate}
+\item
+C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
+\end{enumerate}
 
 
-Block: TempControl
-Needed: 1? per SXI
-Controls the focal plane heater. Do we need more than one?
 
-Block: Temperature
-Needed: 8 per SXI
-Temperature sensor digitizer.
+\subsection{DC-driver}
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{DC-driver.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
 
-\begin{center}
-% Alternately:
-% \includegraphics[height=15 cm,angle=90,keepaspectratio=true]{../ParallelPair.pdf}
-\includegraphics[width=15 cm]{ParallelPair.pdf}
-\end{center}
+This provides low current drive for ID and ISV. Gain is -4.55, so at DAC full scale, the output will be -15V nominally, although it may saturate at a slightly higher voltage, depending on the voltage of the -15V supply.
 
+%Needed: 1 per CCD, 4 per SXI
+%Drives ID and ISV.
+
+Issues:
+\begin{enumerate}
+\item
+This circuit is really just a placeholder: what are the requirements?
+\end{enumerate}
+
+
+\subsection{OD-driver}
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{OD-driver.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+
+This provides drive for two output drains. Full scale on the DAC corresponds to -24V on the output. The transistors boost the opamp output current.
+
+%Needed: 2 per CCD, 8 per SXI
+%Drives OD for each output.
+
+Issues:
+\begin{enumerate}
+\item
+C2 and C4 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
+\end{enumerate}
+
+
+\subsection{ParallelReg}
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{ParallelReg.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+
+These are overload-protected high current regulators intended for high speed clocking of a high capacitance CCD. They can handle high power safely, but they don't match the required voltage range when driven by the DACtoClock block (and the DACtoClock block can't drive their input current), and are inefficient. Their high power capability is not required.
+
+Issues:
+\begin{enumerate}
+\item
+This block needs redesign. It is inefficient does not match our present requirements.
+\end{enumerate}
+
+
+%Needed: 1? per CCD, 4? per SXI
+%Regulates vertical clock voltages. VI==VS?
+
+\subsection{ParallelPair}
+
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{ParallelPair.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+
+This is a high current driver intended for high speed clocking of a high capacitance CCD. 
+
+Issues:
+\begin{enumerate}
+\item
+For our present requirements, this block is unneeded. The SerialDrivers block has sufficient drive capability.
+\end{enumerate}
+
+%Needed: 2 per CCD, 8 per SXI
+%Drives P(1,2)(VI,VS)
+
+\subsection{SerialDrivers}
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{SerialDrivers.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+   
+This is just a pair of analog switches, intended to drive a low capacitance clock. The resistors limit fault currents due to latchup or output short circuits.
+
+Issues:
+\begin{enumerate}
+\item
+The limiting resistors may be increased for greater protection because the drive requirements are reduced.
+\end{enumerate}
+
+%Needed: 4? per CCD, 16? per SXI
+%Drives RG, SG, P1H, P3H, IG1V, IG2V, TG. Is this the right list?
+
+\subsection{OD-pump}
+
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{OD-pump.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+   
+This charge pump provides -30V (nominal assuming no losses). It is a single stage design, pumping negative charge from a 15V square wave signal using the -15V supply as its "ground". It is intended to be able to drive at least 10 mA. Q3, Q4, and their associated resistors form a current limiter to protect against an output short circuit. R4 and R5 protect U1 against latchup.
+
+\section{Connecting the Blocks}
+
+Coming soon!
+
+\section{Status}
+
+The clock drivers don't match present requirements and the blocks won't quite work together. Fortunately, the combination of an enhanced DACtoClock block and a slightly revised SerialDrivers block appears to meet requirements and consume less power than the present design.
+
+Present requirements are not complete.
+
+Much review required. Power dissipation and resistance of protection resistors needs particular attention.
 
 \end{document}

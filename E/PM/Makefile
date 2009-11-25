@@ -16,6 +16,7 @@ S2PS=gschem -p -o $@ -s print.scm $<
 A2PS=a2ps -1 --medium=A4 --toc -o $@ $^
 PS2PDF=ps2pdf -sPAPERSIZE=a4
 MAN=man -Tps -l
+PDFLATEX=pdflatex
 
 %.pdf : %.ps
 	$(PS2PDF) $<
@@ -35,6 +36,7 @@ DACtoClock.pdf\
 DC-driver.pdf\
 hkadc.pdf\
 OD-driver.pdf\
+OD-pump.pdf\
 ParallelPair.pdf\
 ParallelReg.pdf\
 REF.pdf\
@@ -46,8 +48,25 @@ TempMeasure-1.pdf\
 TempMeasure-2.pdf\
 VideoChain.pdf
 
+DRIVERFIGS=BBOG.pdf\
+DAC.pdf\
+DACtoClock.pdf\
+DC-driver.pdf\
+OD-driver.pdf\
+ParallelPair.pdf\
+ParallelReg.pdf\
+REF.pdf\
+SerialDrivers.pdf\
+OD-pump.pdf
+
+DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
+	$(PDFLATEX) Driverboard.tex
 	
 # $Log$
+# Revision 1.5  2009-11-25 22:31:56  jpd
+# More documentation.
+# Preamp schematic.
+#
 # Revision 1.4  2009-10-26 17:48:25  jpd
 # Added DriverBoard doc.
 # Small fix to damping in DADtoClock
