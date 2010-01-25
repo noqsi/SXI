@@ -35,6 +35,50 @@ In the SXI focal plane, there will be four Hamamatsu P-channel CCD chips. Each c
 Horizontal clock rate is assumed to be 132 kHz. Vertical clock rate is assumed to be 32 kHz. Available regulated voltages will be +15V, -15V, and +3.3V. These parameters were established after many of these circuits were first drawn, so they should be checked, particularly for adequate voltage breakdown margin.
 
 \subsection{Requirements}
+The next two tables derive primarily from the CCD-NeXT4 specsheet. Required voltage precision is based on previous CCD experience. The last column identifies the circuit that must meet the requirement, for reference.
+
+\begin{tabular}{|l|rrrr|rrrr|r|l|}
+\hline
+&\multicolumn{4}{c|}{High(V)}&\multicolumn{4}{c|}{Low(V)}& C(pF)& Driver Circuit \\ 
+&Min.&Typ.&Max.&Prec.&Min.&Typ.&Max&Prec.&& \\
+\hline
+RG & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 70 & Serial-driver \\
+SG & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+TG & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 180 & Serial-driver \\
+P1VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 100000 & Parallel \\
+P2VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 100000 & Parallel \\
+P1VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 60000 & Parallel \\
+P2VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 60000 & Parallel \\
+P1H & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 320 & Serial-driver \\
+P3H & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 320 & Serial-driver \\
+P2H-AC & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+P2H-BD & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+P4H-AC & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+P4H-BD & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+IG1V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver \\
+IG2V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver \\
+ISV & -18? & ? & +0.5? & 0.01? & -18? & ? & +0.5? & 0.01? & ? & Serial-driver \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|l|rrrr|r|l|}
+\hline
+&\multicolumn{4}{c|}{Bias(V)} &mA&Driver Circuit \\
+&Min.& Typ.& Max.&Prec& Max.&\\
+\hline
+OD-AC &-22 &-20& -18& 0.1&2.4&OD-driver \\
+OD-BD &-22& -20& -18&0.1& 2.4&OD-driver \\
+RD &-13& -12 &-11& 0.1&0.001&DC-driver \\
+OG& -7& -5& -3&  0.1&0.001&OG \\
+BB &+20 &+30 &+40 &0.5&0.001&BB \\
+\hline
+\end{tabular}
+
+The specified horizontal clock rate is 132\ kHz, and the specified vertical clock rate is 32\ kHz, from the science requirements. Experience suggests that a clock driver time constant of 1/10 the clock period  is sufficiently small. 
+
+The heaviest loads for the Serial-driver block are P1H and P3H, with 12\ V max swings into 320\ pF at 132\ kHz. Output resistance of $<$2.3\ k$\Omega$
+
+
 %I've pulled these together from a variety of documents: they need verification. The clock requirements  %are much less challenging than I assumed when I designed these blocks.
 
 %Vertical clock voltages: (+2,-6) nominal, high level adjustable (0 to +10), low level adjustable (-10 to 0).
@@ -52,7 +96,6 @@ Horizontal clock rate is assumed to be 132 kHz. Vertical clock rate is assumed t
 
 %ISV, ID: what are current requirements?
 
-This entire section needs to be redone in light of the new CCD data sheet. Much of what I had assumed is wrong.
 
 
 \section{Building Block Details}
