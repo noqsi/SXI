@@ -30,16 +30,18 @@ This document describes the circuits on the driver board for the Soft X-ray Imag
 
 This version of the design is intended for resource estimation and preliminary review. This document will evolve as the design evolves.
 
-In the SXI focal plane, there will be four Hamamatsu P-channel CCD chips. Each chip will have its own driver board. 
+In the SXI focal plane, there will be four Hamamatsu CCD-PchNeXT4 sensor chips. Each chip will have its own driver board. 
 
-Horizontal clock rate is assumed to be 132 kHz. Vertical clock rate is assumed to be 32 kHz. Available regulated voltages will be +15V, -15V, and +3.3V. These parameters were established after many of these circuits were first drawn, so they should be checked, particularly for adequate voltage breakdown margin.
+Horizontal clock rate is assumed to be 132 kHz. Vertical clock rate is assumed to be 32 kHz. Available regulated voltages will be +15V, -15V, and +3.3V. 
+
+%These parameters were established after many of these circuits were first drawn, so they should be checked, particularly for adequate voltage breakdown margin.
 
 \subsection{Requirements}
-The next two tables derive primarily from the CCD-NeXT4 specsheet. Required voltage precision is based on previous CCD experience. The last column identifies the circuit that must meet the requirement, for reference.
+The next two tables derive primarily from the CCD-PchNeXT4 specsheet. Required voltage precision is based on previous CCD experience. The last column identifies the circuit that must meet the requirement, for reference.
 
 \begin{tabular}{|l|rrrr|rrrr|r|l|}
 \hline
-&\multicolumn{4}{c|}{High(V)}&\multicolumn{4}{c|}{Low(V)}& C(pF)& Driver Circuit \\ 
+&\multicolumn{4}{c|}{Low(V)}&\multicolumn{4}{c|}{High(V)}& C(pF)& Driver Circuit \\ 
 &Min.&Typ.&Max.&Prec.&Min.&Typ.&Max&Prec.&& \\
 \hline
 RG & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 70 & Serial-driver \\
@@ -49,12 +51,12 @@ P1VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 100000 & Parallel \\
 P2VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 100000 & Parallel \\
 P1VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 60000 & Parallel \\
 P2VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 60000 & Parallel \\
-P1H & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 320 & Serial-driver \\
-P3H & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 320 & Serial-driver \\
-P2H-AC & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
-P2H-BD & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
-P4H-AC & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
-P4H-BD & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+PXH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 320 & Serial-driver \\
+PXH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 320 & Serial-driver \\
+PYH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+PYH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+PZH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+PZH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
 IG1V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver \\
 IG2V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver \\
 ISV & -18? & ? & +0.5? & 0.01? & -18? & ? & +0.5? & 0.01? & ? & Serial-driver \\
@@ -66,17 +68,21 @@ ISV & -18? & ? & +0.5? & 0.01? & -18? & ? & +0.5? & 0.01? & ? & Serial-driver \\
 &\multicolumn{4}{c|}{Bias(V)} &mA&Driver Circuit \\
 &Min.& Typ.& Max.&Prec& Max.&\\
 \hline
-OD-AC &-22 &-20& -18& 0.1&2.4&OD-driver \\
-OD-BD &-22& -20& -18&0.1& 2.4&OD-driver \\
+OD-A &-22 &-20& -18& 0.1&1.2&OD-driver \\
+OD-B &-22 &-20& -18& 0.1&1.2&OD-driver \\
+OD-C &-22 &-20& -18& 0.1&1.2&OD-driver \\
+OD-D &-22 &-20& -18& 0.1&1.2&OD-driver \\
 RD &-13& -12 &-11& 0.1&0.001&DC-driver \\
 OG& -7& -5& -3&  0.1&0.001&OG \\
 BB &+20 &+30 &+40 &0.5&0.001&BB \\
 \hline
 \end{tabular}
 
-The specified horizontal clock rate is 132\ kHz, and the specified vertical clock rate is 32\ kHz, from the science requirements. Experience suggests that a clock driver time constant of 1/10 the clock period  is sufficiently small. 
+% Experience suggests that a clock driver time constant of 1/10 the clock period  is sufficiently small. 
 
-The heaviest loads for the Serial-driver block are P1H and P3H, with 12\ V max swings into 320\ pF at 132\ kHz. Output resistance of $<$2.3\ k$\Omega$
+%The heaviest loads for the Serial-driver block are P1H and P3H, with 12\ V max swings into 320\ pF at 132\ kHz. Output resistance of $<$2.3\ k$\Omega$ and peak current capability of $>$30\ mA will achieve  the required time constant of $<$750\ ns. IG1V and IG2V have larger swings, but they synchronize with the slower vertical clocks, so they need no more peak current.
+
+%The heaviest loads on the Parallel block are the Vertical imaging area clocks, with 12\ V max swings into 100\ nF 
 
 
 %I've pulled these together from a variety of documents: they need verification. The clock requirements  %are much less challenging than I assumed when I designed these blocks.
@@ -108,15 +114,16 @@ The heaviest loads for the Serial-driver block are P1H and P3H, with 12\ V max s
    \end{center}
    \end{figure}
 
-The REF block provides a 3.3V reference voltage for the DAC and driver circuits. The capacitors implement the recommended bypassing for the REF196.
+The REF block provides a 2.5V reference voltage for the DAC and driver circuits. The REF43 has flown successfully on a number of missions, including Suzaku. 2.5V seems a good choice for a reference in a system whose low voltage supply is 3.3V. The capacitors implement the recommended bypassing for the REF43.
+R1 provides current limiting and decoupling.
 
-Issues:
-\begin{enumerate}
-\item
-Is there a preferred part for this other than the REF196?
-\item
-There is no current limit on VL. Should there be one here, or should it be handled at a higher level?
-\end{enumerate}
+% Issues:
+% \begin{enumerate}
+% \item
+% Is there a preferred part for this other than the REF196?
+% \item
+% There is no current limit on VL. Should there be one here, or should it be handled at a higher level?
+% \end{enumerate}
 
 \subsection{DAC}
 % Needed: 2? per CCD, 8? per SXI
@@ -149,24 +156,23 @@ CMOS DAC chips tend to be sensitive to radiation dose. The radiation environment
 %Needed: 1 per CCD, 4 per SXI
 Half of U1 and its associated components form the driver for the output gate (OG) electrodes. These require almost no current, only leakage, but they are adjacent to the charge sense nodes, so they are sensitive to noise. The filter formed by R6 and C6 is intended to strongly attenuate noise at the video frequency. However, this filter potentially destabilizes the driver circuit: C3 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R5\times C3$ is four times the output time constant $R6\times C6$, the circuit is critically damped, assuming that this time constant is also large compared to the amplifier's unity gain small signal response time. This approach to noise reduction and stabilization is employed in several other driver blocks below.
 
-Minimum output voltage is $-3.3\times(R5/R7)$ or $-9.9V$ when the DACOG DAC is set to zero. Maximum is $3.3\times(1+R5/R4)$ or $9.9V$ when DACOG is set to $255$.
+Minimum output voltage is $-2.5\times(R5/R7)$ or $-7.5V$ when the DACOG DAC is set to zero. Maximum is $2.5V$ when DACOG is set to $255$.
 
-U2 switches between $Vp$ and $Vm$ $(\pm15V)$, creating 30V square-wave drive for a charge pump. The switching frequency, applied to PCLK, should be at the pixel rate to minimize the effect of crosstalk and ripple on the video signal. D1, D2, and their associated capacitors form a two stage charge pump, nominally capable of 60V output if losses are ignored. C4 is intentionally fairly small to minimize surge current at startup and under fault conditions, although there is little quantitative reasoning behind this specific value. The other capacitors in the pump (C1, C2, C5) are larger to minimize ripple and loss.
+U2 switches between $Vp$ and $Vm$ $(\pm15V)$, creating 30V square-wave drive for a charge pump. The switching frequency, applied to PCLK, should be at the pixel rate to minimize the effect of crosstalk and ripple on the video signal. D1, D2, and their associated capacitors form a two stage charge pump, nominally capable of 60V output if losses are ignored. C4 is intentionally fairly small to limit current at startup and under fault conditions. $1nF\times30V\times132kHz=4mA$ into the pump under short circuit conditions. That's 2mA into the pump output.
+% , although there is little quantitative reasoning behind this specific value. 
+The other capacitors in the pump (C1, C2, C5) are larger to minimize ripple and loss.
 
-Q1 and Q2 are high voltage transistors making a voltage translation amplifier with gain of about 4.5 (set by $R11/R10$)and an offset roughly equal to the pump output voltage. Applying a negative voltage to R10 thus reduces the output voltage (BB). Half of U1 provides this negative drive. R9 and R10 set the gain at 11, so the maximum output voltage is 36V. The output time constant is $R12\times C10$, or about 1.2 ms. In this case, the damping effect of C11 is reduced by the gain of the voltage translation stage, so for critical damping the $R9\times C11$ time constant should be $(4.5\times4\times1.2)$ or 22 ms. As drawn, this circuit is a bit underdamped, but not seriously, I think. With 15V supplies, R10 could be increased to 330k, reducing the translation gain and improving the damping.
+Q1 and Q2 are high voltage transistors making a voltage translation amplifier with gain of about 3.7 (set by $R11/R10$)and an offset roughly equal to the pump output voltage. Applying a negative voltage to R10 thus reduces the output voltage (BB). Half of U1 provides this negative drive. R9 and R10 set the gain at 16, so the maximum output voltage is 40V. The output time constant is $R12\times C10$, or about 1 ms. In this case, the damping effect of C11 is reduced by the gain of the voltage translation stage, so for critical damping the $R9\times C11$ time constant should be $(3.7\times4)$ or 15ms. As drawn, it's 16 ms, for a little overdamping. With the output of U1 at the negative rail, the output is nominally $60V-3.7\times15V$ or about 4.5V, ignoring losses and diode drops. That's well below the required minimum of 20V.
+
+43V precision Zener diode D3 limits the output voltage to below the absolute maximum of 45V.
+
+The load current on BB is $<1\mu A$. The voltage regulator pulls $60\mu A$ from the pump, much less than the 2mA limit.
 
 R1, R2, and R3 limit current to U2, protecting it in case of latchup. R13 and R14 limit current to U1, although that's less of a concern: U1 is not CMOS so it should be more resistant to latchup. These resistors also help decouple chip power from power supply noise and ripple.
 
-Issues:
-\begin{enumerate}
-\item
-OG output range doesn't match requirement.
-\item
-C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
-\item
-With $\pm15V$ supplies now specified, R10 could be increased to 330k, reducing the translation gain and improving the damping.
-\end{enumerate}
+Output filter capacitors have separate return connections here so that they may be connected for best EMI performance at the higher level.
 
+%Issues:%\begin{enumerate}%\item%OG output range doesn't match requirement.%\item%C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.%\item%With $\pm15V$ supplies now specified, R10 could be increased to 330k, reducing the translation gain and improving the damping.%\end{enumerate}%
 \subsection{DACtoClock}
 
    \begin{figure}
