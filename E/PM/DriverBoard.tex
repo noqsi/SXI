@@ -23,6 +23,8 @@
 \begin{document}
 \begin{titlepage}
 \maketitle
+\centering
+$Id$
 \end{titlepage} 
 
 \section{INTRODUCTION}
@@ -105,7 +107,8 @@ BB &+20 &+30 &+40 &0.5&0.001&BB \\
 
 
 \section{Building Block Details}
-\subsection{REF}
+\subsection{Infrastructure}
+\subsubsection{REF}
    \begin{figure}
    \begin{center}
    \begin{tabular}{c}
@@ -125,7 +128,7 @@ R1 provides current limiting and decoupling.
 % There is no current limit on VL. Should there be one here, or should it be handled at a higher level?
 % \end{enumerate}
 
-\subsection{DAC}
+\subsubsection{DAC}
 % Needed: 2? per CCD, 8? per SXI
 %Two blocks gives us 16 DAC's, enough for (OD*4,RD,RG+-,OG,BB,H+-,V+-,IG+-,ISV). Is that enough, 
 % or do we need three?
@@ -144,7 +147,8 @@ Issues:
 CMOS DAC chips tend to be sensitive to radiation dose. The radiation environment for ASTRO-H is not severe, so I do not expect a problem. However, I have no radiation data on this device, so I have a small concern.
 \end{enumerate}
 
-\subsection{BBOG}
+\subsection{Bias Drivers}
+\subsubsection{BBOG}
 
    \begin{figure}
    \begin{center}
@@ -173,40 +177,6 @@ R1, R2, and R3 limit current to U2, protecting it in case of latchup. R13 and R1
 Output filter capacitors have separate return connections here so that they may be connected for best EMI performance at the higher level.
 
 %Issues:%\begin{enumerate}%\item%OG output range doesn't match requirement.%\item%C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.%\item%With $\pm15V$ supplies now specified, R10 could be increased to 330k, reducing the translation gain and improving the damping.%\end{enumerate}%
-\subsection{DACtoClock}
-
-   \begin{figure}
-   \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{DACtoClock.pdf}
-   \end{tabular}
-   \end{center}
-   \end{figure}
-
-%Needed: 4? per CCD, 16? per SXI
-%Translates DAC voltages to clock voltages. I assume we need:
-%Reset Gate
-%Horizontal
-%Vertical
-%Input Gate
-%But there are questions:
-%I assume voltages for VI==VS==TG. Is this true?
-%I assume voltages for horizantal==SG. Is this true?
-%I assume charge injection voltages for IG1==IG2. Is this true?
-
-This is a pair of amplifiers with gains of $\pm3$ yielding outputs of 0 to 9.9V and -9.9V to 0 for drivers. Noise filtering and damping are similar to the blocks above.
-
-Issues:
-\begin{enumerate}
-\item
-Drive from the OP220 opamp specified is only $\pm1 mA$. This is inadequate for the parallel regulators, and serial clocks. Either a higher current opamp should be selected, or a current boost amplifier should be added. We may also want to reduce the current drive required by the parallel regulators.
-\end{enumerate}
-
-Issues:
-\begin{enumerate}
-\item
-C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
-\end{enumerate}
 
 
 
@@ -249,6 +219,41 @@ Issues:
 \begin{enumerate}
 \item
 C2 and C4 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
+\end{enumerate}
+
+\subsubsection{DACtoClock}
+
+   \begin{figure}
+   \begin{center}
+   \begin{tabular}{c}
+   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{DACtoClock.pdf}
+   \end{tabular}
+   \end{center}
+   \end{figure}
+
+%Needed: 4? per CCD, 16? per SXI
+%Translates DAC voltages to clock voltages. I assume we need:
+%Reset Gate
+%Horizontal
+%Vertical
+%Input Gate
+%But there are questions:
+%I assume voltages for VI==VS==TG. Is this true?
+%I assume voltages for horizantal==SG. Is this true?
+%I assume charge injection voltages for IG1==IG2. Is this true?
+
+This is a pair of amplifiers with gains of $\pm3$ yielding outputs of 0 to 9.9V and -9.9V to 0 for drivers. Noise filtering and damping are similar to the blocks above.
+
+Issues:
+\begin{enumerate}
+\item
+Drive from the OP220 opamp specified is only $\pm1 mA$. This is inadequate for the parallel regulators, and serial clocks. Either a higher current opamp should be selected, or a current boost amplifier should be added. We may also want to reduce the current drive required by the parallel regulators.
+\end{enumerate}
+
+Issues:
+\begin{enumerate}
+\item
+C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
 \end{enumerate}
 
 
