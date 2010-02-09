@@ -30,7 +30,7 @@ PDFLATEX=pdflatex
 	rm output.net
 
 pdf_schematics: \
-BBOG.pdf\
+BB.pdf\
 DAC.pdf\
 DACtoClock.pdf\
 DC-driver.pdf\
@@ -48,7 +48,8 @@ TempMeasure-1.pdf\
 TempMeasure-2.pdf\
 VideoChain.pdf
 
-DRIVERFIGS=BBOG.pdf\
+DRIVERFIGS=BB.pdf\
+ClockCap.pdf\
 DAC.pdf\
 DACtoClock.pdf\
 DC-driver.pdf\
@@ -59,10 +60,16 @@ REF.pdf\
 SerialDrivers.pdf\
 OD-pump.pdf
 
+# For when typesetting within TeXShop GUI 
+driverfigs: $(DRIVERFIGS)
+
 DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	$(PDFLATEX) Driverboard.tex
 	
 # $Log$
+# Revision 1.6  2010-02-09 19:36:05  jpd
+# draft of building blocks complete, onward to the higher level.
+#
 # Revision 1.5  2009-11-25 22:31:56  jpd
 # More documentation.
 # Preamp schematic.

@@ -24,7 +24,7 @@
 \begin{titlepage}
 \maketitle
 \centering
-$Id$
+\verb$Id$
 \end{titlepage} 
 
 \section{INTRODUCTION}
@@ -39,8 +39,10 @@ Horizontal clock rate is assumed to be 132 kHz. Vertical clock rate is assumed t
 %These parameters were established after many of these circuits were first drawn, so they should be checked, particularly for adequate voltage breakdown margin.
 
 \subsection{Requirements}
-The next two tables derive primarily from the CCD-PchNeXT4 specsheet. Required voltage precision is based on previous CCD experience. The last column identifies the circuit that must meet the requirement, for reference.
+Tables \ref{Clocks}, \ref{CIClocks} and \ref{Biases} derive primarily from the CCD-PchNeXT4 specsheet. Required voltage precision is based on previous CCD experience. The last column identifies the circuit that must meet the requirement, for reference.
 
+\begin{table}[h]
+\centering
 \begin{tabular}{|l|rrrr|rrrr|r|l|}
 \hline
 &\multicolumn{4}{c|}{Low(V)}&\multicolumn{4}{c|}{High(V)}& C(pF)& Driver Circuit \\ 
@@ -59,26 +61,54 @@ PYH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
 PYH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
 PZH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
 PZH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
-IG1V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver \\
-IG2V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver \\
-ISV & -18? & ? & +0.5? & 0.01? & -18? & ? & +0.5? & 0.01? & ? & Serial-driver \\
 \hline
 \end{tabular}
+ \caption{CCD Clocks.}
+ \label{Clocks}
+\end{table}
 
+Exactly what the capacitances represent isn't clearly defined on the specsheet, although it appears likely that they are capacitance to all other electrodes combined. More on this in section \ref{ClockDrivers}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|rrrr|rrrr|r|l|}
+\hline
+&\multicolumn{4}{c|}{Low(V)}&\multicolumn{4}{c|}{High(V)}& C(pF)& Driver Circuit \\ 
+&Min.&Typ.&Max.&Prec.&Min.&Typ.&Max&Prec.&& \\
+\hline
+IG1V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver? \\
+IG2V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver? \\
+ISV & -18? & ? & 0? & 0.01? & -18? & ? & 0? & 0.01? & ? & Serial-driver? \\
+\hline
+\end{tabular}
+ \caption{Charge Injection Clocks.}
+ \label{CIClocks}
+\end{table}
+
+Table \ref{CIClocks} shows the charge injection clocks. These are separated out as the charge injection strategy will depend on the outcome of charge injection experiments in progress. The drivers will probably be similar to the drivers for the other low capacitance clocks, perhaps with minor modification depending on the final requirements.
+
+\begin{table}[h]
+\centering
 \begin{tabular}{|l|rrrr|r|l|}
 \hline
 &\multicolumn{4}{c|}{Bias(V)} &mA&Driver Circuit \\
 &Min.& Typ.& Max.&Prec& Max.&\\
 \hline
-OD-A &-22 &-20& -18& 0.1&1.2&OD-driver \\
-OD-B &-22 &-20& -18& 0.1&1.2&OD-driver \\
-OD-C &-22 &-20& -18& 0.1&1.2&OD-driver \\
-OD-D &-22 &-20& -18& 0.1&1.2&OD-driver \\
+OD-A &-22 &-20& -18& 0.1&1.2&DC-driver \\
+OD-B &-22 &-20& -18& 0.1&1.2&DC-driver \\
+OD-C &-22 &-20& -18& 0.1&1.2&DC-driver \\
+OD-D &-22 &-20& -18& 0.1&1.2&DC-driver \\
 RD &-13& -12 &-11& 0.1&0.001&DC-driver \\
-OG& -7& -5& -3&  0.1&0.001&OG \\
+OG& -7& -5& -3&  0.1&0.001&DC-driver \\
+ISV & -18? & ? & 0? & 0.01? & 0.001 & DC-driver \\
 BB &+20 &+30 &+40 &0.5&0.001&BB \\
 \hline
 \end{tabular}
+ \caption{Biases.}
+ \label{Biases}
+\end{table}
+
+ISV may be either a clock or a DC bias (but not both) depending on the outcome of charge injection experiments in progress.
 
 % Experience suggests that a clock driver time constant of 1/10 the clock period  is sufficiently small. 
 
@@ -111,10 +141,9 @@ BB &+20 &+30 &+40 &0.5&0.001&BB \\
 \subsubsection{REF}
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{REF.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{REF.pdf}
    \end{center}
+   \caption{REF Block}
    \end{figure}
 
 The REF block provides a 2.5V reference voltage for the DAC and driver circuits. The REF43 has flown successfully on a number of missions, including Suzaku. 2.5V seems a good choice for a reference in a system whose low voltage supply is 3.3V. The capacitors implement the recommended bypassing for the REF43.
@@ -134,10 +163,9 @@ R1 provides current limiting and decoupling.
 % or do we need three?
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{DAC.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DAC.pdf}
    \end{center}
+   \caption{DAC Block}
    \end{figure}
 The AD5308 DAC chip provides a buffered output from 0V to (255/256) of the reference voltage. R1 provides decoupling and current limiting in case of latchup.
 
@@ -148,19 +176,20 @@ CMOS DAC chips tend to be sensitive to radiation dose. The radiation environment
 \end{enumerate}
 
 \subsection{Bias Drivers}
-\subsubsection{BBOG}
+\subsubsection{BB}
+
+The BB (Back Bias) block consists of a Cockroft-Walton charge pump voltage multiplier and a regulator. It provides the high voltage needed to deplete the main volume of the CCD and drive charge from the backside to the channel.
 
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{BBOG.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{BB.pdf}
    \end{center}
+   \caption{BB Block}
    \end{figure}
 %Needed: 1 per CCD, 4 per SXI
-Half of U1 and its associated components form the driver for the output gate (OG) electrodes. These require almost no current, only leakage, but they are adjacent to the charge sense nodes, so they are sensitive to noise. The filter formed by R6 and C6 is intended to strongly attenuate noise at the video frequency. However, this filter potentially destabilizes the driver circuit: C3 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R5\times C3$ is four times the output time constant $R6\times C6$, the circuit is critically damped, assuming that this time constant is also large compared to the amplifier's unity gain small signal response time. This approach to noise reduction and stabilization is employed in several other driver blocks below.
+%Half of U1 and its associated components form the driver for the output gate (OG) electrodes. These require almost no current, only leakage, but they are adjacent to the charge sense nodes, so they are sensitive to noise. The filter formed by R6 and C6 is intended to strongly attenuate noise at the video frequency. However, this filter potentially destabilizes the driver circuit: C3 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R5\times C3$ is four times the output time constant $R6\times C6$, the circuit is critically damped, assuming that this time constant is also large compared to the amplifier's unity gain small signal response time. This approach to noise reduction and stabilization is employed in several other driver blocks below.
 
-Minimum output voltage is $-2.5\times(R5/R7)$ or $-7.5V$ when the DACOG DAC is set to zero. Maximum is $2.5V$ when DACOG is set to $255$.
+%Minimum output voltage is $-2.5\times(R5/R7)$ or $-7.5V$ when the DACOG DAC is set to 255. Maximum is $0V$ when DACOG is set to $0$.
 
 U2 switches between $Vp$ and $Vm$ $(\pm15V)$, creating 30V square-wave drive for a charge pump. The switching frequency, applied to PCLK, should be at the pixel rate to minimize the effect of crosstalk and ripple on the video signal. D1, D2, and their associated capacitors form a two stage charge pump, nominally capable of 60V output if losses are ignored. C4 is intentionally fairly small to limit current at startup and under fault conditions. $1nF\times30V\times132kHz=4mA$ into the pump under short circuit conditions. That's 2mA into the pump output.
 % , although there is little quantitative reasoning behind this specific value. 
@@ -180,55 +209,83 @@ Output filter capacitors have separate return connections here so that they may 
 
 
 
-\subsection{DC-driver}
+\subsubsection{DC-driver}
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{DC-driver.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DC-driver.pdf}
    \end{center}
+   \caption{DC-driver Block}
    \end{figure}
 
-This provides low current drive for ID and ISV. Gain is -4.55, so at DAC full scale, the output will be -15V nominally, although it may saturate at a slightly higher voltage, depending on the voltage of the -15V supply.
+This provides negative DC drive for the various bias lines. These lines are potentially a path for noise to reach the CCD video output. The filter formed by R2 and C2 is intended to attenuate noise at the video frequency. RETA should go to the sensor analog ground point, which should have a low impedance to system ground.
+However, this filter potentially destabilizes the driver circuit: C1 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R1\times C1$ is four times the output time constant $R2\times C2$, the circuit is critically damped, assuming that this time constant is also large compared to the amplifier's unity gain small signal response time, which it is in this case $(120\mu s>>1 \mu s)$. When critically damped, the circuit has two poles with time constant $2\times R2\times C2$.
+
+The LT1078 opamp used can drive $>5mA$, so it has plenty of margin in this circuit: the maximum load for this circuit is 1.2mA when driving one of the output drains. 
+
+The input is a current into a virtual ground, allowing resistors to set scale and offset individually for each of these circuits.
+
+V+ should normally be 3.3V to prevent positive drive from pulling the opamp input above the positive rail. V- can be -15V if adequate, or the -30V from the OD-pump block if needed.
 
 %Needed: 1 per CCD, 4 per SXI
 %Drives ID and ISV.
 
-Issues:
-\begin{enumerate}
-\item
-This circuit is really just a placeholder: what are the requirements?
-\end{enumerate}
 
+\subsubsection{OD-pump}
 
-\subsection{OD-driver}
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{OD-driver.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{OD-pump.pdf}
    \end{center}
+   \caption{OD-pump Block}
    \end{figure}
+   
+This charge pump provides -30V (nominal assuming no losses). It is a single stage design, pumping negative charge from a 15V square wave signal using the -15V supply as its "ground". It is intended to be able to drive at least 10 mA. Q3, Q4, and their associated resistors form a current limiter to protect against an output short circuit. R4 and R5 protect U1 against latchup.
 
-This provides drive for two output drains. Full scale on the DAC corresponds to -24V on the output. The transistors boost the opamp output current.
+
+%\subsection{OD-driver}
+%   \begin{figure}
+%   \begin{center}
+ %  \begin{tabular}{c}
+%   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{OD-driver.pdf}
+%   \end{tabular}
+%   \end{center}
+%   \end{figure}
+
+%This provides drive for two output drains. Full scale on the DAC corresponds to -24V on the output. The transistors boost the opamp output current.
 
 %Needed: 2 per CCD, 8 per SXI
 %Drives OD for each output.
 
-Issues:
-\begin{enumerate}
-\item
-C2 and C4 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
-\end{enumerate}
+%Issues:
+%\begin{enumerate}
+%\item
+%C2 and C4 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
+%\end{enumerate}
+
+\pagebreak
+\subsection{CCD Clock Drivers}
+\label{ClockDrivers}
+Figure \ref{ClockCap} shows a model of the two phase CCD clock capacitances.  Because of the symmetry of the two phase drive, the gate-substrate and gate-gate capacitances may be combined into a single effective driver load capacitance, $Cdl=Cgs+2Cgg$. Unfortunately, the spec sheet apparently gives $Cgs+Cgg$ for the capacitance.
+
+For the VI clocks, we have more detailed estimates: 62.5\ nF for Cgg and 31.25\ nF for Cgs. In this case, the effective driver load is 156.25\ nF.
+
+Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the power supply needs to provide is $f\times C \times \Delta V$. For the fast (horizontal) clocks $f$ is 132 kHz, so this is about 1.6\ mA/nF. For the slow (vertical) clocks $f$ is 32 kHz, so this is about 0.4\ mA/Mhz.
+
+   \begin{figure}[h]
+   \begin{center}
+   \includegraphics[height=10cm,angle=0,keepaspectratio=true]{ClockCap.pdf}
+   \caption{Two phase drive allows simplification of the model of clock capacitance.}
+   \label{ClockCap}
+   \end{center}
+   \end{figure}
 
 \subsubsection{DACtoClock}
 
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{DACtoClock.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DACtoClock.pdf}
    \end{center}
+   \caption{DACtoClock Block}
    \end{figure}
 
 %Needed: 4? per CCD, 16? per SXI
@@ -242,105 +299,49 @@ C2 and C4 shown returned to board ground. This may not be the best from a noise 
 %I assume voltages for horizantal==SG. Is this true?
 %I assume charge injection voltages for IG1==IG2. Is this true?
 
-This is a pair of amplifiers with gains of $\pm3$ yielding outputs of 0 to 9.9V and -9.9V to 0 for drivers. Noise filtering and damping are similar to the blocks above.
-
-Issues:
-\begin{enumerate}
-\item
-Drive from the OP220 opamp specified is only $\pm1 mA$. This is inadequate for the parallel regulators, and serial clocks. Either a higher current opamp should be selected, or a current boost amplifier should be added. We may also want to reduce the current drive required by the parallel regulators.
-\end{enumerate}
-
-Issues:
-\begin{enumerate}
-\item
-C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
-\end{enumerate}
-
+This is a pair of amplifiers yielding adjustable outputs of 0 to 5V and -10V to -5V for drivers. Noise filtering and damping are similar to the DC-driver block above, but with larger capacitance to handle the time-varying load current. These can directly provide the regulated drive for the fast clock drivers: with output current capability >5\ mA, they can handle the current demands of a >3\ nF load. For the slow (vertical), drivers, these handle level translation but do not provide the large regulated current required.
 
 \subsection{ParallelReg}
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{ParallelReg.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{ParallelReg.pdf}
    \end{center}
+   \caption{ParallelReg Block}
    \end{figure}
 
-These are overload-protected high current regulators intended for high speed clocking of a high capacitance CCD. They can handle high power safely, but they don't match the required voltage range when driven by the DACtoClock block (and the DACtoClock block can't drive their input current), and are inefficient. Their high power capability is not required.
+These are overload-protected high current regulators intended for clocking of a high capacitance CCD. One design challenge here is that the duty cycle is low. To avoid excessive power drain, the idle current must be minimized. Another challenge is providing the required peak current without danger of overheating. An upset or programming error can  potentially raise the duty cycle to the point where power dissipation could cause damage.
 
-Issues:
-\begin{enumerate}
-\item
-This block needs redesign. It is inefficient does not match our present requirements.
-\end{enumerate}
+The NPN "transistors" in this block are LM195 "Ultra Reliable Power Transistor" integrated circuits. These devices protect themselves against excessive current and temperature. One problem, though, is that they pass idle currents of up to 5 mA. Connecting them in series with MOSFET devices cuts off idle emitter current, although a fraction of the idle current can still pass out through the base. A base resistor limits the idle base current, and also prevents parasitic Colpitts "emitter follower oscillations". The combinations (Q1, Q2, R1) and (Q4, Q5, R4) each behave like a MOSFET with a leaky gate. The main difference from the MOSFET by itself is that the LM195 limits the current and power dissipation. At high current, the LM195 handles most of the dissipation, so its thermal limit engages well before the MOSFET  is in danger of overheating.
 
+Additional LM195 devices, Q3 and Q6, limit supply current and provide some decoupling. In this connection, they act like $\approx 1\Omega$ resistors below their $>1$A current limits. Short circuit failures of C1 or C4 can not disable the whole SXI, only one chip.
 
-%Needed: 1? per CCD, 4? per SXI
-%Regulates vertical clock voltages. VI==VS?
+The (C1, R3) and (C3, R6) combinations reduce the high frequency output impedance, reducing transient voltage excursions. They also stabilize the closed loop regulation. The closed loop gain is unity.
+
+These regulators can deliver $>1$A peak and $>30$ mA average current. Idle current is  $\approx 2$ mA from the +15V supply and $\approx 3$ mA from the -15V supply for the regulator pair.
 
 \subsection{ParallelPair}
 
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{ParallelPair.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{ParallelPair.pdf}
    \end{center}
+   \caption{ParallelPair Block}
    \end{figure}
 
-This is a high current driver intended for high speed clocking of a high capacitance CCD. 
-
-Issues:
-\begin{enumerate}
-\item
-For our present requirements, this block is unneeded. The SerialDrivers block has sufficient drive capability.
-\end{enumerate}
-
-%Needed: 2 per CCD, 8 per SXI
-%Drives P(1,2)(VI,VS)
+This is a high current driver intended for high speed clocking of a high capacitance CCD. Connecting the drive transistors in a common source configuration insures break before make switching. The output resistors R1 and R2 insure that the source voltage follows the gate voltage closely enough to prevent gate-source breakdown, regardless of the magnitude of the capacitive load. The other resistors limit fault currents due to latchup or output short circuits and provide decoupling.
 
 \subsection{SerialDrivers}
    \begin{figure}
    \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{SerialDrivers.pdf}
-   \end{tabular}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{SerialDrivers.pdf}
    \end{center}
+   \caption{SerialDrivers Block}
    \end{figure}
    
-This is just a pair of analog switches, intended to drive a low capacitance clock. The resistors limit fault currents due to latchup or output short circuits.
-
-Issues:
-\begin{enumerate}
-\item
-The limiting resistors may be increased for greater protection because the drive requirements are reduced.
-\end{enumerate}
-
-%Needed: 4? per CCD, 16? per SXI
-%Drives RG, SG, P1H, P3H, IG1V, IG2V, TG. Is this the right list?
-
-\subsection{OD-pump}
-
-   \begin{figure}
-   \begin{center}
-   \begin{tabular}{c}
-   \includegraphics[height=17cm,angle=90,keepaspectratio=true]{OD-pump.pdf}
-   \end{tabular}
-   \end{center}
-   \end{figure}
-   
-This charge pump provides -30V (nominal assuming no losses). It is a single stage design, pumping negative charge from a 15V square wave signal using the -15V supply as its "ground". It is intended to be able to drive at least 10 mA. Q3, Q4, and their associated resistors form a current limiter to protect against an output short circuit. R4 and R5 protect U1 against latchup.
+This is just a pair of analog switches, intended to drive a moderate capacitance clock. The resistors limit fault currents due to latchup or output short circuits and provide decoupling.
 
 \section{Connecting the Blocks}
 
 Coming soon!
-
-\section{Status}
-
-The clock drivers don't match present requirements and the blocks won't quite work together. Fortunately, the combination of an enhanced DACtoClock block and a slightly revised SerialDrivers block appears to meet requirements and consume less power than the present design.
-
-Present requirements are not complete.
-
-Much review required. Power dissipation and resistance of protection resistors needs particular attention.
 
 \end{document}
