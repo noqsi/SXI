@@ -307,3 +307,10 @@ device=OUTPUT
 T 55400 45500 5 10 1 1 0 0 1
 refdes=RETB
 }
+C 51700 41600 1 0 0 DC-driver.sym
+{
+T 54100 44000 5 10 1 1 0 3 1
+refdes=U?
+T 53900 43000 5 10 0 1 0 0 1
+graphical=1
+}
