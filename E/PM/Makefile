@@ -64,9 +64,12 @@ OD-pump.pdf
 driverfigs: $(DRIVERFIGS)
 
 DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
-	$(PDFLATEX) Driverboard.tex
+	$(PDFLATEX) DriverBoard.tex
 	
 # $Log$
+# Revision 1.7  2010-02-11 03:56:47  jpd
+# Symbols for PM building blocks.
+#
 # Revision 1.6  2010-02-09 19:36:05  jpd
 # draft of building blocks complete, onward to the higher level.
 #
