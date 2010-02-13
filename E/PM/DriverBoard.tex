@@ -41,7 +41,7 @@ This version of the design is intended for resource estimation and preliminary r
 
 In the SXI focal plane, there will be four Hamamatsu CCD-PchNeXT4 sensor chips. Each chip will have its own driver board. 
 
-Horizontal clock rate is assumed to be 132 kHz. Vertical clock rate is assumed to be 32 kHz. Available regulated voltages will be +15V, -15V, and +3.3V. 
+Horizontal clock rate is assumed to be 136 kHz. Vertical clock rate is assumed to be 32 kHz. Available regulated voltages will be +15V, -15V, and +3.3V. 
 
 %These parameters were established after many of these circuits were first drawn, so they should be checked, particularly for adequate voltage breakdown margin.
 
@@ -55,26 +55,26 @@ Tables \ref{Clocks}, \ref{CIClocks} and \ref{Biases} derive primarily from the C
 &\multicolumn{4}{c|}{Low(V)}&\multicolumn{4}{c|}{High(V)}& C(pF)& Driver Circuit \\ 
 &Min.&Typ.&Max.&Prec.&Min.&Typ.&Max&Prec.&& \\
 \hline
-RG & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 70 & Serial-driver \\
+RG & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
 SG & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
 TG & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 180 & Serial-driver \\
-P1VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 100000 & Parallel \\
-P2VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 100000 & Parallel \\
-P1VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 60000 & Parallel \\
-P2VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 60000 & Parallel \\
-PXH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 320 & Serial-driver \\
-PXH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 320 & Serial-driver \\
-PYH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
-PYH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
-PZH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
-PZH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 160 & Serial-driver \\
+P1VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 70000 & Parallel \\
+P2VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 70000 & Parallel \\
+P1VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 50000 & Parallel \\
+P2VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 50000 & Parallel \\
+PXH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 230 & Serial-driver \\
+PXH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 230 & Serial-driver \\
+PYH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
+PYH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
+PZH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
+PZH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 \hline
 \end{tabular}
  \caption{CCD Clocks.}
  \label{Clocks}
 \end{table}
 
-Exactly what the capacitances represent isn't clearly defined on the specsheet, although it appears likely that they are capacitance to all other electrodes combined. More on this in section \ref{ClockDrivers}.
+Exactly what the capacitances represent isn't clearly defined on the specsheet, although it appears likely that they are gate-gate capacitance for the two phase clocks, and gate-substrate for single ended clocks. More on this in section \ref{ClockDrivers}.
 
 \begin{table}[h]
 \centering
