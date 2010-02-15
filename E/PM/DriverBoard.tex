@@ -35,7 +35,7 @@ This work is licensed under the Creative Commons Attribution-Share Alike 3.0 Lic
 
 \end{titlepage} 
 
-\section{INTRODUCTION}
+\section{Introduction}
 This document describes the circuits on the driver board for the Soft X-ray Imager under development for the ASTRO-H high energy astronomy mission.
 
 This version of the design is intended for resource estimation and preliminary review. This document will evolve as the design evolves.
@@ -309,7 +309,7 @@ Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the po
 
 This is a pair of amplifiers yielding adjustable outputs of 0 to 5V and -10V to -5V for drivers. Noise filtering and damping are similar to the DC-driver block above, but with larger capacitance to handle the time-varying load current. These can directly provide the regulated drive for the fast clock drivers: with output current capability $\approx 10$\ mA, they can handle the current demands of a $\approx 6$\ nF load. For the slow (vertical), drivers, these handle level translation but do not provide the large regulated current required.
 
-\subsection{ParallelReg}
+\subsubsection{ParallelReg}
    \begin{figure}
    \begin{center}
    \includegraphics[height=16cm,angle=90,keepaspectratio=true]{ParallelReg.pdf}
@@ -327,7 +327,7 @@ The (C1, R3) and (C3, R6) combinations reduce the high frequency output impedanc
 
 These regulators can deliver $>1$A peak (corresponding to a 2500\ nF load) and $>30$ mA average current. Idle current is  $\approx 2$ mA from the +15V supply and $\approx 3$ mA from the -15V supply for the regulator pair.
 
-\subsection{ParallelPair}
+\subsubsection{ParallelPair}
 
    \begin{figure}
    \begin{center}
@@ -338,7 +338,7 @@ These regulators can deliver $>1$A peak (corresponding to a 2500\ nF load) and $
 
 This is a high current driver intended for high speed clocking of a high capacitance CCD. Connecting the drive transistors in a common source configuration insures break before make switching. The output resistors R1 and R2 insure that the source voltage follows the gate voltage closely enough to prevent gate-source breakdown, regardless of the magnitude of the capacitive load. The other resistors limit fault currents due to latchup or output short circuits and provide decoupling.
 
-\subsection{SerialDrivers}
+\subsubsection{SerialDrivers}
    \begin{figure}
    \begin{center}
    \includegraphics[height=16cm,angle=90,keepaspectratio=true]{SerialDrivers.pdf}
@@ -348,7 +348,57 @@ This is a high current driver intended for high speed clocking of a high capacit
    
 This is just a pair of analog switches, intended to drive a moderate capacitance clock. The resistors limit fault currents due to latchup or output short circuits and provide decoupling.
 
+\subsection{Temperature Control}
+
+\subsubsection{Temperature Measurement}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{Temperature.pdf}
+   \end{center}
+   \caption{Temperature Block}
+   \end{figure}
+   
+This low speed 16 bit ADC is connected as a ratiometric ohmmeter. It compares the sensor resistance with R1, which sets the maximum scale. $1180\ \Omega$ for a Pt1000 sensor corresponds to a temperature of 46\ C.
+
+\subsubsection{Heater Control}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{TempControl.pdf}
+   \end{center}
+   \caption{TempControl Block}
+   \end{figure}
+
+The first section of U1 buffers 1/10 the heater supply voltage (Vhtr) as a reference for DAC U2. The second section of U1 together with Q1 is a differential amplifier with a gain of 10, controlling the voltage at Ihtr.  If the heater is connected between Vhtr and Ihtr, the heater voltage will be proportional to the DAC setting, with full scale equal to Vhtr. In practice, it won't quite reach that value because of saturation of Q1.
+
+Q1 is an LM195, which will protect itself against overheating. It also has limited transconductance, $\approx\ 1$\ S, which helps stability. C1 provides stabilizing feedback, much more than required for any reasonable heater resistance.
+
+As drawn, this circuit accommodates heater supply voltages up to 20V (limited by U1's output swing). This can be changed by resistor changes if a larger supply is to be used.
+
+\subsection{Housekeeping}
+
+\subsubsection{Housekeeping ADC}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{hkadc.pdf}
+   \end{center}
+   \caption{Housekeeping ADC Block}
+   \end{figure}
+
+This is a low speed 16 bit ADC with a high Z input whose range is $\pm 12.5$\ V.
+
 \section{Connecting the Blocks}
+
+The top level schematics indicate interconnections between pages with bus symbols.
+
+\begin{tabular}{ll}
+Power & Board internal power \\
+DAC & DAC output and reference voltages \\
+Control & Digital controls and clocks \\
+Output & CCD Driver outputs \\
+HK & Housekeeping test points \\
+\end{tabular}
+
+These graphical indicators do not necessarily imply the existence of physical busses on the board.
 
 \subsection{Reference and DACs}
    \begin{figure}
@@ -391,7 +441,7 @@ This drives the transfer gate between the vertical and horizontal register of th
    \caption{Horizontal Register Driver}
    \end{figure}
    
-The data sheet capacitances for these clocks total 1380\ pF. Applying the factor of 2.5 above for the effective capacitance, the total effective capacitance is $\approx 3.5$\ nF. A single DACtoClock block (drive capability $\approx 6$\ nF suffices to provide the regulated drive voltages.
+The data sheet capacitances for these clocks total 1380\ pF. Applying the factor of 2.5 above for the effective capacitance, the total effective capacitance is $\approx 3.5$\ nF. A single DACtoClock block (drive capability $\approx 6$\ nF) suffices to provide the regulated drive voltages.
   
 
 \subsection{VI Driver}

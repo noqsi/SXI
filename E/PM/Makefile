@@ -59,6 +59,9 @@ ParallelReg.pdf\
 REF.pdf\
 SerialDrivers.pdf\
 OD-pump.pdf \
+Temperature.pdf \
+TempControl.pdf \
+hkadc.pdf \
 DriverBoard.1.pdf \
 DriverBoard.2.pdf \
 DriverBoard.3.pdf \
@@ -78,6 +81,9 @@ DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	$(PDFLATEX) DriverBoard.tex
 	
 # $Log$
+# Revision 1.9  2010-02-15 19:46:43  jpd
+# TCE, housekeeping stuff.
+#
 # Revision 1.8  2010-02-15 03:10:52  jpd
 # Draft of section 3.
 #
