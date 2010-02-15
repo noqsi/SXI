@@ -58,7 +58,18 @@ ParallelPair.pdf\
 ParallelReg.pdf\
 REF.pdf\
 SerialDrivers.pdf\
-OD-pump.pdf
+OD-pump.pdf \
+DriverBoard.1.pdf \
+DriverBoard.2.pdf \
+DriverBoard.3.pdf \
+DriverBoard.4.pdf \
+DriverBoard.5.pdf \
+DriverBoard.6.pdf \
+DriverBoard.7.pdf \
+DriverBoard.8.pdf \
+DriverBoard.9.pdf 
+
+
 
 # For when typesetting within TeXShop GUI 
 driverfigs: $(DRIVERFIGS)
@@ -67,6 +78,9 @@ DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	$(PDFLATEX) DriverBoard.tex
 	
 # $Log$
+# Revision 1.8  2010-02-15 03:10:52  jpd
+# Draft of section 3.
+#
 # Revision 1.7  2010-02-11 03:56:47  jpd
 # Symbols for PM building blocks.
 #

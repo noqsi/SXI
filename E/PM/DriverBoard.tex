@@ -6,6 +6,7 @@
 \usepackage[english]{babel}
 \usepackage{fontenc}
 \usepackage{graphicx}
+\usepackage{grffile}
 \usepackage[hmargin=2cm,vmargin=2.5cm]{geometry}
 
 % Space out paragraphs, don't indent
@@ -272,11 +273,11 @@ This charge pump provides -30V (nominal assuming no losses). It is a single stag
 \pagebreak
 \subsection{CCD Clock Drivers}
 \label{ClockDrivers}
-Figure \ref{ClockCap} shows a model of the two phase CCD clock capacitances.  Because of the symmetry of the two phase drive, the gate-substrate and gate-gate capacitances may be combined into a single effective driver load capacitance, $Cdl=Cgs+2Cgg$. Unfortunately, the spec sheet apparently gives $Cgs+Cgg$ for the capacitance.
+Figure \ref{ClockCap} shows a model of the two phase CCD clock capacitances.  Because of the symmetry of the two phase drive, the gate-substrate and gate-gate capacitances may be combined into a single effective driver load capacitance, $Cdl=Cgs+2Cgg$. Unfortunately, the spec sheet apparently gives $Cgg$ for the capacitance.
 
-For the VI clocks, we have more detailed estimates: 62.5\ nF for Cgg and 31.25\ nF for Cgs. In this case, the effective driver load is 156.25\ nF.
+For the VI clocks, we have more detailed estimates: 62.5\ nF for Cgg and 31.25\ nF for Cgs. In this case, the effective driver load is 156.25\ nF. This compares to the 70\ nF on the spec sheet. We'll therefore estimate the effective load capacitance as 2.5 times that given on the spec sheet.
 
-Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the power supply needs to provide is $f\times C \times \Delta V$. For the fast (horizontal) clocks $f$ is 132 kHz, so this is about 1.6\ mA/nF. For the slow (vertical) clocks $f$ is 32 kHz, so this is about 0.4\ mA/Mhz.
+Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the power supply needs to provide is $f\times C \times \Delta V$. For the fast (horizontal) clocks $f$ is 132 kHz, so this is about 1.6\ mA/nF. For the slow (vertical) clocks $f$ is 32 kHz, so this is about 0.4\ mA/nF.
 
    \begin{figure}[h]
    \begin{center}
@@ -306,7 +307,7 @@ Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the po
 %I assume voltages for horizantal==SG. Is this true?
 %I assume charge injection voltages for IG1==IG2. Is this true?
 
-This is a pair of amplifiers yielding adjustable outputs of 0 to 5V and -10V to -5V for drivers. Noise filtering and damping are similar to the DC-driver block above, but with larger capacitance to handle the time-varying load current. These can directly provide the regulated drive for the fast clock drivers: with output current capability >5\ mA, they can handle the current demands of a >3\ nF load. For the slow (vertical), drivers, these handle level translation but do not provide the large regulated current required.
+This is a pair of amplifiers yielding adjustable outputs of 0 to 5V and -10V to -5V for drivers. Noise filtering and damping are similar to the DC-driver block above, but with larger capacitance to handle the time-varying load current. These can directly provide the regulated drive for the fast clock drivers: with output current capability $\approx 10$\ mA, they can handle the current demands of a $\approx 6$\ nF load. For the slow (vertical), drivers, these handle level translation but do not provide the large regulated current required.
 
 \subsection{ParallelReg}
    \begin{figure}
@@ -324,7 +325,7 @@ Additional LM195 devices, Q3 and Q6, limit supply current and provide some decou
 
 The (C1, R3) and (C3, R6) combinations reduce the high frequency output impedance, reducing transient voltage excursions. They also stabilize the closed loop regulation. The closed loop gain is unity.
 
-These regulators can deliver $>1$A peak and $>30$ mA average current. Idle current is  $\approx 2$ mA from the +15V supply and $\approx 3$ mA from the -15V supply for the regulator pair.
+These regulators can deliver $>1$A peak (corresponding to a 2500\ nF load) and $>30$ mA average current. Idle current is  $\approx 2$ mA from the +15V supply and $\approx 3$ mA from the -15V supply for the regulator pair.
 
 \subsection{ParallelPair}
 
@@ -349,6 +350,103 @@ This is just a pair of analog switches, intended to drive a moderate capacitance
 
 \section{Connecting the Blocks}
 
-Coming soon!
+\subsection{Reference and DACs}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.1.pdf}
+   \end{center}
+   \caption{Reference and DACs}
+   \end{figure}
+   
+This provides the 2.5V reference voltage and 24 DAC channels for control of CCD clock and bias levels.
+  
 
+\subsection{RG and SG Drivers}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.2.pdf}
+   \end{center}
+   \caption{RG and SG Drivers}
+   \end{figure}
+
+This drives the reset gate and summing gate. These gates have low capacitance, so drive requirements are not challenging. For best clock level stability, these should be driven perfectly periodically, even during vertical transfers. There is no harm in doing so, and this will reduce variation of the video bias across the CCD image.
+  
+
+\subsection{TG Driver}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.3.pdf}
+   \end{center}
+   \caption{TG Driver}
+   \end{figure}
+   
+This drives the transfer gate between the vertical and horizontal register of the CCD. This is another low capacitance gate. This page also shows a spare driver: this may be used for charge injection when the requirements are clarified.
+  
+
+\subsection{Horizontal Register Driver}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.4.pdf}
+   \end{center}
+   \caption{Horizontal Register Driver}
+   \end{figure}
+   
+The data sheet capacitances for these clocks total 1380\ pF. Applying the factor of 2.5 above for the effective capacitance, the total effective capacitance is $\approx 3.5$\ nF. A single DACtoClock block (drive capability $\approx 6$\ nF suffices to provide the regulated drive voltages.
+  
+
+\subsection{VI Driver}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.5.pdf}
+   \end{center}
+   \caption{VI Driver}
+   \end{figure}
+
+The total effective capacitance of the to vertical imaging clocks is $\approx 350$\ nF, well within the 2500\ nF capacity of the ParallelReg block supplying the regulated drive voltage.
+
+\subsection{VS Driver}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.6.pdf}
+   \end{center}
+   \caption{VS Driver}
+   \end{figure}
+
+The vertical storage area has lower capacitance that the vertical imaging area, so a similar drive circuit suffices.
+
+\subsection{Output Drain Drivers}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.7.pdf}
+   \end{center}
+   \caption{Output Drain Drivers}
+   \end{figure}
+
+These provide -17 to -23\ V for the output drains. Maximum load per drain is 1.2\ mA, no a challenge for a DC-driver block.  
+
+\subsection{Bias Drivers}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.8.pdf}
+   \end{center}
+   \caption{Bias Drivers}
+   \end{figure}
+  
+The reset drain driver provides -10 to -14\ V. 
+The output gate driver provides -2 to -8\ V.
+The back bias driver provides 0 to 40\ V.
+
+\subsection{Power Translation}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.9.pdf}
+   \end{center}
+   \caption{Power Translation}
+   \end{figure}
+  
+A small amount of power (total nominally $<1$\ mA, but probably somewhat larger due to dynamic power consumption) is required a +5V by the DG403 switches and the CS5507 ADC's, and at -5V by the CS5507 ADCs. The LT1078 opamps we are using for other functions have more than enough current capability here and will be highly efficient. Because all loads are resistively decoupled, there will be no capacitive instability issue with this approach.
+  
+The OD-pump provides $\approx -28$\ V for the output drain drivers, and possibly for charge injection also.
+
+  
 \end{document}
