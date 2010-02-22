@@ -70,7 +70,10 @@ DriverBoard.5.pdf \
 DriverBoard.6.pdf \
 DriverBoard.7.pdf \
 DriverBoard.8.pdf \
-DriverBoard.9.pdf 
+DriverBoard.9.pdf \
+DriverBoard.10.pdf \
+DriverBoard.11.pdf \
+
 
 
 
@@ -81,6 +84,9 @@ DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	$(PDFLATEX) DriverBoard.tex
 	
 # $Log$
+# Revision 1.10  2010-02-22 03:00:31  jpd
+# Add more details.
+#
 # Revision 1.9  2010-02-15 19:46:43  jpd
 # TCE, housekeeping stuff.
 #

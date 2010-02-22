@@ -496,7 +496,46 @@ The back bias driver provides 0 to 40\ V.
   
 A small amount of power (total nominally $<1$\ mA, but probably somewhat larger due to dynamic power consumption) is required a +5V by the DG403 switches and the CS5507 ADC's, and at -5V by the CS5507 ADCs. The LT1078 opamps we are using for other functions have more than enough current capability here and will be highly efficient. Because all loads are resistively decoupled, there will be no capacitive instability issue with this approach.
   
-The OD-pump provides $\approx -28$\ V for the output drain drivers, and possibly for charge injection also.
+The OD-pump provides $\approx -28$\ V for the output drain drivers, and possibly for charge injection also (TBD).
 
+\subsection{Bias and Power Housekeeping}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.10.pdf}
+   \end{center}
+   \caption{Bias and Power Housekeeping}
+   \end{figure}
+
+The multiplexers on this page feed bias and power supply voltages to the housekeeping ADC. Most of these are outside the $\pm 12.5$\ V range of the ADC, so 4X attenuators reduce the voltages.
+
+\subsection{Clock Level Housekeeping}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.11.pdf}
+   \end{center}
+   \caption{Clock Level Housekeeping}
+   \end{figure}
+
+The multiplexers on this page feed clock levels to the housekeeping ADC. The driver board temperature monitor signal is also included here.
+
+\subsection{Video Housekeeping}
+
+Requirements TBD. Will be based on the housekeeping building blocks.
+
+\subsection{Charge Injection}
+
+Requirements TBD. Will be based on DC and serial driver blocks, possibly with small modifications.
+
+\subsection{Temperature Control}
+
+Requirements defined, need top level drawing.
+
+\subsection{Digital Interface to PE}
+
+Requirements TBD.
+
+\subsection{Interface to Video Board}
+
+Requirements TBD.
   
 \end{document}
