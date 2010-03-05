@@ -73,6 +73,8 @@ DriverBoard.8.pdf \
 DriverBoard.9.pdf \
 DriverBoard.10.pdf \
 DriverBoard.11.pdf \
+DriverBoard.12.pdf \
+TCE.pdf \
 
 
 
@@ -84,6 +86,9 @@ DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	$(PDFLATEX) DriverBoard.tex
 	
 # $Log$
+# Revision 1.11  2010-03-05 05:05:58  jpd
+# Housekeeping and TCE
+#
 # Revision 1.10  2010-02-22 03:00:31  jpd
 # Add more details.
 #
