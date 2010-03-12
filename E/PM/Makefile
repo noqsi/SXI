@@ -29,6 +29,9 @@ PDFLATEX=pdflatex
 	grep -v INPUT <output.net | grep -v OUTPUT >$@
 	rm output.net
 
+%.tex : %.tsv
+	awk -f pins2tex.awk $< >$@
+
 pdf_schematics: \
 BB.pdf\
 DAC.pdf\
@@ -74,7 +77,14 @@ DriverBoard.9.pdf \
 DriverBoard.10.pdf \
 DriverBoard.11.pdf \
 DriverBoard.12.pdf \
+DriverBoard.13.pdf \
+DriverBoard.14.pdf \
+DriverBoard.15.pdf \
+DriverBoard.16.pdf \
+DriverBoard.17.pdf \
+DriverBoard.18.pdf \
 TCE.pdf \
+J1.tex J2.tex J3.tex J4.tex
 
 
 
@@ -86,6 +96,9 @@ DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	$(PDFLATEX) DriverBoard.tex
 	
 # $Log$
+# Revision 1.12  2010-03-12 04:31:15  jpd
+# Fixes, interfaces.
+#
 # Revision 1.11  2010-03-05 05:05:58  jpd
 # Housekeeping and TCE
 #

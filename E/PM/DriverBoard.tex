@@ -531,7 +531,57 @@ This page just shows the board-level connections of the HKADC block.
 
 \subsection{Video Housekeeping}
 
-Requirements TBD. Will be based on the housekeeping building blocks.
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.13.pdf}
+   \end{center}
+   \caption{Video Housekeeping}
+   \end{figure}
+
+
+R47 provides a load for an AD590 temperature sensor on the video board. This circuit also monitors references and the power supply.
+
+\subsection{Command Decoding}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.14.pdf}
+   \end{center}
+   \caption{Command Decoding}
+   \end{figure}
+
+\subsection{CCD Clock Decoding}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.15.pdf}
+   \end{center}
+   \caption{CCD Clock Decoding}
+   \end{figure}
+
+\subsection{Digital Power}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.16.pdf}
+   \end{center}
+   \caption{Digital Power}
+   \end{figure}
+
+\subsection{LVDS Drivers}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.17.pdf}
+   \end{center}
+   \caption{LVDS Drivers}
+   \end{figure}
+
+\subsection{LVDS Receivers}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.18.pdf}
+   \end{center}
+   \caption{LVDS Receivers}
+   \end{figure}
+
+
 
 \subsection{Charge Injection}
 
@@ -549,12 +599,80 @@ Requirements TBD. Will be based on DC and serial driver blocks, possibly with sm
 
 Each driver board will have the footprints for Temperature Control Electronics, but only two of the four boards will populate these with components.
 
-\section{Digital Interface to PE}
+\section{External interfaces}
 
-Requirements TBD.
+The primary reference for the external interfaces of the driver board is the "SXIFE" document. This section lists the connectors and designates their pins.
 
 \subsection{Interface to Video Board}
 
-Requirements TBD.
+Table \ref{J1} shows the pinout of J1. All LVDS signals to and from the video board pass through this connector.
+
+Table \ref{J2} shows the pinout of J2. CCD clocks and biases, focal plane temperature data and drive, video board power, and video board housekeeping signals pass through this connector.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+ Connector & Pin & Signal & Description \\
+\hline
+\input{J1}
+\hline
+\end{tabular}
+\caption{J1}
+\label{J1}
+\end{table}
+
+\begin{table}[h]
+\centering
+{\small
+\begin{tabular}{|l|l|l|l|}
+\hline
+ Connector & Pin & Signal & Description \\
+\hline
+\input{J2}
+\hline
+\end{tabular}
+}
+\caption{J2}
+\label{J2}
+\end{table}
+
+\subsection{Digital/Power Interface to PE}
+
+Table \ref{J3} shows the pinout of J3, through which power and data pass from the Pixel Electronics to the Driver Board.
+
+Table \ref{J4} shows the pinout of J4, through which data passes from the Driver Board to the Pixel Electronics.
+
+\begin{table}[h]
+\centering
+{\small
+\begin{tabular}{|l|l|l|l|}
+\hline
+ Connector & Pin & Signal & Description \\
+\hline
+\input{J3}
+\hline
+\end{tabular}
+}
+\caption{J3}
+\label{J3}
+\end{table}
+
+\begin{table}[h]
+\centering
+{\small
+\begin{tabular}{|l|l|l|l|}
+\hline
+ Connector & Pin & Signal & Description \\
+\hline
+\input{J4}
+\hline
+\end{tabular}
+}
+\caption{J4}
+\label{J4}
+\end{table}
+
+
   
 \end{document}

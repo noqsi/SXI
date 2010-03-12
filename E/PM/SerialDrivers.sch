@@ -1,4 +1,4 @@
-v 20081231 1
+v 20091004 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 {
 T 50000 40500 5 10 1 1 0 0 1
@@ -182,7 +182,7 @@ C 40900 44500 1 0 0 in-1.sym
 T 40900 44800 5 10 0 0 0 0 1
 device=INPUT
 T 40400 44600 5 10 1 1 0 0 1
-refdes=\_I2\_
+refdes=I2
 }
 C 40900 46100 1 0 0 in-1.sym
 {
@@ -211,7 +211,7 @@ C 53000 44900 1 0 0 out-1.sym
 T 53000 45200 5 10 0 0 0 0 1
 device=OUTPUT
 T 53000 45200 5 10 1 1 0 0 1
-refdes=\_O2\_
+refdes=O2
 }
 C 43500 47300 1 0 0 resistor.sym
 {
@@ -252,7 +252,7 @@ C 40900 43800 1 0 0 in-1.sym
 T 40900 44100 5 10 0 0 0 0 1
 device=INPUT
 T 40400 43900 5 10 1 1 0 0 1
-refdes=Vlo2
+refdes=Vhi2
 }
 C 43500 43800 1 0 0 resistor.sym
 {
@@ -275,7 +275,7 @@ C 50200 43300 1 0 0 in-1.sym
 T 50200 43600 5 10 0 0 0 0 1
 device=INPUT
 T 49700 43400 5 10 1 1 0 0 1
-refdes=Vhi2
+refdes=Vlo2
 }
 C 50800 43300 1 0 0 resistor.sym
 {

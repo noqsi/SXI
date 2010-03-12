@@ -1,0 +1,54 @@
+v 20091004 2
+C 40000 40000 0 0 0 Noqsi-title-B.sym
+{
+T 50000 40500 5 10 1 1 0 0 1
+date=$Date$
+T 53900 40500 5 10 1 1 0 0 1
+rev=$Revision$
+T 55400 40200 5 10 1 1 0 0 1
+auth=$Author$
+T 50200 40800 5 8 1 1 0 0 1
+fname=$Source$
+T 53200 41200 5 14 1 1 0 4 1
+title=Driver Board
+}
+C 46700 45300 1 0 0 capacitor-1.sym
+{
+T 46900 46000 5 10 0 0 0 0 1
+device=CAPACITOR
+T 46600 45600 5 10 1 1 0 0 1
+refdes=C13
+T 46900 46200 5 10 0 0 0 0 1
+symversion=0.1
+T 47300 45300 5 10 1 1 0 0 1
+value=0.1uF
+T 46700 45300 5 10 0 1 0 0 1
+footprint=0603
+T 46700 45300 5 10 0 1 0 0 1
+spec=25WVDC X7R
+}
+C 46600 45200 1 0 0 gnd-1.sym
+N 47600 45500 47800 45500 4
+C 47800 46100 1 0 1 resistor.sym
+{
+T 47500 46500 5 10 0 0 0 6 1
+device=RESISTOR
+T 47600 46400 5 10 1 1 0 6 1
+refdes=R47
+T 47500 45900 5 10 1 1 0 6 1
+value=100k
+}
+N 47800 45500 47800 47300 4
+{
+T 47900 47100 5 10 1 1 270 0 1
+netname=\_PUR\_
+}
+N 46900 46200 46900 47300 4
+{
+T 46700 47100 5 10 1 1 270 0 1
+netname=+3.3
+}
+C 46900 47300 1 90 0 busripper-1.sym
+C 47800 47300 1 0 0 busripper-1.sym
+T 40500 40500 9 25 1 0 0 0 1
+Digital Power

@@ -178,7 +178,7 @@ U 52900 47200 53700 47200 10 0
 C 53700 46900 1 0 0 Connector.sym
 {
 T 54000 47200 5 10 1 1 0 4 1
-refdes=JT1
+refdes=J2
 T 53900 46900 5 10 0 0 0 0 1
 footprint=TBD
 T 53700 46900 5 10 0 0 0 0 1
@@ -237,6 +237,6 @@ C 52700 46700 1 270 1 busripper-1.sym
 N 44000 43600 44000 41200 4
 {
 T 44100 41200 5 10 1 1 0 0 1
-netname=TCOM
+netname=TRTN
 }
 C 44000 41200 1 270 0 busripper-1.sym
