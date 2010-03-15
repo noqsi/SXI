@@ -83,6 +83,7 @@ DriverBoard.15.pdf \
 DriverBoard.16.pdf \
 DriverBoard.17.pdf \
 DriverBoard.18.pdf \
+DriverBoard.19.pdf \
 TCE.pdf \
 J1.tex J2.tex J3.tex J4.tex
 
@@ -96,6 +97,9 @@ DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	$(PDFLATEX) DriverBoard.tex
 	
 # $Log$
+# Revision 1.13  2010-03-15 09:51:39  jpd
+# Crossing eyes, dotting tees...
+#
 # Revision 1.12  2010-03-12 04:31:15  jpd
 # Fixes, interfaces.
 #
