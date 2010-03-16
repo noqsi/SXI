@@ -15,12 +15,12 @@ J2	37	P2VI
 J2	3	P1VS
 J2	21	P2VS
 #-
-J2	38	PXH	Horizontal Clocks
-J2	4	PYH
-J2	22	PZH
-J2	39	\_PXH\_
-J2	5	\_PYH\_
-J2	23	\_PZH\_
+J2	38	P1H	Horizontal Clocks
+J2	4	P3H
+J2	22	P2/4H-1
+J2	39	P2/4H-2
+J2	5	P2/4H-3
+J2	23	P2/4H-4
 #-
 J2	40	IG1V	Charge injection
 J2	6	IG2V
@@ -77,6 +77,9 @@ J2	17	VRST+	Video reset
 J2	35	VRST-
 #
 # $Log$
+# Revision 1.2  2010-03-16 05:58:20  jpd
+# Digital interface doc, and nits uncovered.
+#
 # Revision 1.1  2010-03-16 00:15:13  jpd
 # Connector pinmaps.
 #

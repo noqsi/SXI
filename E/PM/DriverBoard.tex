@@ -63,12 +63,12 @@ P1VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 70000 & Parallel \\
 P2VI & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 70000 & Parallel \\
 P1VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 50000 & Parallel \\
 P2VS & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 50000 & Parallel \\
-PXH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 230 & Serial-driver \\
-PXH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 230 & Serial-driver \\
-PYH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
-PYH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
-PZH & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
-PZH/ & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
+P1H & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 230 & Serial-driver \\
+P3H & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 230 & Serial-driver \\
+P2/4H-1 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
+P2/4H-2 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
+P2/4H-3 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
+P2/4H-4 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 \hline
 \end{tabular}
  \caption{CCD Clocks.}
@@ -228,7 +228,7 @@ Output filter capacitors have separate return connections here so that they may 
 This provides negative DC drive for the various bias lines. These lines are potentially a path for noise to reach the CCD video output. The filter formed by R2 and C2 is intended to attenuate noise at the video frequency. RETA should go to the sensor analog ground point, which should have a low impedance to system ground.
 However, this filter potentially destabilizes the driver circuit: C1 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R1\times C1$ is four times the output time constant $R2\times C2$, the circuit is critically damped, assuming that this time constant is also large compared to the amplifier's unity gain small signal response time, which it is in this case $(120\mu s>>1 \mu s)$. When critically damped, the circuit has two poles with time constant $2\times R2\times C2$.
 
-The LT1078 opamp used can drive $>5mA$, so it has plenty of margin in this circuit: the maximum load for this circuit is 1.2mA when driving one of the output drains. 
+The LT1078 opamp used can drive $>5$mA, so it has plenty of margin in this circuit: the maximum load for this circuit is 1.2mA when driving one of the output drains. 
 
 The input is a current into a virtual ground, allowing resistors to set scale and offset individually for each of these circuits.
 
@@ -548,6 +548,52 @@ R47 provides a load for an AD590 temperature sensor on the video board. This cir
    \end{center}
    \caption{Command Decoding}
    \end{figure}
+
+The Pixel Electronics send digital commands to the Driver Board through a serial interface. Some of these flow through the Driver Board to the video board. The serial interface operates at the PCLK rate (139\ kHz), and consists of a serial data signal and two control "strobes".
+
+\begin{tabular}{ll}
+DVCD & Driver/video serial command data \\
+PCLK & Serial command clock \\
+DVMS & Driver/video mode strobe \\
+$\overline{\textup{DVCS}}$ & Driver/video command strobe \\
+\end{tabular}
+
+Because the targeted subsystems have different serial protocols, command transmission proceeds in two stages. First, the PE should transmit 8 bits of mode information followed by pulse of DVMS. This controls the routing of $\overline{\textup{DVCS}}$. Then, the PE transmits information to the subsystem under control of $\overline{\textup{DVCS}}$ using a the protocol appropriate to the subsystem.
+
+The two most significant bits (7 and 6) of the mode byte indicate the selected subsystem.
+
+\begin{tabular}{|l|l|}
+\hline
+Code & Subsystem \\
+\hline
+00 & DAC \\
+\hline
+01 & Housekeeping MUX \\
+\hline
+10 & Housekeeping ADC \\
+\hline
+11 & Video Board \\
+\hline
+\end{tabular}
+
+In DAC mode (00), the two least signficant bits (1 and 0) of the mode byte select the DAC. $\overline{\textup{DVCS}}$ is applied to the $\overline{\textup{SYNC}}$ pin of the selected DAC. PCLK and DVCD are always applied to every DAC, but $\overline{\textup{SYNC}}$ controls whether the DAC resonds to them. Therefore, the timing of $\overline{\textup{DVCS}}$ in this mode should correspond to the interface protocol of the AD5308 DAC chip. See the AD5308 data sheet for more details.
+
+In Housekeeping MUX mode, the six least significant bits of the mode byte select the housekeeping channel. In this mode, pulse $\overline{\textup{DVCS}}$ to place this data in the MUX selection latches and apply the selected channel to the housekeeping ADC.
+
+In Housekeeping ADC mode, three mode register bits are directly applied to the ADC.
+
+\begin{tabular}{|l|l|}
+\hline
+Bit & Input \\
+\hline
+3 & CNV \\
+\hline
+4 & CAL \\
+\hline
+5 & $\overline{\textup{CS}}$ \\
+\hline
+\end{tabular}
+
 
 \subsection{CCD Clock Decoding}
    \begin{figure}

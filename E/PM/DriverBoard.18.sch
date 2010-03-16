@@ -1,4 +1,4 @@
-v 20091004 2
+v 20100214 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 {
 T 50000 40500 5 10 1 1 0 0 1
@@ -71,7 +71,7 @@ C 50600 46200 1 0 0 busripper-1.sym
 N 49700 45800 50600 45800 4
 {
 T 50100 45900 5 10 1 1 0 0 1
-netname=DVCS
+netname=\_DVCS\_
 }
 C 50600 45800 1 0 0 busripper-1.sym
 N 49700 44600 50600 44600 4
@@ -310,13 +310,13 @@ footprint=51pin
 N 45900 45400 47700 45400 4
 {
 T 47600 45300 5 10 1 1 180 0 1
-netname=DVCS-
+netname=DVCS+
 }
 C 47100 45400 1 180 0 busripper-1.sym
 N 46800 45800 47700 45800 4
 {
 T 47600 45700 5 10 1 1 180 0 1
-netname=DVCS+
+netname=DVCS-
 }
 C 47100 45800 1 180 0 busripper-1.sym
 N 45900 44600 47700 44600 4
