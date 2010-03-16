@@ -1,0 +1,82 @@
+# $Id$
+# 51 pin connector Video<->Driver
+# Most LVDS signals are on J1, but all others and VRST are here.
+#
+J2	1	CCDret	Return for CCD signals
+#-
+J2	19	RG	Reset gate
+#-
+J2	36	SG	Summing gate
+#-
+J2	2	TG	Transfer gate
+#-
+J2	20	P1VI	Vertical clocks
+J2	37	P2VI
+J2	3	P1VS
+J2	21	P2VS
+#-
+J2	38	PXH	Horizontal Clocks
+J2	4	PYH
+J2	22	PZH
+J2	39	\_PXH\_
+J2	5	\_PYH\_
+J2	23	\_PZH\_
+#-
+J2	40	IG1V	Charge injection
+J2	6	IG2V
+J2	24	ISV
+#-
+J2	41	CCDret	Return for CCD signals
+#-
+J2	7	OD-A	Output drains
+J2	25	OD-B
+J2	42	OD-C
+J2	8	OD-D
+#-
+J2	26	RD	Reset drain
+#-
+J2	43	OG	Output gate
+#-
+J2	9	BB	Back Bias
+#-
+J2	27	CCDret	Return for CCD signals
+#-
+J2	44	VT+	Driver board temperature
+J2	10	VT-
+#-
+J2	28	AR	ASIC video reference voltage
+#-
+J2	45	GND
+#-
+J2	11	DR	ASIC bias DAC reference voltage
+#-
+J2	29	GND
+#-
+J2	46	V3.3	Video board 3.3V monitor
+J2	12	GND
+#-
+J2	30	3.3A	Video board analog power
+J2	47	GND
+J2	13	3.3A
+J2	31	GND
+#-
+J2	48	3.3D	Video board digital power
+J2	14	GND
+J2	32	3.3D
+J2	49	GND
+#-
+J2	15	TCCDA	TCE Pt1000 sensors
+J2	33	TCCDB
+J2	50	TCOLD
+J2	16	TRTN
+#-
+J2	34	HTR	Heater
+J2	51	HRTN
+#-
+J2	17	VRST+	Video reset
+J2	35	VRST-
+#
+# $Log$
+# Revision 1.1  2010-03-16 00:15:13  jpd
+# Connector pinmaps.
+#
