@@ -273,9 +273,9 @@ This charge pump provides -30V (nominal assuming no losses). It is a single stag
 \pagebreak
 \subsection{CCD Clock Drivers}
 \label{ClockDrivers}
-Figure \ref{ClockCap} shows a model of the two phase CCD clock capacitances.  Because of the symmetry of the two phase drive, the gate-substrate and gate-gate capacitances may be combined into a single effective driver load capacitance, $Cdl=Cgs+2Cgg$. Unfortunately, the spec sheet apparently gives $Cgg$ for the capacitance.
+Figure \ref{ClockCap} shows a model of the two phase CCD clock capacitances. The data sheet capacitance is Cgg.  Because of the symmetry of the two phase drive, the effective driver load capacitance, $Cdl=2Cgg$, twice that given on the data sheet.
 
-For the VI clocks, we have more detailed estimates: 62.5\ nF for Cgg and 31.25\ nF for Cgs. In this case, the effective driver load is 156.25\ nF. This compares to the 70\ nF on the spec sheet. We'll therefore estimate the effective load capacitance as 2.5 times that given on the spec sheet.
+Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the power supply needs to provide is $f\times C \times \Delta V$. For the fast (horizontal) clocks $f$ is 136 kHz, so this is about 1.7\ mA/nF. For the slow (vertical) clocks $f$ is 32 kHz, so this is about 0.4\ mA/nF.
 
 Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the power supply needs to provide is $f\times C \times \Delta V$. For the fast (horizontal) clocks $f$ is 136 kHz, so this is about 1.7\ mA/nF. For the slow (vertical) clocks $f$ is 32 kHz, so this is about 0.4\ mA/nF.
 
@@ -441,7 +441,7 @@ This drives the transfer gate between the vertical and horizontal register of th
    \caption{Horizontal Register Driver}
    \end{figure}
    
-The data sheet capacitances for these clocks total 1380\ pF. Applying the factor of 2.5 above for the effective capacitance, the total effective capacitance is $\approx 3.5$\ nF. A single DACtoClock block (drive capability $\approx 6$\ nF) suffices to provide the regulated drive voltages.
+The data sheet capacitances for these clocks total 1380\ pF. Applying the factor of 2 above for the effective capacitance, the total effective capacitance is $\approx 2.8$\ nF. A single DACtoClock block (drive capability $\approx 6$\ nF) suffices to provide the regulated drive voltages.
   
 
 \subsection{VI Driver}
@@ -452,7 +452,7 @@ The data sheet capacitances for these clocks total 1380\ pF. Applying the factor
    \caption{VI Driver}
    \end{figure}
 
-The total effective capacitance of the to vertical imaging clocks is $\approx 350$\ nF, well within the 2500\ nF capacity of the ParallelReg block supplying the regulated drive voltage.
+The total effective capacitance of the to vertical imaging clocks is $\approx 140$\ nF, well within the 2500\ nF capacity of the ParallelReg block supplying the regulated drive voltage.
 
 \subsection{VS Driver}
    \begin{figure}
@@ -594,6 +594,10 @@ Bit & Input \\
 \hline
 \end{tabular}
 
+If CNV and CAL are high together, the ADC performs a self calibration. To perform this operation, the PE should transmit the mode 10111000 followed by 10100000 to pulse the signals together. The calibration requires 3246 PCLK cycles. To initiate a conversion, the PE should transmit the mode 10101000 followed by 10100000 to pulse CNV only. Conversion takes 1624 PCLK cycles. Once this is complete, the PE may read out the converted value by transmitting the mode 10000000 and then reading the serial bits from DVCD. See the CS5507 datasheet for more details.
+
+Finally, in Video Board mode, this subsystem routes $\overline{\textup{DVCS}}$ to $\overline{\textup{VSTROBE}}$ to control the Video Board FPGA.
+
 
 \subsection{CCD Clock Decoding}
    \begin{figure}
@@ -602,14 +606,18 @@ Bit & Input \\
    \end{center}
    \caption{CCD Clock Decoding}
    \end{figure}
+   
+The timing signals for the CCD clocks are transmitted as two 10Mb/s serial streams, strobed by SYNC.
 
-\subsection{Digital Power}
+\subsection{Digital Power/HK Multiplexer}
    \begin{figure}
    \begin{center}
    \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.16.pdf}
    \end{center}
    \caption{Digital Power}
    \end{figure}
+
+This page shows the power connections to the Driver Board's digital chips, the power up reset circuits, and the digital multiplexing of housekeeping and Video Board data.
 
 \subsection{LVDS Drivers}
    \begin{figure}
@@ -618,6 +626,8 @@ Bit & Input \\
    \end{center}
    \caption{LVDS Drivers}
    \end{figure}
+ 
+The Driver Board transmits digital signals to the PE and video board via LVDS.
 
 \subsection{LVDS Receivers}
    \begin{figure}
@@ -627,6 +637,9 @@ Bit & Input \\
    \caption{LVDS Receivers}
    \end{figure}
 
+The Driver Board receives digital signals from the PE and video board via LVDS.
+
+
 \subsection{Video Power Filters}
    \begin{figure}
    \begin{center}
@@ -635,10 +648,7 @@ Bit & Input \\
    \caption{Video Power Filters}
    \end{figure}
 
-
-\subsection{Charge Injection}
-
-Requirements TBD. Will be based on DC and serial driver blocks, possibly with small modifications.
+Power filters for the Video board are installed on the Driver Board.
 
 \section{TCE}
 
