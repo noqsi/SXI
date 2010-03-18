@@ -71,12 +71,15 @@ J2	50	TCOLD
 J2	16	TRTN
 #-
 J2	34	HTR	Heater
-J2	51	HRTN
+J2	51	+15	Heater Return
 #-
 J2	17	VRST+	Video reset
 J2	35	VRST-
 #
 # $Log$
+# Revision 1.3  2010-03-18 05:15:22  jpd
+# Bunch of nits revealed by BOM/netlist.
+#
 # Revision 1.2  2010-03-16 05:58:20  jpd
 # Digital interface doc, and nits uncovered.
 #

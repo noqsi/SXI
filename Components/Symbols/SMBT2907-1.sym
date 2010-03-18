@@ -1,4 +1,4 @@
-v 20081231 1
+v 20091004 2
 P 0 400 200 400 1 0 0
 {
 T 100 450 5 8 0 1 0 6 1
@@ -41,7 +41,7 @@ author=Stefan Salewski
 T 0 1250 5 10 0 0 0 0 1
 description=Transistor PNP
 T 0 850 5 10 0 0 0 0 1
-footprint=SOT23-95P-240L1-3N__On-Semi_318-08-Package
+footprint=SOT23
 T 0 1650 5 10 0 0 0 0 1
 dist-license=GPL
 T 0 1850 5 10 0 0 0 0 1

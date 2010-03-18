@@ -399,4 +399,6 @@ C 42800 40700 1 0 0 ParallelReg.sym
 {
 T 44400 43500 5 10 1 1 0 3 1
 refdes=U?
+T 42800 40700 5 10 0 0 0 0 1
+graphical=1
 }

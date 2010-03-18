@@ -31,6 +31,9 @@ PDFLATEX=pdflatex
 
 %.tex : %.tsv
 	awk -f pins2tex.awk $< >$@
+	
+%.sch : %.tsv
+	awk -f pins2gsch.awk $< >$@
 
 pdf_schematics: \
 BB.pdf\
@@ -87,16 +90,61 @@ DriverBoard.19.pdf \
 TCE.pdf \
 J1.tex J2.tex J3.tex J4.tex
 
-
-
-
 # For when typesetting within TeXShop GUI 
 driverfigs: $(DRIVERFIGS)
 
 DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	$(PDFLATEX) DriverBoard.tex
-	
+
+BLOCKSCHEM=\
+BB.sch\
+ClockCap.sch\
+DAC.sch\
+DACtoClock.sch\
+DC-driver.sch\
+OD-driver.sch\
+ParallelPair.sch\
+ParallelReg.sch\
+REF.sch\
+SerialDrivers.sch\
+OD-pump.sch \
+Temperature.sch \
+TempControl.sch \
+hkadc.sch 
+
+TOPSCHEM=\
+DriverBoard.1.sch \
+DriverBoard.2.sch \
+DriverBoard.3.sch \
+DriverBoard.4.sch \
+DriverBoard.5.sch \
+DriverBoard.6.sch \
+DriverBoard.7.sch \
+DriverBoard.8.sch \
+DriverBoard.9.sch \
+DriverBoard.10.sch \
+DriverBoard.11.sch \
+DriverBoard.12.sch \
+DriverBoard.13.sch \
+DriverBoard.14.sch \
+DriverBoard.15.sch \
+DriverBoard.16.sch \
+DriverBoard.17.sch \
+DriverBoard.18.sch \
+DriverBoard.19.sch \
+TCE.sch \
+J1.sch J2.sch J3.sch J4.sch
+
+DriverBoard.bom.txt : $(BLOCKSCHEM) $(TOPSCHEM)
+	gnetlist -g bom -o DriverBoard.bom.txt $(TOPSCHEM)
+
+DriverBoard.net.txt : $(BLOCKSCHEM) $(TOPSCHEM)
+	gnetlist -g calay -o DriverBoard.net.txt $(TOPSCHEM)
+
 # $Log$
+# Revision 1.14  2010-03-18 05:15:22  jpd
+# Bunch of nits revealed by BOM/netlist.
+#
 # Revision 1.13  2010-03-15 09:51:39  jpd
 # Crossing eyes, dotting tees...
 #

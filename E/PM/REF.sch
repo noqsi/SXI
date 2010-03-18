@@ -111,7 +111,7 @@ C 45100 47600 1 0 0 in-1.sym
 T 45100 47900 5 10 0 0 0 0 1
 device=INPUT
 T 45100 47900 5 10 1 1 0 0 1
-refdes=+15
+refdes=+15V
 }
 C 45700 47600 1 0 0 resistor.sym
 {

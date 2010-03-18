@@ -54,3 +54,5 @@ pinnumber=4
 T 2100 750 5 8 0 1 0 0 1
 pinseq=4
 }
+T 1400 2900 8 10 0 0 0 0 1
+source=REF.sch
