@@ -32,8 +32,8 @@ J3	31	TCS-
 J3	15	CCLK+	ASIC Cclk
 J3	33	CCLK-
 #--
-J3	17	Clamp+	ASIC Clamp
-J3	35	Clamp-
+J3	17	CLAMP+	ASIC Clamp
+J3	35	CLAMP-
 #--
 # Lower pairs
 J3	36	SCLK+	Sequencer clock
@@ -82,6 +82,9 @@ J3	45	GND
 ##--
 #
 # $Log$
+# Revision 1.2  2010-05-28 14:52:04  jpd
+# DRC found a few real mistakes.
+#
 # Revision 1.1  2010-03-16 00:15:13  jpd
 # Connector pinmaps.
 #

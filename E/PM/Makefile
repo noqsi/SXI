@@ -141,7 +141,13 @@ DriverBoard.bom.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 DriverBoard.net.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 	gnetlist -g calay -o DriverBoard.net.txt $(TOPSCHEM)
 
+DriverBoard.drc.txt : $(BLOCKSCHEM) $(TOPSCHEM)
+	gnetlist -g drc2 -l drc-config.scm -o DriverBoard.drc.txt $(TOPSCHEM)
+
 # $Log$
+# Revision 1.15  2010-05-28 14:52:04  jpd
+# DRC found a few real mistakes.
+#
 # Revision 1.14  2010-03-18 05:15:22  jpd
 # Bunch of nits revealed by BOM/netlist.
 #

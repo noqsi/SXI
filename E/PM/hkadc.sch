@@ -1,4 +1,4 @@
-v 20091004 2
+v 20100214 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 C 52000 42600 1 0 0 CS5507.sym
 {
@@ -334,7 +334,7 @@ C 49300 41600 1 0 0 capacitor.sym
 T 49500 42300 5 10 0 0 0 0 1
 device=CAPACITOR
 T 49500 42100 5 10 1 1 0 0 1
-refdes=C3
+refdes=C5
 T 49500 42500 5 10 0 0 0 0 1
 symversion=0.1
 T 49900 41900 5 10 1 1 0 0 1
