@@ -83,7 +83,7 @@ C 50600 44600 1 0 0 busripper-1.sym
 N 49700 44200 50600 44200 4
 {
 T 50100 44300 5 10 1 1 0 0 1
-netname=TCS
+netname=\_TCS\_
 }
 C 50600 44200 1 0 0 busripper-1.sym
 C 49600 43500 1 0 0 gnd-1.sym
