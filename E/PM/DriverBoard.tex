@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{grffile}
 \usepackage[hmargin=2cm,vmargin=2.5cm]{geometry}
+\usepackage{tikz-timing}
 
 % Space out paragraphs, don't indent
  \setlength{\parindent}{0.0in}
@@ -15,7 +16,7 @@
 
 
 
-\usepackage[dvips]{hyperref}
+\usepackage[pdftex]{hyperref}
 
 \author{John P. Doty}
 \date{\today}
@@ -541,7 +542,7 @@ This page just shows the board-level connections of the HKADC block.
 
 R47 provides a load for an AD590 temperature sensor on the video board. This circuit also monitors references and the power supply.
 
-\subsection{Command Decoding}
+\subsection{Command and Housekeeping Protocols}
    \begin{figure}
    \begin{center}
    \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.14.pdf}
@@ -549,18 +550,33 @@ R47 provides a load for an AD590 temperature sensor on the video board. This cir
    \caption{Command Decoding}
    \end{figure}
 
-The Pixel Electronics send digital commands to the Driver Board through a serial interface. Some of these flow through the Driver Board to the video board. The serial interface operates at the PCLK rate (139\ kHz), and consists of a serial data signal and two control "strobes".
+The Pixel Electronics send digital commands to the Driver Board, and retrieve housekeeping data, through a serial interface. Some of these flow through the Driver Board to or from the video board. The serial interface operates at the PCLK rate (139\ kHz), and consists of two serial data signals and two control "strobes".
 
 \begin{tabular}{ll}
-DVCD & Driver/video serial command data \\
 PCLK & Serial command clock \\
+DVCD & Driver/video serial command data \\
+HKDAT & Driver/video serial command data \\
 DVMS & Driver/video mode strobe \\
 $\overline{\textup{DVCS}}$ & Driver/video command strobe \\
 \end{tabular}
 
-Because the targeted subsystems have different serial protocols, command transmission proceeds in two stages. First, the PE should transmit 8 bits of mode information followed by pulse of DVMS. This controls the routing of $\overline{\textup{DVCS}}$. Then, the PE transmits information to the subsystem under control of $\overline{\textup{DVCS}}$ using a the protocol appropriate to the subsystem.
+Because the targeted subsystems have different serial protocols, command transmission proceeds in at least two stages. For commands, these are mode control and command transfer. For housekeeping, an additional data transfer stage is required.
 
-The two most significant bits (7 and 6) of the mode byte indicate the selected subsystem.
+In the mode control stage, the PE should transmit 8 bits of mode information followed by a (positive) pulse of DVMS. Rising edges of PCLK and DVMS control the mode deserialization. For reliable capture of the data bits, the rising edges of PCLK should occur when DVCD is stable. The rising edge of DVMS should occur after capture of the final data bit, but before the next rising edge of PCLK. $\overline{\textup{DVCS}}$ should remain high during mode selection. The following timing diagram obeys these rules robustly:
+
+{\large
+\newcounter{bitcount}
+\addtocounter{bitcount}{7}
+\begin{tikztimingtable}
+PCLK & 20{C} \\
+DVCD & 2U8{2D{M\arabic{bitcount}\addtocounter{bitcount}{-1}}}2U \\
+DVMS & 18L2{C} \\
+$\overline{\textup{DVCS}}$ & 20H \\
+\end{tikztimingtable}}
+
+Setting the mode in this fashion controls the routing of $\overline{\textup{DVCS}}$. Then, the PE transmits information to the subsystem under control of $\overline{\textup{DVCS}}$ using a the protocol appropriate to the subsystem.
+
+The two most significant bits (M7 and M6) of the mode byte indicate the selected subsystem.
 
 \begin{tabular}{|l|l|}
 \hline
@@ -576,11 +592,38 @@ Code & Subsystem \\
 \hline
 \end{tabular}
 
-In DAC mode (00), the two least signficant bits (1 and 0) of the mode byte select the DAC. $\overline{\textup{DVCS}}$ is applied to the $\overline{\textup{SYNC}}$ pin of the selected DAC. PCLK and DVCD are always applied to every DAC, but $\overline{\textup{SYNC}}$ controls whether the DAC resonds to them. Therefore, the timing of $\overline{\textup{DVCS}}$ in this mode should correspond to the interface protocol of the AD5308 DAC chip. See the AD5308 data sheet for more details.
+\subsubsection{DAC Mode}
 
-In Housekeeping MUX mode, the six least significant bits of the mode byte select the housekeeping channel. In this mode, pulse $\overline{\textup{DVCS}}$ to place this data in the MUX selection latches and apply the selected channel to the housekeeping ADC.
+In DAC mode (00), the two least signficant bits (M1 and M0) of the mode byte select the DAC. Once you've placed the driver board into DAC mode, $\overline{\textup{DVCS}}$ is applied to the $\overline{\textup{SYNC}}$ pin of the selected DAC. PCLK and DVCD are always applied to SCLK and DIN of every DAC, but $\overline{\textup{SYNC}}$ controls whether the DAC responds to them. In the command transfer stage of this mode the timing of PCLK, DVCD, and $\overline{\textup{DVCS}}$ should correspond respectively to SCLK, DIN, and $\overline{\textup{SYNC}}$ in the interface protocol of the AD5308 DAC chip. $\overline{\textup{LDAC}}$ is permanently tied high on each DAC ("software update mode"). The AD5308 transfers data on the falling edge of the clock, gated by $\overline{\textup{DVCS}}$:
 
-In Housekeeping ADC mode, three mode register bits are directly applied to the ADC.
+{\large
+\newcounter{dacbit}
+\addtocounter{dacbit}{15}
+\begin{tikztimingtable}
+PCLK & 38{C} \\
+DVCD & 3U16{2D{D\arabic{dacbit}\addtocounter{dacbit}{-1}}}3U \\
+$\overline{\textup{DVCS}}$ & 3H32L3H \\
+DVMS & 38L \\
+\end{tikztimingtable}}
+
+
+See the AD5308 data sheet for more details. 
+
+\subsubsection{Housekeeping MUX Mode}
+
+In Housekeeping MUX mode, the six least significant bits of the mode byte select the housekeeping channel. In this mode, DVCD is ignored. The command transfer stage is simply a pulse of  $\overline{\textup{DVCS}}$:
+
+{\large
+\begin{tikztimingtable}
+$\overline{\textup{DVCS}}$ & 2H2L2H \\
+DVMS & 6L \\
+\end{tikztimingtable}}
+
+This will place the channel data in the MUX selection latches and apply the selected channel to the housekeeping ADC.
+
+\subsubsection{Housekeeping ADC Mode}
+
+In Housekeeping ADC mode, three mode register bits control the ADC.
 
 \begin{tabular}{|l|l|}
 \hline
@@ -594,9 +637,36 @@ Bit & Input \\
 \hline
 \end{tabular}
 
-If CNV and CAL are high together, the ADC performs a self calibration. To perform this operation, the PE should transmit the mode 10111000 followed by 10100000 to pulse the signals together. The calibration requires 3246 PCLK cycles. To initiate a conversion, the PE should transmit the mode 10101000 followed by 10100000 to pulse CNV only. Conversion takes 1624 PCLK cycles. Once this is complete, the PE may read out the converted value by transmitting the mode 10000000 and then reading the serial bits from DVCD. See the CS5507 datasheet for more details.
+As in the Housekeeping MUX Mode, the command transfer stage is simply a pulse of  $\overline{\textup{DVCS}}$:
 
-Finally, in Video Board mode, this subsystem routes $\overline{\textup{DVCS}}$ to $\overline{\textup{VSTROBE}}$ to control the Video Board FPGA.
+{\large
+\begin{tikztimingtable}
+$\overline{\textup{DVCS}}$ & 2H2L2H \\
+DVMS & 6L \\
+\end{tikztimingtable}}
+
+If CNV and CAL are high together, the ADC performs a self calibration. To perform this operation, the PE should set the mode 10111000, pulse  $\overline{\textup{DVCS}}$, then set the mode to 10100000, and  pulse  $\overline{\textup{DVCS}}$. The calibration requires 3246 PCLK cycles. 
+
+To initiate a conversion, the PE should set the mode to 10101000, pulse  $\overline{\textup{DVCS}}$, then set the mode to 10100000, and  pulse  $\overline{\textup{DVCS}}$. Conversion takes 1624 PCLK cycles. 
+
+Once this is complete, the PE may read out the converted value by setting the mode to 10000000, pulsing  $\overline{\textup{DVCS}}$, and then reading the serial bits from HKDAT. 
+
+{\large
+\newcounter{hkbit}
+\addtocounter{hkbit}{15}
+\begin{tikztimingtable}
+PCLK & 36{C} \\
+HKDAT & 2Z16{2D{B\arabic{hkbit}\addtocounter{hkbit}{-1}}}2Z \\
+$\overline{\textup{DVCS}}$ & HL34H \\
+DVMS & 36L \\
+\end{tikztimingtable}}
+
+
+See the CS5507 datasheet for more details.
+
+\subsubsection{Video Board Mode}
+
+In Video Board mode, this Driver Board routes $\overline{\textup{DVCS}}$ to $\overline{\textup{VSTROBE}}$ to control the Video Board FPGA, and routes VCRD to HKDAT to receive returned data, if any. PCLK always drives VPCLK, and DVCD always drives VCMD. The timing of the coomand and data transfer stages of communication with this subsystem are not yet defined: it depends on the Video Board FPGA design.
 
 
 \subsection{CCD Clock Decoding}
