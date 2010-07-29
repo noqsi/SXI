@@ -1,4 +1,4 @@
-v 20091004 2
+v 20100214 2
 C 40000 40100 0 0 0 Noqsi-title-B.sym
 {
 T 50000 40600 5 10 1 1 0 0 1
@@ -15,7 +15,7 @@ title=Driver Board
 T 50400 40300 9 10 1 0 0 0 1
 3
 T 41100 41100 9 25 1 0 0 0 1
-TG Driver
+TG and ISV Drivers
 C 42200 44500 1 0 0 DACtoClock.sym
 {
 T 43700 47300 5 10 1 1 0 3 1
@@ -146,7 +146,7 @@ C 49000 43000 1 270 0 busripper-1.sym
 N 53900 45100 53900 43000 4
 {
 T 54100 43100 5 10 1 1 0 0 1
-netname=spare
+netname=ISV
 }
 C 53900 43000 1 270 0 busripper-1.sym
 N 53900 46700 55000 46700 4
@@ -186,13 +186,13 @@ C 44500 42200 1 270 0 busripper-1.sym
 N 48500 42200 48500 45200 4
 {
 T 48600 42300 5 10 1 1 0 0 1
-netname=spareLO
+netname=ISVLO
 }
 C 48500 42200 1 270 0 busripper-1.sym
 N 50200 45500 50200 42200 4
 {
 T 50300 42300 5 10 1 1 0 0 1
-netname=spareHI
+netname=ISVHI
 }
 C 50200 42200 1 270 0 busripper-1.sym
 N 52800 44000 52800 43500 4

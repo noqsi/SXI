@@ -48,7 +48,7 @@ The nominal horizontal clock timing has a complex rhythm, with a minimum half cy
 %These parameters were established after many of these circuits were first drawn, so they should be checked, particularly for adequate voltage breakdown margin.
 
 \subsection{Requirements}
-Tables \ref{Clocks}, \ref{CIClocks} and \ref{Biases} derive primarily from the CCD-PchNeXT4 specsheet. Required voltage precision is based on previous CCD experience. The last column identifies the circuit that must meet the requirement, for reference.
+Tables \ref{Clocks} and \ref{Biases} derive primarily from the CCD-PchNeXT4 specsheet. Required voltage precision is based on previous CCD experience. The last column identifies the circuit that must meet the requirement, for reference.
 
 \begin{table}[h]
 \centering
@@ -70,6 +70,7 @@ P2/4H-1 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-2 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-3 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-4 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
+ISV & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & (small) & Serial-driver \\
 \hline
 \end{tabular}
  \caption{CCD Clocks.}
@@ -78,23 +79,22 @@ P2/4H-4 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 
 Exactly what the capacitances represent isn't clearly defined on the specsheet, although it appears likely that they are gate-gate capacitance for the two phase clocks, and gate-substrate for single ended clocks. More on this in section \ref{ClockDrivers}.
 
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|rrrr|rrrr|r|l|}
-\hline
-&\multicolumn{4}{c|}{Low(V)}&\multicolumn{4}{c|}{High(V)}& C(pF)& Driver Circuit \\ 
-&Min.&Typ.&Max.&Prec.&Min.&Typ.&Max&Prec.&& \\
-\hline
-IG1V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver? \\
-IG2V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver? \\
-ISV & -18? & ? & 0? & 0.01? & -18? & ? & 0? & 0.01? & ? & Serial-driver? \\
-\hline
-\end{tabular}
- \caption{Charge Injection Clocks.}
- \label{CIClocks}
-\end{table}
+%\begin{table}[h]
+%\centering
+%\begin{tabular}{|l|rrrr|rrrr|r|l|}
+%\hline
+%&\multicolumn{4}{c|}{Low(V)}&\multicolumn{4}{c|}{High(V)}& C(pF)& Driver Circuit \\ 
+%&Min.&Typ.&Max.&Prec.&Min.&Typ.&Max&Prec.&& \\
+%\hline
+%IG1V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver? \\
+%IG2V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver? \\
+%\hline
+%\end{tabular}
+ %\caption{Charge Injection Clocks.}
+ %\label{CIClocks}
+%\end{table}
 
-Table \ref{CIClocks} shows the charge injection clocks. These are separated out as the charge injection strategy will depend on the outcome of charge injection experiments in progress. The drivers will probably be similar to the drivers for the other low capacitance clocks, perhaps with minor modification depending on the final requirements.
+% Table \ref{CIClocks} shows the charge injection clocks. These are separated out as the charge injection strategy will depend on the outcome of charge injection experiments in progress. The drivers will probably be similar to the drivers for the other low capacitance clocks, perhaps with minor modification depending on the final requirements.
 
 \begin{table}[h]
 \centering
@@ -109,15 +109,16 @@ OD-C &-22 &-20& -18& 0.1&1.2&DC-driver \\
 OD-D &-22 &-20& -18& 0.1&1.2&DC-driver \\
 RD &-13& -12 &-11& 0.1&0.001&DC-driver \\
 OG& -7& -5& -3&  0.1&0.001&DC-driver \\
-ISV & -18? & ? & 0? & 0.01? & 0.001 & DC-driver \\
 BB &+20 &+30 &+40 &0.5&0.001&BB \\
+IG1V&-5&-3&-2&0.03&0.001&DC-driver \\
+IG2V&-5&-3&-2&0.03&0.001&DC-driver \\
 \hline
 \end{tabular}
  \caption{Biases.}
  \label{Biases}
 \end{table}
 
-ISV may be either a clock or a DC bias (but not both) depending on the outcome of charge injection experiments in progress.
+%ISV may be either a clock or a DC bias (but not both) depending on the outcome of charge injection experiments in progress.
 
 % Experience suggests that a clock driver time constant of 1/10 the clock period  is sufficiently small. 
 
@@ -806,6 +807,107 @@ Table \ref{J4} shows the pinout of J4, through which data passes from the Driver
 \label{J4}
 \end{table}
 
+\clearpage
+\section{DAC and Housekeeping Tables}
 
-  
+Table \ref{DACV} shows the DAC-controlled voltages. DAC numbers are in base 8 (octal). Table \ref{HKC} has more detailed descriptions of the functions.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+DAC & Function & V(0) & V(255) & Resolution \\
+00 & RGHI & 0.00 & 7.47 & 0.0293 \\
+01 & RGLO & -5.01 & -10.00 & -0.0196 \\
+02 & SGHI & 0.00 & 7.47 & 0.0293 \\
+03 & SGLO & -5.01 & -10.00 & -0.0196 \\
+04 & TGHI & 0.00 & 7.47 & 0.0293 \\
+05 & TGLO & -5.01 & -10.00 & -0.0196 \\
+06 & PHHI & 0.00 & 7.47 & 0.0293 \\
+07 & PHLO & -5.01 & -10.00 & -0.0196 \\
+10 & VIHI & 0.00 & 7.47 & 0.0293 \\
+11 & VILO & -5.01 & -10.00 & -0.0196 \\
+12 & VSHI & 0.00 & 7.47 & 0.0293 \\
+13 & VSLH & -5.01 & -10.00 & -0.0196 \\
+14 & IG1V & -1.25 & -6.24 & -0.0196 \\
+15 & IG2V & -1.25 & -6.24 & -0.0196 \\
+16 & ISVHI & 0.00 & 7.47 & 0.0293 \\
+17 & ISVLO & -5.01 & -10.00 & -0.0196 \\
+20 & OD-A & -17.04 & -23.01 & -0.0234 \\
+21 & OD-B & -17.04 & -23.01 & -0.0234 \\
+22 & OD-C & -17.04 & -23.01 & -0.0234 \\
+23 & OD-D & -17.04 & -23.01 & -0.0234 \\
+24 & RD & -10.06 & -14.08 & -0.0158 \\
+25 & OG & -2.02 & -7.99 & -0.0234 \\
+26 & BB & 0.00 & 40.86 & 0.160 \\
+27 & unused & & & \\
+\hline
+\end{tabular}
+\caption{DAC controlled voltages}
+\label{DACV}
+\end{table}
+
+Table \ref{HKC} shows the housekeeping channels on the Driver Board. Channel numbers are in base 8 (octal). 
+
+DTEMP is the output of the temperature monitor circuit in the REF43 reference voltage chip on the board: this is a positive voltage, proportional to absolute temperature, with a slope of 1.9$\pm$0.2\ mV/K.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+Channel & Function & Scale& Description\\
+\hline
+00 & OD-A & $\pm$50.31V & Output Drains \\
+01 & OD-B & $\pm$50.31V &\\
+02 & OD-C & $\pm$50.31V& \\
+03 & OD-D & $\pm$50.31V& \\
+\hline
+04 & RD & $\pm$50.31V & Reset Drain\\
+\hline
+05 & BB & $\pm$50.31V & Back Bias \\
+\hline
+06 & OG &  $\pm$12.54V & Output Gate \\
+\hline
+07 & IG1V & $\pm$12.54V & Charge Input Gate 1\\
+\hline
+10 & +15 & $\pm$50.31V & Power Supplies\\
+11 & -15 & $\pm$50.31V & \\
+12 & -28 & $\pm$50.31V &\\
+13 & +5 & $\pm$12.54V &\\
+14 & +3.3&  $\pm$12.54V &\\
+15 & -5 &$\pm$12.54V& \\
+\hline
+16 & DTEMP &$\pm$12.54V & Driver Board Temperature\\
+\hline
+17 & IG2V & $\pm$12.54V& Charge Input Gate 2 \\
+\hline
+20 & RGHI & $\pm$12.54V & Reset Gate\\
+21 & RGLO & $\pm$12.54V & \\
+\hline
+22 & SGHI & $\pm$12.54V & Summing Gate \\
+23 & SGLO & $\pm$12.54V & \\
+\hline
+24 & TGHI & $\pm$12.54V & Transfer Gate\\
+25 & TGLO & $\pm$12.54V & \\
+\hline
+26 & ISVHI & $\pm$12.54V & Charge Input Source\\
+27 & ISVLO & $\pm$12.54V& \\
+\hline
+30 & PHHI & $\pm$12.54V & Horizontal Clocks\\
+31 & PHLO & $\pm$12.54V &\\
+\hline
+32 & VIHI & $\pm$12.54V & Vertical Image Clocks\\
+33 & VILO & $\pm$12.54V &\\
+\hline
+34 & VSHI & $\pm$12.54V & Vertical Storage Clocks\\
+35 & VSLO & $\pm$12.54V &\\
+\hline
+36 & +2.5ref & $\pm$12.54V & ADC and DAC Reference Voltage\\
+\hline
+37 & GND & $\pm$12.54V & Driver Board Ground Plane\\
+\hline
+\end{tabular}
+\caption{Housekeeping Channels}
+\label{HKC}
+\end{table}
 \end{document}

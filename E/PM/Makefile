@@ -35,6 +35,8 @@ PDFLATEX=pdflatex
 %.sch : %.tsv
 	awk -f pins2gsch.awk $< >$@
 
+all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf
+
 pdf_schematics: \
 BB.pdf\
 DAC.pdf\
@@ -145,6 +147,10 @@ DriverBoard.drc.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 	gnetlist -g drc2 -l drc-config.scm -o DriverBoard.drc.txt $(TOPSCHEM)
 
 # $Log$
+# Revision 1.16  2010-07-29 21:23:56  jpd
+# Charge injection (PE method).
+# Tables of DAC and HK channels in documentation.
+#
 # Revision 1.15  2010-05-28 14:52:04  jpd
 # DRC found a few real mistakes.
 #
