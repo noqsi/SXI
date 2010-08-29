@@ -25,7 +25,7 @@ PDFLATEX=pdflatex
 	$(MAN) $< >$@
 
 %.bom.txt : %.sch
-	gnetlist -g bom $<
+	gnetlist -v -g bom $<
 	grep -v INPUT <output.net | grep -v OUTPUT >$@
 	rm output.net
 
@@ -147,6 +147,9 @@ DriverBoard.drc.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 	gnetlist -g drc2 -l drc-config.scm -o DriverBoard.drc.txt $(TOPSCHEM)
 
 # $Log$
+# Revision 1.17  2010-08-29 22:56:28  jpd
+# Finalize charge injection. Change for 69 kHz PCLK.
+#
 # Revision 1.16  2010-07-29 21:23:56  jpd
 # Charge injection (PE method).
 # Tables of DAC and HK channels in documentation.

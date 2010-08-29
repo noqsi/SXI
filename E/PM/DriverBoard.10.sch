@@ -644,7 +644,7 @@ spec=5% 1/10W
 N 42800 41100 41000 41100 4
 {
 T 41100 41200 5 10 1 1 0 0 1
-netname=IG1V
+netname=ISV
 }
 C 41000 41100 1 90 0 busripper-1.sym
 C 42300 40300 1 0 0 resistor.sym

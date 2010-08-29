@@ -70,7 +70,7 @@ P2/4H-1 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-2 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-3 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-4 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
-ISV & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & (small) & Serial-driver \\
+IG1V & -6 & -5 & -4 & 0.1 & +5 & +6 & +7 & 0.1 &230 & Serial-driver \\
 \hline
 \end{tabular}
  \caption{CCD Clocks.}
@@ -110,8 +110,8 @@ OD-D &-22 &-20& -18& 0.1&1.2&DC-driver \\
 RD &-13& -12 &-11& 0.1&0.001&DC-driver \\
 OG& -7& -5& -3&  0.1&0.001&DC-driver \\
 BB &+20 &+30 &+40 &0.5&0.001&BB \\
-IG1V&-5&-3&-2&0.03&0.001&DC-driver \\
-IG2V&-5&-3&-2&0.03&0.001&DC-driver \\
+IG2V&-3.5&-3.0&-2.5&0.02&0.001&DC-driver \\
+ISV&-6.1&-5.8&-5.5&0.02&0.001&DC-driver \\
 \hline
 \end{tabular}
  \caption{Biases.}
@@ -201,7 +201,7 @@ The BB (Back Bias) block consists of a Cockroft-Walton charge pump voltage multi
 
 %Minimum output voltage is $-2.5\times(R5/R7)$ or $-7.5V$ when the DACOG DAC is set to 255. Maximum is $0V$ when DACOG is set to $0$.
 
-U2 switches between $Vp$ and $Vm$ $(\pm15V)$, creating 30V square-wave drive for a charge pump. The switching frequency, applied to PCLK, should be at the pixel rate to minimize the effect of crosstalk and ripple on the video signal. D1, D2, and their associated capacitors form a two stage charge pump, nominally capable of 60V output if losses are ignored. C4 is intentionally fairly small to limit current at startup and under fault conditions. $1nF\times30V\times132kHz=4.2mA$ into the pump under short circuit conditions. That's 2.1mA into the pump output.
+U2 switches between $Vp$ and $Vm$ $(\pm15V)$, creating 30V square-wave drive for a charge pump. The switching frequency, applied to PCLK, is twice the (summed) pixel rate to minimize the effect of crosstalk and ripple on the video signal. D1, D2, and their associated capacitors form a two stage charge pump, nominally capable of 60V output if losses are ignored. C4 is intentionally fairly small to limit current at startup and under fault conditions. $2.2nF\times30V\times69kHz=4.6mA$ into the pump under short circuit conditions. That's 2.3 mA into the pump output.
 % , although there is little quantitative reasoning behind this specific value. 
 The other capacitors in the pump (C1, C2, C5) are larger to minimize ripple and loss.
 
@@ -209,7 +209,7 @@ Q1 and Q2 are high voltage transistors making a voltage translation amplifier wi
 
 43V precision Zener diode D3 limits the output voltage to below the absolute maximum of 45V without preventing an output of the maximum operating voltage of 40V.
 
-The load current on BB is $<1\ \mu$A The voltage regulator and housekeeping circuit pull $100\ \mu$A from the pump, much less than the 2\ mA limit.
+The load current on BB is $<1\ \mu$A The voltage regulator and housekeeping circuit pull $100\ \mu$A from the pump, much less than the 2.3\ mA limit.
 
 R1, R2, and R3 limit current to U2, protecting it in case of latchup. R13 and R14 limit current to U1, although that's less of a concern: U1 is not CMOS so it should be more resistant to latchup. These resistors also help decouple chip power from power supply noise and ripple.
 
@@ -309,7 +309,7 @@ Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the po
 %I assume voltages for horizantal==SG. Is this true?
 %I assume charge injection voltages for IG1==IG2. Is this true?
 
-This is a pair of amplifiers yielding adjustable outputs of 0 to 5V and -10V to -5V for drivers. Noise filtering and damping are similar to the DC-driver block above, but with larger capacitance to handle the time-varying load current. These can directly provide the regulated drive for the fast clock drivers: with output current capability $\approx 10$\ mA, they can handle the current demands of a $\approx 6$\ nF load. For the slow (vertical), drivers, these handle level translation but do not provide the large regulated current required.
+This is a pair of amplifiers yielding adjustable outputs of 0 to 7.5V and -10V to -2.5V for drivers. Noise filtering and damping are similar to the DC-driver block above, but with larger capacitance to handle the time-varying load current. These can directly provide the regulated drive for the fast clock drivers: with output current capability $\approx 10$\ mA, they can handle the current demands of a $\approx 6$\ nF load. For the slow (vertical), drivers, these handle level translation but do not provide the large regulated current required.
 
 \subsubsection{ParallelReg}
    \begin{figure}
@@ -817,22 +817,22 @@ Table \ref{DACV} shows the DAC-controlled voltages. DAC numbers are in base 8 (o
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 DAC & Function & V(0) & V(255) & Resolution \\
-00 & RGHI & 0.00 & 7.47 & 0.0293 \\
-01 & RGLO & -5.01 & -10.00 & -0.0196 \\
-02 & SGHI & 0.00 & 7.47 & 0.0293 \\
-03 & SGLO & -5.01 & -10.00 & -0.0196 \\
-04 & TGHI & 0.00 & 7.47 & 0.0293 \\
-05 & TGLO & -5.01 & -10.00 & -0.0196 \\
-06 & PHHI & 0.00 & 7.47 & 0.0293 \\
-07 & PHLO & -5.01 & -10.00 & -0.0196 \\
-10 & VIHI & 0.00 & 7.47 & 0.0293 \\
-11 & VILO & -5.01 & -10.00 & -0.0196 \\
-12 & VSHI & 0.00 & 7.47 & 0.0293 \\
-13 & VSLH & -5.01 & -10.00 & -0.0196 \\
-14 & IG1V & -1.25 & -6.24 & -0.0196 \\
-15 & IG2V & -1.25 & -6.24 & -0.0196 \\
-16 & ISVHI & 0.00 & 7.47 & 0.0293 \\
-17 & ISVLO & -5.01 & -10.00 & -0.0196 \\
+00 & RGHI & 0.00 & 7.48 & 0.0293 \\
+01 & RGLO & -2.5 & -10.03 & -0.0295 \\
+02 & SGHI & 0.00 & 7.48 & 0.0293 \\
+03 & SGLO & -2.5 & -10.03 & -0.0295 \\
+04 & TGHI & 0.00 & 7.48 & 0.0293 \\
+05 & TGLO & -2.5 & -10.03 & -0.0295 \\
+06 & PHHI & 0.00 & 7.48 & 0.0293 \\
+07 & PHLO & -2.5 & -10.03 & -0.0295 \\
+10 & VIHI & 0.00 & 7.48 & 0.0293 \\
+11 & VILO & -2.5 & -10.03 & -0.0295 \\
+12 & VSHI & 0.00 & 7.48 & 0.0293 \\
+13 & VSLH & -2.5 & -10.03 & -0.0295 \\
+14 & ISV & -5.01 & -7.02 & -0.00787 \\
+15 & IG2V & -2.02 & -4.03 & -0.00787 \\
+16 & IG1VHI & 0.00 & 7.48 & 0.0293 \\
+17 & IG1VLO & -2.5 & -10.03 & -0.0295 \\
 20 & OD-A & -17.04 & -23.01 & -0.0234 \\
 21 & OD-B & -17.04 & -23.01 & -0.0234 \\
 22 & OD-C & -17.04 & -23.01 & -0.0234 \\
@@ -868,7 +868,7 @@ Channel & Function & Scale& Description\\
 \hline
 06 & OG &  $\pm$12.54V & Output Gate \\
 \hline
-07 & IG1V & $\pm$12.54V & Charge Input Gate 1\\
+07 & ISV & $\pm$12.54V & Charge Input Gate 1\\
 \hline
 10 & +15 & $\pm$50.31V & Power Supplies\\
 11 & -15 & $\pm$50.31V & \\
@@ -890,8 +890,8 @@ Channel & Function & Scale& Description\\
 24 & TGHI & $\pm$12.54V & Transfer Gate\\
 25 & TGLO & $\pm$12.54V & \\
 \hline
-26 & ISVHI & $\pm$12.54V & Charge Input Source\\
-27 & ISVLO & $\pm$12.54V& \\
+26 & IG1VHI & $\pm$12.54V & Charge Input Source\\
+27 & IG1VLO & $\pm$12.54V& \\
 \hline
 30 & PHHI & $\pm$12.54V & Horizontal Clocks\\
 31 & PHLO & $\pm$12.54V &\\

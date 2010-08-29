@@ -331,13 +331,13 @@ title=Clock Level Housekeeping
 N 41700 43900 40800 43900 4
 {
 T 40800 43900 5 10 1 1 0 0 1
-netname=ISVHI
+netname=IG1VHI
 }
 C 40800 43900 1 90 0 busripper-1.sym
 N 41700 43600 40800 43600 4
 {
 T 40800 43600 5 10 1 1 0 0 1
-netname=ISVLO
+netname=IG1VLO
 }
 C 40800 43600 1 90 0 busripper-1.sym
 C 47100 43300 1 0 0 gnd-1.sym
