@@ -447,7 +447,7 @@ C 49000 43900 1 90 0 busripper-1.sym
 N 54200 43600 49000 43600 4
 {
 T 49100 43600 5 10 1 1 0 0 1
-netname=-5
+netname=+5ADC
 }
 C 49000 43600 1 90 0 busripper-1.sym
 C 45400 49000 1 0 0 resistor.sym

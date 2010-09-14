@@ -68,7 +68,7 @@ J2	49	GND
 J2	15	TCCDA	TCE Pt1000 sensors
 J2	33	TCCDB
 J2	50	TCOLD
-J2	16	TRTN
+J2	16	GND	Common return for Pt1000 sensors
 #-
 J2	34	HTR	Heater
 J2	51	+15	Heater Return
@@ -77,6 +77,9 @@ J2	17	VRST+	Video reset
 J2	35	VRST-
 #
 # $Log$
+# Revision 1.4  2010-09-14 17:55:00  jpd
+# Fixed a few errors found by DRC.
+#
 # Revision 1.3  2010-03-18 05:15:22  jpd
 # Bunch of nits revealed by BOM/netlist.
 #
