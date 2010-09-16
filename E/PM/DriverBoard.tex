@@ -352,7 +352,9 @@ This is just a pair of analog switches, intended to drive a moderate capacitance
    \caption{Temperature Block}
    \end{figure}
    
-This low speed 16 bit ADC is connected as a ratiometric ohmmeter. It compares the sensor resistance with R1, which sets the maximum scale. $1180\ \Omega$ for a Pt1000 sensor corresponds to a temperature of 46\ C.
+This 12 bit ADC is connected as a ratiometric ohmmeter. U1 is connected as a constant current source with reference voltage equal to the 5V reference power provided to the ADC, and reference resistance R1 ($1180\ \Omega$). This current develops a voltage across the sensor. The topology makes the measurement insensitive to resistance between I+ and V+, but the sensor return resistance to ground must be low, as it can affect the measurement. Because the circuit uses the same reference voltage for the ADC and the current source, it measures the ratio of the sensor resistance to R1. $1180\ \Omega$ for a Pt1000 sensor corresponds to a temperature of 46\ C, so this is the full scale temperature.
+
+VD on the ADC must remain below VA when power is turned on. Q1 insures that this condition will be met.
 
 \subsubsection{Heater Control}
    \begin{figure}
@@ -378,7 +380,7 @@ As drawn, this circuit accommodates heater supply voltages up to 20V (limited by
    \caption{Housekeeping ADC Block}
    \end{figure}
 
-This is a low speed 16 bit ADC with a high Z input whose range is $\pm 12.5$\ V.
+This is a 12 bit ADC with a high Z input whose range is -12.76V to 12.89V. U1 handles buffering, attenuation, and bias, allowing the 5V unipolar ADC chip to cover the wider bipolar range required. Q1 insures proper power sequencing, as in the Temperature Measurement block.
 
 \section{Connecting the Blocks}
 
@@ -416,7 +418,7 @@ This provides the 2.5V reference voltage and 24 DAC channels for control of CCD 
 This drives the reset gate and summing gate. These gates have low capacitance, so drive requirements are not challenging. For best clock level stability, these should be driven perfectly periodically, even during vertical transfers. There is no harm in doing so, and this will reduce variation of the video bias across the CCD image.
   
 
-\subsection{TG Driver}
+\subsection{TG and IG1 Driver}
    \begin{figure}
    \begin{center}
    \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.3.pdf}
@@ -424,7 +426,7 @@ This drives the reset gate and summing gate. These gates have low capacitance, s
    \caption{TG Driver}
    \end{figure}
    
-This drives the transfer gate between the vertical and horizontal register of the CCD. This is another low capacitance gate. This page also shows a spare driver: this may be used for charge injection when the requirements are clarified.
+The TG driver drives the transfer gate between the vertical and horizontal register of the CCD. The IG1 driver drives the charge injection gate. These are low capacitance gates.
   
 
 \subsection{Horizontal Register Driver}
@@ -466,7 +468,7 @@ The vertical storage area has lower capacitance that the vertical imaging area, 
    \caption{Output Drain Drivers}
    \end{figure}
 
-These provide -17 to -23\ V for the output drains. Maximum load per drain is 1.2\ mA, no a challenge for a DC-driver block.  
+These provide -17 to -23\ V for the output drains. Maximum load per drain is 1.2\ mA, not a challenge for a DC-driver block.  
 
 \subsection{Bias Drivers}
    \begin{figure}
@@ -476,8 +478,10 @@ These provide -17 to -23\ V for the output drains. Maximum load per drain is 1.2
    \caption{Bias Drivers}
    \end{figure}
   
-The reset drain driver provides -10 to -14\ V. 
-The output gate driver provides -2 to -8\ V.
+The reset drain (RD) driver provides -10 to -14\ V. 
+The output gate (OG) driver provides -2 to -8\ V.
+The charge injection source (IS) driver provides -5 to -7\ V.
+The charge injection gate 2 (IG2) driver provides -2 to -4\ V.
 The back bias driver provides 0 to 40\ V.
 
 \subsection{Power Translation}
@@ -587,20 +591,24 @@ Code & Subsystem \\
 
 \subsubsection{DAC Mode}
 
-In DAC mode (00), the two least signficant bits (M1 and M0) of the mode byte select the DAC. Once you've placed the driver board into DAC mode, $\overline{\textup{DVCS}}$ is applied to the $\overline{\textup{SYNC}}$ pin of the selected DAC. PCLK and DVCD are always applied to SCLK and DIN of every DAC, but $\overline{\textup{SYNC}}$ controls whether the DAC responds to them. In the command transfer stage of this mode the timing of PCLK, DVCD, and $\overline{\textup{DVCS}}$ should correspond respectively to SCLK, DIN, and $\overline{\textup{SYNC}}$ in the interface protocol of the AD5308 DAC chip. $\overline{\textup{LDAC}}$ is permanently tied high on each DAC ("software update mode"). The AD5308 transfers data on the falling edge of the clock, gated by $\overline{\textup{DVCS}}$:
+In DAC mode (00), the two least signficant bits (M1 and M0) of the mode byte select the DAC chip. Once you've placed the driver board into DAC mode, $\overline{\textup{DVCS}}$ is applied to the $\overline{\textup{LD}}$ pin of the selected DAC. PCLK and DVCD are always applied to CLK and SDI of every DAC, but $\overline{\textup{LD}}$ controls whether the DAC responds to them. In the command transfer stage of this mode the timing of PCLK, DVCD, and $\overline{\textup{DVCS}}$ should correspond respectively to CLK, SDI, and $\overline{\textup{LD}}$ in the interface protocol of the DAC8800 chip. The DAC8800 transfers serial data on the rising edge of the serial clock (PCLK). A low level on $\overline{\textup{DVCS}}$ latches the captured serial data.
 
 {\large
 \newcounter{dacbit}
-\addtocounter{dacbit}{15}
+\addtocounter{dacbit}{7}
+\newcounter{dacnum}
+\addtocounter{dacnum}{2}
 \begin{tikztimingtable}
-PCLK & 38{C} \\
-DVCD & 3U16{2D{D\arabic{dacbit}\addtocounter{dacbit}{-1}}}3U \\
-$\overline{\textup{DVCS}}$ & 3H32L3H \\
-DVMS & 38L \\
+PCLK & 27{C} \\
+DVCD & 2U3{2D{A\arabic{dacnum}\addtocounter{dacnum}{-1}}}8{2D{D\arabic{dacbit}\addtocounter{dacbit}{-1}}}3U \\
+$\overline{\textup{DVCS}}$ & 23.75H0.5L2.75H \\
+DVMS & 27L \\
 \end{tikztimingtable}}
 
+Including an allowance for decoding propagation, the falling edge of  $\overline{\textup{DVCS}}$  should come at least 50\ ns after the rising edge of PCLK, the $\overline{\textup{DVCS}}$ pulse width should be at least 75\ ns, and the rising edge of $\overline{\textup{DVCS}}$ should come at least 100\ ns before the rising edge of PCLK.
 
-See the AD5308 data sheet for more details. 
+Data is transmitted most significant bit first. Bits A2-A0 select the DAC within the chip, while bits D7-D0 are the data to be loaded into the DAC.
+See the DAC8800 data sheet for more details. 
 
 \subsubsection{Housekeeping MUX Mode}
 
@@ -616,50 +624,24 @@ This will place the channel data in the MUX selection latches and apply the sele
 
 \subsubsection{Housekeeping ADC Mode}
 
-In Housekeeping ADC mode, three mode register bits control the ADC.
-
-\begin{tabular}{|l|l|}
-\hline
-Bit & Input \\
-\hline
-3 & CNV \\
-\hline
-4 & CAL \\
-\hline
-5 & $\overline{\textup{CS}}$ \\
-\hline
-\end{tabular}
-
-As in the Housekeeping MUX Mode, the command transfer stage is simply a pulse of  $\overline{\textup{DVCS}}$:
-
-{\large
-\begin{tikztimingtable}
-$\overline{\textup{DVCS}}$ & 2H2L2H \\
-DVMS & 6L \\
-\end{tikztimingtable}}
-
-If CNV and CAL are high together, the ADC performs a self calibration. To perform this operation, the PE should set the mode 10111000, pulse  $\overline{\textup{DVCS}}$, then set the mode to 10100000, and  pulse  $\overline{\textup{DVCS}}$. The calibration requires 3246 PCLK cycles. 
-
-To initiate a conversion, the PE should set the mode to 10101000, pulse  $\overline{\textup{DVCS}}$, then set the mode to 10100000, and  pulse  $\overline{\textup{DVCS}}$. Conversion takes 1624 PCLK cycles. 
-
-Once this is complete, the PE may read out the converted value by setting the mode to 10000000, pulsing  $\overline{\textup{DVCS}}$, and then reading the serial bits from HKDAT. 
+After setting the housekeeping MUX, the controller should wait at least 500\ $\mu$s before initiating a conversion with the housekeeping ADC. A falling edge on $\overline{\textup{DVCS}}$ in Housekeeping ADC Mode initiates the conversion. The ADC yields 16 bits four zero bits followed by 12 data bits, most significant bit first. $\overline{\textup{DVCS}}$ should remain low for the entire 16 cycle conversion time.
 
 {\large
 \newcounter{hkbit}
-\addtocounter{hkbit}{15}
+\addtocounter{hkbit}{11}
 \begin{tikztimingtable}
 PCLK & 36{C} \\
-HKDAT & 2Z16{2D{B\arabic{hkbit}\addtocounter{hkbit}{-1}}}2Z \\
-$\overline{\textup{DVCS}}$ & HL34H \\
+$\overline{\textup{DVCS}}$ & 2H32L2H \\
+HKDAT & 2U8L12{2D{B\arabic{hkbit}\addtocounter{hkbit}{-1}}}U\\
 DVMS & 36L \\
 \end{tikztimingtable}}
 
 
-See the CS5507 datasheet for more details.
+See the ADC128S102 datasheet for more details.
 
 \subsubsection{Video Board Mode}
 
-In Video Board mode, this Driver Board routes $\overline{\textup{DVCS}}$ to $\overline{\textup{VSTROBE}}$ to control the Video Board FPGA, and routes VCRD to HKDAT to receive returned data, if any. PCLK always drives VPCLK, and DVCD always drives VCMD. The timing of the coomand and data transfer stages of communication with this subsystem are not yet defined: it depends on the Video Board FPGA design.
+In Video Board mode, this Driver Board routes $\overline{\textup{DVCS}}$ to $\overline{\textup{VSTROBE}}$ to control the Video Board FPGA, and routes VCRD to HKDAT to receive returned data, if any. PCLK always drives VPCLK, and DVCD always drives VCMD. The timing of the command and data transfer stages of communication with this subsystem are not yet defined: it depends on the Video Board FPGA design.
 
 
 \subsection{CCD Clock Decoding}
@@ -841,62 +823,62 @@ DAC & Function & V(0) & V(255) & Resolution \\
 
 Table \ref{HKC} shows the housekeeping channels on the Driver Board. Channel numbers are in base 8 (octal). 
 
-DTEMP is the output of the temperature monitor circuit in the REF43 reference voltage chip on the board: this is a positive voltage, proportional to absolute temperature, with a slope of 1.9$\pm$0.2\ mV/K.
+DTEMP is the output of the temperature monitor circuit in the REF43 reference voltage chip on the board. As an absolute measuring device it is only good to about $\pm$10\% in absolute temperature. However, most of that error is constant ``gain'' error, so a single temperature calibration should suffice to make this measurement useful. Adjust the nominal temperature limits in the table by the ratio of the actual temperature to the temperature measured assuming the nominal limits.
 
 \begin{table}[h]
 \centering
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-Channel & Function & Scale& Description\\
+Channel & Function & Low Voltage & High Voltage & Description\\
 \hline
-00 & OD-A & $\pm$50.31V & Output Drains \\
-01 & OD-B & $\pm$50.31V &\\
-02 & OD-C & $\pm$50.31V& \\
-03 & OD-D & $\pm$50.31V& \\
+00 & OD-A & -51.02 & 51.55 & Output Drains \\
+01 & OD-B & -51.02 & 51.55 &\\
+02 & OD-C & -51.02 & 51.55& \\
+03 & OD-D & -51.02 & 51.55& \\
 \hline
-04 & RD & $\pm$50.31V & Reset Drain\\
+04 & RD & -51.02 & 51.55 & Reset Drain\\
 \hline
-05 & BB & $\pm$50.31V & Back Bias \\
+05 & BB & -51.02 & 51.55 & Back Bias \\
 \hline
-06 & OG &  $\pm$12.54V & Output Gate \\
+06 & OG &  -12.76 & 12.89& Output Gate \\
 \hline
-07 & ISV & $\pm$12.54V & Charge Input Gate 1\\
+07 & ISV & -12.76 & 12.89& Charge Input Gate 1\\
 \hline
-10 & +15 & $\pm$50.31V & Power Supplies\\
-11 & -15 & $\pm$50.31V & \\
-12 & -28 & $\pm$50.31V &\\
-13 & +5 & $\pm$12.54V &\\
-14 & +3.3&  $\pm$12.54V &\\
-15 & -5 &$\pm$12.54V& \\
+10 & +15 & -51.02 & 51.55 & Power Supplies\\
+11 & -15 & -51.02 & 51.55 & \\
+12 & -28 & -51.02 & 51.55 &\\
+13 & +5 & -12.76 & 12.89&\\
+14 & +3.3&  -12.76 & 12.89&\\
+15 & +5ADC & -12.76 & 12.89& \\
 \hline
-16 & DTEMP &$\pm$12.54V & Driver Board Temperature\\
+16 & DTEMP & -365 K & 369 K & Driver Board Temperature\\
 \hline
-17 & IG2V & $\pm$12.54V& Charge Input Gate 2 \\
+17 & IG2V &  -12.76 & 12.89& Charge Input Gate 2 \\
 \hline
-20 & RGHI & $\pm$12.54V & Reset Gate\\
-21 & RGLO & $\pm$12.54V & \\
+20 & RGHI & -12.76 & 12.89& Reset Gate\\
+21 & RGLO & -12.76 & 12.89& \\
 \hline
-22 & SGHI & $\pm$12.54V & Summing Gate \\
-23 & SGLO & $\pm$12.54V & \\
+22 & SGHI & -12.76 & 12.89& Summing Gate \\
+23 & SGLO & -12.76 & 12.89& \\
 \hline
-24 & TGHI & $\pm$12.54V & Transfer Gate\\
-25 & TGLO & $\pm$12.54V & \\
+24 & TGHI & -12.76 & 12.89& Transfer Gate\\
+25 & TGLO & -12.76 & 12.89& \\
 \hline
-26 & IG1VHI & $\pm$12.54V & Charge Input Source\\
-27 & IG1VLO & $\pm$12.54V& \\
+26 & IG1VHI & -12.76 & 12.89& Charge Input Source\\
+27 & IG1VLO & -12.76 & 12.89& \\
 \hline
-30 & PHHI & $\pm$12.54V & Horizontal Clocks\\
-31 & PHLO & $\pm$12.54V &\\
+30 & PHHI & -12.76 & 12.89& Horizontal Clocks\\
+31 & PHLO & -12.76 & 12.89&\\
 \hline
-32 & VIHI & $\pm$12.54V & Vertical Image Clocks\\
-33 & VILO & $\pm$12.54V &\\
+32 & VIHI & -12.76 & 12.89& Vertical Image Clocks\\
+33 & VILO & -12.76 & 12.89&\\
 \hline
-34 & VSHI & $\pm$12.54V & Vertical Storage Clocks\\
-35 & VSLO & $\pm$12.54V &\\
+34 & VSHI & -12.76 & 12.89& Vertical Storage Clocks\\
+35 & VSLO & -12.76 & 12.89&\\
 \hline
-36 & +2.5ref & $\pm$12.54V & ADC and DAC Reference Voltage\\
+36 & +2.5ref & -12.76 & 12.89& ADC and DAC Reference Voltage\\
 \hline
-37 & GND & $\pm$12.54V & Driver Board Ground Plane\\
+37 & GND & -12.76 & 12.89& Driver Board Ground Plane\\
 \hline
 \end{tabular}
 \caption{Housekeeping Channels}
