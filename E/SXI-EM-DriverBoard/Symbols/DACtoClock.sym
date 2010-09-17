@@ -1,0 +1,103 @@
+v 20091004 2
+B 300 300 1400 2400 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+T 1700 2800 9 10 0 0 0 0 1
+source=DACtoClock.sch
+T 1700 3000 9 10 0 0 0 0 1
+footprint=none
+T 1700 3200 9 10 0 0 0 0 1
+description=DAC to clock level translator and driver
+T 1700 3400 9 10 0 0 0 0 1
+device=DACtoClock
+T 1700 3600 9 10 0 0 0 0 1
+distlicense=GPL
+T 1700 3800 9 10 0 0 0 0 1
+uselicense=unlimited
+T 1700 4000 9 10 0 0 0 0 1
+author=jpd@noqsi.com
+T 1700 4200 9 10 0 0 0 0 1
+copyright=2010 John P. Doty
+T 1500 2800 9 10 1 1 0 3 1
+refdes=U?
+T 1000 2000 9 10 1 1 0 3 1
+DACtoClock
+P 1000 3000 1000 2700 1 0 0
+{
+T 1000 2650 9 10 1 1 0 5 1
+pinlabel=V+
+T 1050 2750 5 8 0 1 0 0 1
+pinseq=1
+T 1000 3000 5 10 0 0 0 0 1
+pinnumber=9
+}
+P 700 0 700 300 1 0 0
+{
+T 700 350 9 10 1 1 0 3 1
+pinlabel=GND
+T 750 250 5 8 0 1 0 2 1
+pinseq=2
+T 700 0 5 10 0 0 0 0 1
+pinnumber=4
+}
+P 1300 0 1300 300 1 0 0
+{
+T 1300 350 9 10 1 1 0 3 1
+pinlabel=V-
+T 1350 250 5 8 0 1 0 2 1
+pinseq=3
+T 1300 0 5 10 0 0 0 0 1
+pinnumber=5
+}
+P 0 2300 300 2300 1 0 0
+{
+T 350 2300 9 10 1 1 0 1 1
+pinlabel=Dhi
+T 200 2350 5 8 0 1 0 6 1
+pinseq=4
+T 0 2300 5 10 0 0 0 0 1
+pinnumber=1
+}
+P 0 1500 300 1500 1 0 0
+{
+T 350 1500 9 10 1 1 0 1 1
+pinlabel=Ref
+T 200 1550 5 8 0 1 0 6 1
+pinseq=5
+T 0 1500 5 10 0 0 0 0 1
+pinnumber=2
+}
+P 0 700 300 700 1 0 0
+{
+T 350 700 9 10 1 1 0 1 1
+pinlabel=Dlo
+T 200 750 5 8 0 1 0 6 1
+pinseq=6
+T 0 700 5 10 0 0 0 0 1
+pinnumber=3
+}
+P 2000 2300 1700 2300 1 0 0
+{
+T 1650 2300 9 10 1 1 0 7 1
+pinlabel=Vhi
+T 1800 2350 5 8 0 1 0 0 1
+pinseq=7
+T 2000 2300 5 10 0 0 0 0 1
+pinnumber=8
+}
+P 2000 1500 1700 1500 1 0 0
+{
+T 1650 1500 9 10 1 1 0 7 1
+pinlabel=Ret
+T 1800 1550 5 8 0 1 0 0 1
+pinseq=8
+T 2000 1500 5 10 0 0 0 0 1
+pinnumber=7
+}
+P 2000 700 1700 700 1 0 0
+{
+T 1650 700 9 10 1 1 0 7 1
+pinlabel=Vlo
+T 1800 750 5 8 0 1 0 0 1
+pinseq=9
+T 2000 700 5 10 0 0 0 0 1
+pinnumber=6
+}

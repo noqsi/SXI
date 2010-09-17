@@ -1,0 +1,130 @@
+v 20091004 2
+B 300 300 2200 3200 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+T 2500 3600 9 10 0 0 0 0 1
+source=SerialDrivers.sch
+T 2500 3800 9 10 0 0 0 0 1
+footprint=none
+T 2500 4000 9 10 0 0 0 0 1
+description=Serial Clock Drivers
+T 2500 4200 9 10 0 0 0 0 1
+device=SerialDrivers
+T 2500 4400 9 10 0 0 0 0 1
+distlicense=GPL
+T 2500 4600 9 10 0 0 0 0 1
+uselicense=unlimited
+T 2500 4800 9 10 0 0 0 0 1
+author=jpd@noqsi.com
+T 2500 5000 9 10 0 0 0 0 1
+copyright=2010 John P. Doty
+T 2300 3600 9 10 1 1 0 3 1
+refdes=U?
+T 1400 2800 9 10 1 1 0 3 1
+SerialDrivers
+P 1700 3800 1700 3500 1 0 0
+{
+T 1700 3450 9 10 1 1 0 5 1
+pinlabel=V+
+T 1750 3550 5 8 0 1 0 0 1
+pinseq=1
+T 1700 3800 5 10 0 0 0 0 1
+pinnumber=1
+}
+P 1100 3800 1100 3500 1 0 0
+{
+T 1100 3450 9 10 1 1 0 5 1
+pinlabel=VL
+T 1150 3550 5 8 0 1 0 0 1
+pinseq=2
+T 1100 3800 5 10 0 0 0 0 1
+pinnumber=2
+}
+P 1100 0 1100 300 1 0 0
+{
+T 1100 350 9 10 1 1 0 3 1
+pinlabel=GND
+T 1150 250 5 8 0 1 0 2 1
+pinseq=3
+T 1100 0 5 10 0 0 0 0 1
+pinnumber=9
+}
+P 1700 0 1700 300 1 0 0
+{
+T 1700 350 9 10 1 1 0 3 1
+pinlabel=V-
+T 1750 250 5 8 0 1 0 2 1
+pinseq=4
+T 1700 0 5 10 0 0 0 0 1
+pinnumber=10
+}
+P 0 3100 300 3100 1 0 0
+{
+T 350 3100 9 10 1 1 0 1 1
+pinlabel=Vhi1
+T 200 3150 5 8 0 1 0 6 1
+pinseq=5
+T 0 3100 5 10 0 0 0 0 1
+pinnumber=3
+}
+P 0 2700 300 2700 1 0 0
+{
+T 350 2700 9 10 1 1 0 1 1
+pinlabel=I1
+T 200 2750 5 8 0 1 0 6 1
+pinseq=6
+T 0 2700 5 10 0 0 0 0 1
+pinnumber=4
+}
+P 0 700 300 700 1 0 0
+{
+T 350 700 9 10 1 1 0 1 1
+pinlabel=Vlo2
+T 200 750 5 8 0 1 0 6 1
+pinseq=7
+T 0 700 5 10 0 0 0 0 1
+pinnumber=8
+}
+P 2800 2700 2500 2700 1 0 0
+{
+T 2450 2700 9 10 1 1 0 7 1
+pinlabel=O1
+T 2600 2750 5 8 0 1 0 0 1
+pinseq=8
+T 2800 2700 5 10 0 0 0 0 1
+pinnumber=12
+}
+P 2800 1100 2500 1100 1 0 0
+{
+T 2450 1100 9 10 1 1 0 7 1
+pinlabel=O2
+T 2600 1150 5 8 0 1 0 0 1
+pinseq=9
+T 2800 1100 5 10 0 0 0 0 1
+pinnumber=11
+}
+P 0 1100 300 1100 1 0 0
+{
+T 350 1100 9 10 1 1 0 1 1
+pinlabel=I2
+T 200 1150 5 8 0 1 0 6 1
+pinseq=10
+T 0 1100 5 10 0 0 0 0 1
+pinnumber=7
+}
+P 0 2300 300 2300 1 0 0
+{
+T 350 2300 9 10 1 1 0 1 1
+pinlabel=Vlo1
+T 200 2350 5 8 0 1 0 6 1
+pinseq=11
+T 0 2300 5 10 0 0 0 0 1
+pinnumber=5
+}
+P 0 1500 300 1500 1 0 0
+{
+T 350 1500 9 10 1 1 0 1 1
+pinlabel=Vhi2
+T 200 1550 5 8 0 1 0 6 1
+pinseq=12
+T 0 1500 5 10 0 0 0 0 1
+pinnumber=6
+}

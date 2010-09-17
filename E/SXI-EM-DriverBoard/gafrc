@@ -1,0 +1,21 @@
+; $Id$
+
+; For syms and schematics, we can search:
+;
+(component-library "Symbols")
+(source-library ".")
+(define default-titleblock "Noqsi-title-B.sym")
+(always-promote-attributes "refdes")
+;
+; $Log$
+; Revision 2.1  2010-09-17 17:24:46  jpd
+; Cleaned up EM design directory.
+;
+; Revision 1.2  2009-10-26 17:48:25  jpd
+; Added DriverBoard doc.
+; Small fix to damping in DADtoClock
+;
+; Revision 1.1  2008-10-23 02:22:45  jpd
+; gafrc file for SXI-E-PM
+;
+

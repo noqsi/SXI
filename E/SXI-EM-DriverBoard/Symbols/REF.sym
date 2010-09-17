@@ -1,0 +1,58 @@
+v 20091004 2
+B 300 300 1700 1200 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+T 2000 1600 9 10 0 0 0 0 1
+footprint=none
+T 2000 1800 9 10 0 0 0 0 1
+description=Voltage Reference
+T 2000 2000 9 10 0 0 0 0 1
+device=REF
+T 2000 2200 9 10 0 0 0 0 1
+distlicense=GPL
+T 2000 2400 9 10 0 0 0 0 1
+uselicense=unlimited
+T 2000 2600 9 10 0 0 0 0 1
+author=jpd@noqsi.com
+T 2000 2800 9 10 0 0 0 0 1
+copyright=2010 John P. Doty
+T 1800 1600 9 10 1 1 0 3 1
+refdes=U?
+T 1100 1300 9 10 1 1 0 3 1
+REF
+P 0 1100 300 1100 1 0 0
+{
+T 350 1100 9 10 1 1 0 1 1
+pinlabel=+15V
+T 200 1150 5 8 0 1 0 6 1
+pinnumber=1
+T 200 1150 5 8 0 1 0 6 1
+pinseq=1
+}
+P 0 700 300 700 1 0 0
+{
+T 350 700 9 10 1 1 0 1 1
+pinlabel=GND
+T 200 750 5 8 0 1 0 6 1
+pinnumber=2
+T 200 750 5 8 0 1 0 6 1
+pinseq=2
+}
+P 2300 1100 2000 1100 1 0 0
+{
+T 1950 1100 9 10 1 1 0 7 1
+pinlabel=+2.5Ref
+T 2100 1150 5 8 0 1 0 0 1
+pinnumber=3
+T 2100 1150 5 8 0 1 0 0 1
+pinseq=3
+}
+P 2300 700 2000 700 1 0 0
+{
+T 1950 700 9 10 1 1 0 7 1
+pinlabel=Temp
+T 2100 750 5 8 0 1 0 0 1
+pinnumber=4
+T 2100 750 5 8 0 1 0 0 1
+pinseq=4
+}
+T 1400 2900 8 10 0 0 0 0 1
+source=REF.sch

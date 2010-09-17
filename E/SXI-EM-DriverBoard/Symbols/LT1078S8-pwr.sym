@@ -1,0 +1,36 @@
+v 20091004 2
+T 700 800 5 10 0 0 0 0 1
+device=LT1078IS8
+T 500 400 8 10 1 1 0 0 1
+refdes=U?
+T 700 1200 5 10 0 0 0 0 1
+description=dual operational amplifier
+T 700 1000 5 10 0 0 0 0 1
+numslots=0
+T 700 1400 5 10 0 0 0 0 1
+symversion=0.1
+T 1000 600 8 10 0 0 0 0 1
+footprint=SO8
+B 0 200 400 400 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+P 200 800 200 600 1 0 0
+{
+T 200 800 5 10 0 0 0 0 1
+pintype=pwr
+T 205 500 5 10 1 1 180 4 1
+pinlabel=V+
+T 205 750 5 10 1 1 180 0 1
+pinnumber=6
+T 200 800 5 10 0 0 0 0 1
+pinseq=4
+}
+P 200 0 200 200 1 0 0
+{
+T 200 0 5 10 0 0 0 0 1
+pintype=pwr
+T 195 300 5 10 1 1 180 4 1
+pinlabel=V-
+T -5 150 5 10 1 1 180 6 1
+pinnumber=2
+T 200 0 5 10 0 0 0 0 1
+pinseq=5
+}

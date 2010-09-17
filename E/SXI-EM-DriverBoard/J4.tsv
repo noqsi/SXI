@@ -1,0 +1,106 @@
+# $Id$
+# LVDS signals from driver to PE
+#
+# Layout for using a 51 pin three row connector for a mixture of LVDS
+# and other signals. Keeping the pairs as close as possible allows 17
+# of them, and then 17 single signals remain. This list represents a
+# "herringbone" pattern of pairs, with the singles on the first and
+# third rows.
+#
+# Upper pairs
+J4	1	VOCLK+	Video out clock
+J4	19	VOCLK-
+#--
+J4	3	VOSYNC+	Video out sync
+J4	21	VOSYNC-
+#--
+J4	5	VODA+	Video out data segment A
+J4	23	VODA-
+#--
+J4	7	VODC+	Video out data segment C
+J4	25	VODC-
+#--
+J4	9	VODB+	Video out data segment B
+J4	27	VODB-
+#--
+J4	11	VODD+	Video out data segment D
+J4	29	VODD-
+##--
+#13
+#31
+##--
+#15
+#33
+##--
+#17
+#35
+#--
+# Lower pairs
+J4	36	TCEDAT+	TCE temperature data
+J4	20	TCEDAT-
+#--
+J4	38	HKDAT+	Housekeeping data
+J4	22	HKDAT-
+##--
+#40
+#24
+##--
+#42
+#26
+##--
+#44
+#28
+##--
+#46
+#30
+##--
+#48
+#32
+##--
+#50
+#34
+#--
+# Upper singles
+J4	2	GND
+#--
+J4	4	GND
+#--
+J4	6	GND
+#--
+J4	8	GND
+##--
+#10
+##--
+#12
+##--
+#14
+##--
+#16
+##--
+#18
+##--
+# Lower singles
+J4	37	GND
+#--
+J4	39	GND
+##--
+#41
+##--
+#43
+##--
+#45
+##--
+#47
+##--
+#49
+##--
+#51
+##--
+#
+# $Log$
+# Revision 2.1  2010-09-17 17:24:46  jpd
+# Cleaned up EM design directory.
+#
+# Revision 1.1  2010-03-16 00:15:13  jpd
+# Connector pinmaps.
+#
