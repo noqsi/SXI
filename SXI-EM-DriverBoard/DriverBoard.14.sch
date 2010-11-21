@@ -2,13 +2,13 @@ v 20100214 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 {
 T 50000 40500 5 10 1 1 0 0 1
-date=$Date$
+date=$Date: 2010-09-17 17:24:46 $
 T 53900 40500 5 10 1 1 0 0 1
-rev=$Revision$
+rev=$Revision: 2.1 $
 T 55400 40200 5 10 1 1 0 0 1
-auth=$Author$
+auth=$Author: jpd $
 T 50200 40800 5 8 1 1 0 0 1
-fname=$Source$
+fname=$Source: /cvs/Osaka/SXI/E/SXI-EM-DriverBoard/DriverBoard.14.sch,v $
 T 53200 41200 5 14 1 1 0 4 1
 title=Driver Board
 }
@@ -296,7 +296,7 @@ N 53100 44800 53100 43700 4
 N 48900 45700 51000 45700 4
 {
 T 49800 45800 5 10 1 1 0 1 1
-netname=PUR
+netname=\_PUR\_
 }
 C 48900 45700 1 180 0 busripper-1.sym
 T 40300 49100 9 10 1 0 0 0 1

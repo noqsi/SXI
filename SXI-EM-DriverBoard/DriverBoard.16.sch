@@ -2,13 +2,13 @@ v 20100214 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 {
 T 50000 40500 5 10 1 1 0 0 1
-date=$Date$
+date=$Date: 2010-09-17 17:24:46 $
 T 53900 40500 5 10 1 1 0 0 1
-rev=$Revision$
+rev=$Revision: 2.1 $
 T 55400 40200 5 10 1 1 0 0 1
-auth=$Author$
+auth=$Author: jpd $
 T 50200 40800 5 8 1 1 0 0 1
-fname=$Source$
+fname=$Source: /cvs/Osaka/SXI/E/SXI-EM-DriverBoard/DriverBoard.16.sch,v $
 T 53200 41200 5 14 1 1 0 4 1
 title=Driver Board
 }
@@ -221,44 +221,6 @@ T 41800 48600 5 10 1 1 270 0 1
 netname=+3.3
 }
 C 42000 48800 1 90 0 busripper-1.sym
-C 51000 46500 1 0 0 gnd-1.sym
-N 52000 46800 52200 46800 4
-N 52200 46800 52200 48800 4
-{
-T 52300 48600 5 10 1 1 270 0 1
-netname=PUR
-}
-N 51300 47700 51300 48800 4
-{
-T 51100 48600 5 10 1 1 270 0 1
-netname=+3.3
-}
-C 51300 48800 1 90 0 busripper-1.sym
-C 52200 48800 1 0 0 busripper-1.sym
-C 52000 46700 1 0 1 resistor.sym
-{
-T 51700 47100 5 10 0 0 0 6 1
-device=RESISTOR
-T 51800 47000 5 10 1 1 0 6 1
-refdes=R55
-T 51700 46500 5 10 1 1 0 6 1
-value=100k
-}
-C 51300 47500 1 0 0 capacitor-1.sym
-{
-T 51500 48200 5 10 0 0 0 0 1
-device=CAPACITOR
-T 51500 48000 5 10 1 1 0 0 1
-refdes=C26
-T 51500 48400 5 10 0 0 0 0 1
-symversion=0.1
-T 51600 47300 5 10 1 1 0 0 1
-value=0.1uF
-T 51300 47500 5 10 0 1 0 0 1
-footprint=0603
-T 51300 47500 5 10 0 1 0 0 1
-spec=25WVDC X7R
-}
 T 40400 48900 9 10 1 0 0 0 1
 Power
 C 53400 41700 1 0 0 74157.sym
