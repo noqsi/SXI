@@ -18,8 +18,12 @@ PS2PDF=ps2pdf -sPAPERSIZE=a4
 MAN=man -Tps -l
 PDFLATEX=pdflatex
 
+%.tsv.pdf : %.tsv
+	awk -f pins2tex.awk $< | pdflatex -jobname=$< > /dev/null
+	
 %.pdf : %.ps
-	$(PS2PDF) $<
+	$(PS2PDF) $< pre_$@
+	pdfcrop pre_$@ $@
 
 %.ps : %.man
 	$(MAN) $< >$@
@@ -29,9 +33,6 @@ PDFLATEX=pdflatex
 	grep -v INPUT <output.net | grep -v OUTPUT >$@
 	rm output.net
 
-%.tex : %.tsv
-	awk -f pins2tex.awk $< >$@
-	
 %.sch : %.tsv
 	awk -f pins2gsch.awk $< >$@
 
@@ -91,7 +92,7 @@ DriverBoard.18.pdf \
 DriverBoard.19.pdf \
 DriverBoard.20.pdf \
 TCE.pdf \
-J1.tex J2.tex J3.tex J4.tex J5.tex
+J1.tsv.pdf J2.tsv.pdf J3.tsv.pdf J4.tsv.pdf J5.tsv.pdf
 
 # For when typesetting within TeXShop GUI 
 driverfigs: $(DRIVERFIGS)
@@ -247,8 +248,8 @@ SXI-EM-DriverBoard.tar.gz :
 
 clean : 
 	rm -f *~ Symbols/*~ \#*\# Symbols/\#*\# *.pdf *.ps *.log output.net \
-	 J1.tex J1.sch J2.tex J2.sch J3.tex J3.sch J4.tex J4.sch J5.tex J5.sch \
-	 DriverBoard.aux DriverBoard.out DriverBoard.*.txt EM.tar.gz
+	 J1.sch J2.sch J3.sch J4.sch J5.sch \
+	 *.aux *.out DriverBoard.*.txt EM.tar.gz
 
 # $Log$
 # Revision 2.1  2010-09-17 17:24:46  jpd

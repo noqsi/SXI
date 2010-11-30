@@ -11,10 +11,30 @@
 \usepackage{tikz-timing}
 
 % Space out paragraphs, don't indent
- \setlength{\parindent}{0.0in}
- \setlength{\parskip}{0.1in}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.1in}
 
+% Macro for including tsv generated tables
+\newcommand{\tsvtable}[1]{
+\begin{table}[h]
+\centering
+\includegraphics[height=\textheight]{#1.tsv.pdf}
+\caption{#1}
+\label{#1}
+\end{table}
+}
 
+% Flush graphics before every new section
+\usepackage{placeins}
+\let\oldsection\section
+\renewcommand{\section}{\FloatBarrier\oldsection} 
+%\let\oldsubsection\subsection
+%\renewcommand{\subsection}{\FloatBarrier\oldsubsection} 
+%\let\oldsubsubsection\subsubsection
+%\renewcommand{\subsubsection}{\FloatBarrier\oldsubsubsection} 
+
+% Put the page numbers in the top right corner
+\pagestyle{headings}
 
 \usepackage[pdftex]{hyperref}
 
@@ -151,7 +171,7 @@ ISV&-6.1&-5.8&-5.5&0.02&0.001&DC-driver \\
 \subsubsection{REF}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{REF.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{REF.pdf}
    \end{center}
    \caption{REF Block}
    \end{figure}
@@ -173,7 +193,7 @@ R1 provides current limiting and decoupling.
 % or do we need three?
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DAC.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DAC.pdf}
    \end{center}
    \caption{DAC Block}
    \end{figure}
@@ -186,7 +206,7 @@ The BB (Back Bias) block consists of a Cockroft-Walton charge pump voltage multi
 
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{BB.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{BB.pdf}
    \end{center}
    \caption{BB Block}
    \end{figure}
@@ -214,7 +234,7 @@ Output filter capacitors have separate return connections here so that they may 
 \subsubsection{DC-driver}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DC-driver.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DC-driver.pdf}
    \end{center}
    \caption{DC-driver Block}
    \end{figure}
@@ -236,7 +256,7 @@ V+ should normally be 3.3V to prevent positive drive from pulling the opamp inpu
 
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{OD-pump.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{OD-pump.pdf}
    \end{center}
    \caption{OD-pump Block}
    \end{figure}
@@ -248,7 +268,7 @@ This charge pump provides -30V (nominal assuming no losses). It is a single stag
 %   \begin{figure}
 %   \begin{center}
  %  \begin{tabular}{c}
-%   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{OD-driver.pdf}
+%   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{OD-driver.pdf}
 %   \end{tabular}
 %   \end{center}
 %   \end{figure}
@@ -275,7 +295,7 @@ Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the po
 
    \begin{figure}[h]
    \begin{center}
-   \includegraphics[height=10cm,angle=0,keepaspectratio=true]{ClockCap.pdf}
+   \includegraphics[width=\textwidth,angle=0,keepaspectratio=true]{ClockCap.pdf}
    \caption{Two phase drive allows simplification of the model of clock capacitance.}
    \label{ClockCap}
    \end{center}
@@ -285,7 +305,7 @@ Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the po
 
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DACtoClock.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DACtoClock.pdf}
    \end{center}
    \caption{DACtoClock Block}
    \end{figure}
@@ -306,7 +326,7 @@ This is a pair of amplifiers yielding adjustable outputs of 0 to 7.5V and -10V t
 \subsubsection{ParallelReg}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{ParallelReg.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{ParallelReg.pdf}
    \end{center}
    \caption{ParallelReg Block}
    \end{figure}
@@ -325,7 +345,7 @@ These regulators can deliver $>1$A peak (corresponding to a 2500\ nF load) and $
 
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{ParallelPair.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{ParallelPair.pdf}
    \end{center}
    \caption{ParallelPair Block}
    \end{figure}
@@ -335,7 +355,7 @@ This is a high current driver intended for high speed clocking of a high capacit
 \subsubsection{SerialDrivers}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{SerialDrivers.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{SerialDrivers.pdf}
    \end{center}
    \caption{SerialDrivers Block}
    \end{figure}
@@ -347,7 +367,7 @@ This is just a pair of analog switches, intended to drive a moderate capacitance
 \subsubsection{Temperature Measurement}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{Temperature.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{Temperature.pdf}
    \end{center}
    \caption{Temperature Block}
    \end{figure}
@@ -359,7 +379,7 @@ VD on the ADC must remain below VA when power is turned on. Q1 insures that this
 \subsubsection{Heater Control}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{TempControl.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{TempControl.pdf}
    \end{center}
    \caption{TempControl Block}
    \end{figure}
@@ -375,7 +395,7 @@ As drawn, this circuit accommodates heater supply voltages up to 20V (limited by
 \subsubsection{Housekeeping ADC}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{hkadc.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{hkadc.pdf}
    \end{center}
    \caption{Housekeeping ADC Block}
    \end{figure}
@@ -399,7 +419,7 @@ These graphical indicators do not necessarily imply the existence of physical bu
 \subsection{Reference and DACs}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.1.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.1.pdf}
    \end{center}
    \caption{Reference and DACs}
    \end{figure}
@@ -407,10 +427,11 @@ These graphical indicators do not necessarily imply the existence of physical bu
 This provides the 2.5V reference voltage and 24 DAC channels for control of CCD clock and bias levels.
   
 
+
 \subsection{RG and SG Drivers}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.2.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.2.pdf}
    \end{center}
    \caption{RG and SG Drivers}
    \end{figure}
@@ -418,10 +439,11 @@ This provides the 2.5V reference voltage and 24 DAC channels for control of CCD 
 This drives the reset gate and summing gate. These gates have low capacitance, so drive requirements are not challenging. For best clock level stability, these should be driven perfectly periodically, even during vertical transfers. There is no harm in doing so, and this will reduce variation of the video bias across the CCD image.
   
 
+
 \subsection{TG and IG1 Driver}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.3.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.3.pdf}
    \end{center}
    \caption{TG Driver}
    \end{figure}
@@ -429,10 +451,11 @@ This drives the reset gate and summing gate. These gates have low capacitance, s
 The TG driver drives the transfer gate between the vertical and horizontal register of the CCD. The IG1 driver drives the charge injection gate. These are low capacitance gates.
   
 
+
 \subsection{Horizontal Register Driver}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.4.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.4.pdf}
    \end{center}
    \caption{Horizontal Register Driver}
    \end{figure}
@@ -440,40 +463,44 @@ The TG driver drives the transfer gate between the vertical and horizontal regis
 The data sheet capacitances for these clocks total 1380\ pF. Applying the factor of 2 above for the effective capacitance, the total effective capacitance is $\approx 2.8$\ nF. A single DACtoClock block (drive capability $\approx 6$\ nF) suffices to provide the regulated drive voltages.
   
 
+
 \subsection{VI Driver}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.5.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.5.pdf}
    \end{center}
    \caption{VI Driver}
    \end{figure}
 
 The total effective capacitance of the to vertical imaging clocks is $\approx 140$\ nF, well within the 2500\ nF capacity of the ParallelReg block supplying the regulated drive voltage.
 
+
 \subsection{VS Driver}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.6.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.6.pdf}
    \end{center}
    \caption{VS Driver}
    \end{figure}
 
 The vertical storage area has lower capacitance that the vertical imaging area, so a similar drive circuit suffices.
 
+
 \subsection{Output Drain Drivers}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.7.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.7.pdf}
    \end{center}
    \caption{Output Drain Drivers}
    \end{figure}
 
 These provide -17 to -23\ V for the output drains. Maximum load per drain is 1.2\ mA, not a challenge for a DC-driver block.  
 
+
 \subsection{Bias Drivers}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.8.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.8.pdf}
    \end{center}
    \caption{Bias Drivers}
    \end{figure}
@@ -484,54 +511,59 @@ The charge injection source (IS) driver provides -5 to -7\ V.
 The charge injection gate 2 (IG2) driver provides -2 to -4\ V.
 The back bias driver provides 0 to 40\ V.
 
+
 \subsection{Power Translation}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.9.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.9.pdf}
    \end{center}
    \caption{Power Translation}
    \end{figure}
   
 A small amount of power (total nominally $<1$\ mA, but probably somewhat larger due to dynamic power consumption) is required a +5V by the DG403 switches. The ADC128S102 ADC's need a tightly regulated 5V supply, which serves both as analog power and voltage refence. The LT1078 opamps we are using for other functions have more than enough current capability here and will be highly efficient. The DG403 loads are resistively decoupled, so there will be no capacitive instability issue. The +5ADC is capacitively loaded, so it requires damping components C2 and R18.
+
   
 The OD-pump provides $\approx -28$\ V for the output drain drivers, and possibly for charge injection also (TBD).
 
 \subsection{Bias and Power Housekeeping}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.10.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.10.pdf}
    \end{center}
    \caption{Bias and Power Housekeeping}
    \end{figure}
 
 The multiplexers on this page feed bias and power supply voltages to the housekeeping ADC. Most of these are outside the $\pm 12.5$\ V range of the ADC, so 4X attenuators reduce the voltages.
 
+
 \subsection{Clock Level Housekeeping}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.11.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.11.pdf}
    \end{center}
    \caption{Clock Level Housekeeping}
    \end{figure}
 
 The multiplexers on this page feed clock levels to the housekeeping ADC. The driver board temperature monitor signal is also included here.
 
+
 \subsection{Housekeeping ADC}
 
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.12.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.12.pdf}
    \end{center}
    \caption{Housekeeping ADC}
    \end{figure}
 
 This page just shows the board-level connections of the HKADC block.
 
+
 \subsection{Video Housekeeping}
 
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.13.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.13.pdf}
    \end{center}
    \caption{Video Housekeeping}
    \end{figure}
@@ -539,15 +571,17 @@ This page just shows the board-level connections of the HKADC block.
 
 R47 provides a load for an AD590 temperature sensor on the video board. This circuit also monitors references and the power supply.
 
+
 \subsection{Command and Housekeeping Protocols}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.14.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.14.pdf}
    \end{center}
    \caption{Command Decoding}
    \end{figure}
 
 The Pixel Electronics send digital commands to the Driver Board, and retrieve housekeeping data, through a serial interface. Some of these flow through the Driver Board to or from the video board. The serial interface operates at the PCLK rate (139\ kHz), and consists of two serial data signals and two control "strobes".
+
 
 \begin{tabular}{ll}
 PCLK & Serial command clock \\
@@ -647,37 +681,40 @@ In Video Board mode, this Driver Board routes $\overline{\textup{DVCS}}$ to $\ov
 \subsection{CCD Clock Decoding}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.15.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.15.pdf}
    \end{center}
    \caption{CCD Clock Decoding}
    \end{figure}
    
 The timing signals for the CCD clocks are transmitted as two 10Mb/s serial streams, strobed by SYNC.
 
+
 \subsection{Digital Power/HK Multiplexer}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.16.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.16.pdf}
    \end{center}
    \caption{Digital Power}
    \end{figure}
 
 This page shows the power connections to the Driver Board's digital chips, the power up reset circuits, and the digital multiplexing of housekeeping and Video Board data.
 
+
 \subsection{LVDS Drivers}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.17.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.17.pdf}
    \end{center}
    \caption{LVDS Drivers}
    \end{figure}
  
 The Driver Board transmits digital signals to the PE and video board via LVDS.
 
+
 \subsection{LVDS Receivers}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.18.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.18.pdf}
    \end{center}
    \caption{LVDS Receivers}
    \end{figure}
@@ -685,27 +722,32 @@ The Driver Board transmits digital signals to the PE and video board via LVDS.
 The Driver Board receives digital signals from the PE and video board via LVDS.
 
 
+
 \subsection{Video Power Filters}
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{DriverBoard.19.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.19.pdf}
    \end{center}
    \caption{Video Power Filters}
    \end{figure}
 
 Power filters for the Video board are installed on the Driver Board.
 
+
+
 \section{TCE}
 
    \begin{figure}
    \begin{center}
-   \includegraphics[height=16cm,angle=90,keepaspectratio=true]{TCE.pdf}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{TCE.pdf}
    \end{center}
    \caption{TCE}
    \end{figure}
 
 
 Each driver board will have the footprints for Temperature Control Electronics, but only two of the four boards will populate these with components.
+
+
 
 \section{External interfaces}
 
@@ -717,33 +759,16 @@ Table \ref{J1} shows the pinout of J1. All LVDS signals to and from the video bo
 
 Table \ref{J2} shows the pinout of J2. CCD clocks and biases, focal plane temperature data and drive, video board power, and video board housekeeping signals pass through this connector.
 
+%\tsvtable{J1}
+% This one is small so we don't use the template
 \begin{table}[h]
 \centering
-\begin{tabular}{|l|l|l|l|}
-\hline
- Connector & Pin & Signal & Description \\
-\hline
-\input{J1}
-\hline
-\end{tabular}
+\includegraphics[]{J1.tsv.pdf}
 \caption{J1}
 \label{J1}
 \end{table}
 
-\begin{table}[h]
-\centering
-{\small
-\begin{tabular}{|l|l|l|l|}
-\hline
- Connector & Pin & Signal & Description \\
-\hline
-\input{J2}
-\hline
-\end{tabular}
-}
-\caption{J2}
-\label{J2}
-\end{table}
+\tsvtable{J2}
 
 \subsection{Digital/Power Interface to PE}
 
@@ -751,37 +776,10 @@ Table \ref{J3} shows the pinout of J3, through which power and data pass from th
 
 Table \ref{J4} shows the pinout of J4, through which data passes from the Driver Board to the Pixel Electronics.
 
-\begin{table}[h]
-\centering
-{\small
-\begin{tabular}{|l|l|l|l|}
-\hline
- Connector & Pin & Signal & Description \\
-\hline
-\input{J3}
-\hline
-\end{tabular}
-}
-\caption{J3}
-\label{J3}
-\end{table}
+\tsvtable{J3}
+\tsvtable{J4}
 
-\begin{table}[h]
-\centering
-{\small
-\begin{tabular}{|l|l|l|l|}
-\hline
- Connector & Pin & Signal & Description \\
-\hline
-\input{J4}
-\hline
-\end{tabular}
-}
-\caption{J4}
-\label{J4}
-\end{table}
 
-\clearpage
 \section{DAC and Housekeeping Tables}
 
 Table \ref{DACV} shows the DAC-controlled voltages. DAC numbers are in base 8 (octal). Table \ref{HKC} has more detailed descriptions of the functions.
