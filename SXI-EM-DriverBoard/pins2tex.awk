@@ -1,7 +1,7 @@
 BEGIN{
 FS="\t"
 # LaTeX preamble
-print "\\documentclass{article}"
+print "\\documentclass[12pt]{article}"
 print "\\usepackage[active,tightpage]{preview}"
 print "\\PreviewEnvironment{tabular}"
 print "\\begin{document}"

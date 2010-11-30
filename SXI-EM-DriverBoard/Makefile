@@ -36,7 +36,7 @@ PDFLATEX=pdflatex
 %.sch : %.tsv
 	awk -f pins2gsch.awk $< >$@
 
-all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf
+all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf DriverBoard-letter.pdf
 
 pdf_schematics: \
 BB.pdf\
@@ -97,12 +97,19 @@ J1.tsv.pdf J2.tsv.pdf J3.tsv.pdf J4.tsv.pdf J5.tsv.pdf
 # For when typesetting within TeXShop GUI 
 driverfigs: $(DRIVERFIGS)
 
-DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
+# Make the A4 Documentation
+DriverBoard.pdf: DriverBoard.tex DriverBoard-content.tex $(DRIVERFIGS) 
 	rm -f DriverBoard.aux
 	$(PDFLATEX) DriverBoard.tex
 	$(PDFLATEX) DriverBoard.tex
 	$(PDFLATEX) DriverBoard.tex
 
+# Make 8.5" x 11" Documentation
+DriverBoard-letter.pdf: DriverBoard-letter.tex DriverBoard-content.tex $(DRIVERFIGS)
+	rm -f DriverBoard-letter.aux
+	$(PDFLATEX) DriverBoard-letter.tex
+	$(PDFLATEX) DriverBoard-letter.tex
+	$(PDFLATEX) DriverBoard-letter.tex
 
 BLOCKSCHEM=\
 BB.sch\
