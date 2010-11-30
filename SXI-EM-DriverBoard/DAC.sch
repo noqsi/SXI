@@ -43,18 +43,10 @@ T 47800 46600 5 10 1 1 0 3 1
 refdes=U1
 }
 N 48900 43800 45400 43800 4
-C 46800 48700 1 0 0 capacitor.sym
+C 46800 48700 1 0 0 DoubleCap.sym
 {
-T 47000 49400 5 10 0 0 0 0 1
-device=CAPACITOR
-T 46900 48600 5 10 1 1 0 0 1
+T 47500 49000 5 10 1 1 0 0 1
 refdes=C1
-T 47000 49600 5 10 0 0 0 0 1
-symversion=0.1
-T 47400 49000 5 10 1 1 0 0 1
-value=0.1uF
-T 47000 50200 5 10 0 0 0 0 1
-footprint=0603
 }
 C 47600 48600 1 0 0 gnd-1.sym
 C 44900 48800 1 0 0 resistor.sym
@@ -297,18 +289,10 @@ N 52700 46300 54200 46300 4
 N 52700 44900 54200 44900 4
 N 52700 43400 54200 43400 4
 N 52700 42000 54200 42000 4
-C 50600 48600 1 0 0 capacitor.sym
+C 50600 48600 1 0 0 DoubleCap.sym
 {
-T 50800 49300 5 10 0 0 0 0 1
-device=CAPACITOR
 T 50800 49100 5 10 1 1 0 0 1
 refdes=C2
-T 50800 49500 5 10 0 0 0 0 1
-symversion=0.1
-T 51200 48900 5 10 1 1 0 0 1
-value=0.1uF
-T 50800 50100 5 10 0 0 0 0 1
-footprint=0603
 }
 C 51400 48500 1 0 0 gnd-1.sym
 C 50500 47700 1 0 0 gnd-1.sym
@@ -319,18 +303,10 @@ refdes=U3
 T 52500 49400 5 10 0 0 0 0 1
 symversion=0.1
 }
-C 52000 48600 1 0 0 capacitor.sym
+C 52000 48600 1 0 0 DoubleCap.sym
 {
-T 52200 49300 5 10 0 0 0 0 1
-device=CAPACITOR
 T 52200 49100 5 10 1 1 0 0 1
 refdes=C3
-T 52200 49500 5 10 0 0 0 0 1
-symversion=0.1
-T 52600 48900 5 10 1 1 0 0 1
-value=0.1uF
-T 52200 50100 5 10 0 0 0 0 1
-footprint=0603
 }
 C 52800 48500 1 0 0 gnd-1.sym
 C 51900 47700 1 0 0 gnd-1.sym
@@ -341,18 +317,10 @@ refdes=U4
 T 54200 49400 5 10 0 0 0 0 1
 symversion=0.1
 }
-C 53700 48600 1 0 0 capacitor.sym
+C 53700 48600 1 0 0 DoubleCap.sym
 {
-T 53900 49300 5 10 0 0 0 0 1
-device=CAPACITOR
 T 53900 49100 5 10 1 1 0 0 1
 refdes=C4
-T 53900 49500 5 10 0 0 0 0 1
-symversion=0.1
-T 54300 48900 5 10 1 1 0 0 1
-value=0.1uF
-T 53900 50100 5 10 0 0 0 0 1
-footprint=0603
 }
 C 54500 48500 1 0 0 gnd-1.sym
 C 53600 47700 1 0 0 gnd-1.sym
@@ -363,18 +331,10 @@ refdes=U5
 T 55600 49400 5 10 0 0 0 0 1
 symversion=0.1
 }
-C 55100 48600 1 0 0 capacitor.sym
+C 55100 48600 1 0 0 DoubleCap.sym
 {
-T 55300 49300 5 10 0 0 0 0 1
-device=CAPACITOR
 T 55300 49100 5 10 1 1 0 0 1
 refdes=C5
-T 55300 49500 5 10 0 0 0 0 1
-symversion=0.1
-T 55700 48900 5 10 1 1 0 0 1
-value=0.1uF
-T 55300 50100 5 10 0 0 0 0 1
-footprint=0603
 }
 C 55900 48500 1 0 0 gnd-1.sym
 C 55000 47700 1 0 0 gnd-1.sym

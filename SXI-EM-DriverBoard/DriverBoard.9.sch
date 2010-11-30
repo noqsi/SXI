@@ -83,20 +83,10 @@ symversion=0.1
 T 52900 43800 5 10 0 0 0 0 1
 footprint=SO8
 }
-C 51000 44100 1 0 0 capacitor-1.sym
+C 51000 44100 1 0 0 DoubleCap.sym
 {
-T 51200 44800 5 10 0 0 0 0 1
-device=CAPACITOR
 T 51200 44600 5 10 1 1 0 0 1
 refdes=C1
-T 51200 45000 5 10 0 0 0 0 1
-symversion=0.1
-T 51600 44100 5 10 1 1 0 0 1
-value=0.1uF
-T 51000 44100 5 10 0 1 0 0 1
-footprint=0603
-T 51000 44100 5 10 0 1 0 0 1
-spec=25WVDC X7R
 }
 C 50900 44000 1 0 0 gnd-1.sym
 N 51900 44300 52100 44300 4

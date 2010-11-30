@@ -25,20 +25,10 @@ footprint=1210
 T 54300 47400 5 10 0 1 0 0 1
 spec=5% 1/2W
 }
-C 54300 46400 1 0 0 capacitor-1.sym
+C 54300 46400 1 0 0 DoubleCap.sym
 {
-T 54500 47100 5 10 0 0 0 0 1
-device=CAPACITOR
 T 54500 46900 5 10 1 1 0 0 1
 refdes=C5
-T 54500 47300 5 10 0 0 0 0 1
-symversion=0.1
-T 54700 46200 5 10 1 1 0 0 1
-value=0.1uF
-T 54300 46400 5 10 0 1 0 0 1
-footprint=0603
-T 54300 46400 5 10 0 1 0 0 1
-spec=25WVDC X7R
 }
 C 54200 46300 1 0 0 gnd-1.sym
 C 45300 43800 1 0 0 MAX4508.sym
@@ -410,20 +400,10 @@ footprint=1210
 T 56500 47400 5 10 0 1 0 6 1
 spec=5% 1/2W
 }
-C 56500 46400 1 0 1 capacitor-1.sym
+C 56500 46400 1 0 1 DoubleCap.sym
 {
-T 56300 47100 5 10 0 0 0 6 1
-device=CAPACITOR
-T 56300 46900 5 10 1 1 0 6 1
+T 55900 46900 5 10 1 1 0 0 1
 refdes=C6
-T 56300 47300 5 10 0 0 0 6 1
-symversion=0.1
-T 56100 46200 5 10 1 1 0 6 1
-value=0.1uF
-T 56500 46400 5 10 0 1 0 6 1
-footprint=0603
-T 56500 46400 5 10 0 1 0 6 1
-spec=25WVDC X7R
 }
 C 56600 46300 1 0 1 gnd-1.sym
 N 54200 45100 53500 45100 4
@@ -463,21 +443,6 @@ footprint=1210
 T 45400 49000 5 10 0 1 0 0 1
 spec=5% 1/2W
 }
-C 45400 48000 1 0 0 capacitor-1.sym
-{
-T 45600 48700 5 10 0 0 0 0 1
-device=CAPACITOR
-T 45600 48500 5 10 1 1 0 0 1
-refdes=C3
-T 45600 48900 5 10 0 0 0 0 1
-symversion=0.1
-T 45800 47800 5 10 1 1 0 0 1
-value=0.1uF
-T 45400 48000 5 10 0 1 0 0 1
-footprint=0603
-T 45400 48000 5 10 0 1 0 0 1
-spec=25WVDC X7R
-}
 C 45300 47900 1 0 0 gnd-1.sym
 C 47600 49000 1 0 1 resistor.sym
 {
@@ -492,20 +457,10 @@ footprint=1210
 T 47600 49000 5 10 0 1 0 6 1
 spec=5% 1/2W
 }
-C 47600 48000 1 0 1 capacitor-1.sym
+C 47600 48000 1 0 1 DoubleCap.sym
 {
-T 47400 48700 5 10 0 0 0 6 1
-device=CAPACITOR
-T 47400 48500 5 10 1 1 0 6 1
+T 46900 48500 5 10 1 1 0 0 1
 refdes=C4
-T 47400 48900 5 10 0 0 0 6 1
-symversion=0.1
-T 47200 47800 5 10 1 1 0 6 1
-value=0.1uF
-T 47600 48000 5 10 0 1 0 6 1
-footprint=0603
-T 47600 48000 5 10 0 1 0 6 1
-spec=25WVDC X7R
 }
 C 47700 47900 1 0 1 gnd-1.sym
 N 44900 46500 45300 46500 4
@@ -688,3 +643,8 @@ spec=5% 1/10W
 }
 T 52000 40200 9 10 1 0 0 0 1
 19
+C 45400 48000 1 0 0 DoubleCap.sym
+{
+T 45600 48500 5 10 1 1 0 0 1
+refdes=C3
+}

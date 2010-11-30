@@ -160,18 +160,10 @@ footprint=0603
 T 48600 45900 5 10 0 1 0 0 1
 spec=5% 1/10W
 }
-C 49900 45200 1 0 0 capacitor.sym
+C 49900 45200 1 0 0 DoubleCap.sym
 {
-T 50100 45900 5 10 0 0 0 0 1
-device=CAPACITOR
 T 50100 45700 5 10 1 1 0 0 1
 refdes=C2
-T 50100 46100 5 10 0 0 0 0 1
-symversion=0.1
-T 50500 45500 5 10 1 1 0 0 1
-value=0.1uF
-T 50100 46700 5 10 0 0 0 0 1
-footprint=0603
 }
 C 50700 45100 1 0 0 gnd-1.sym
 N 49900 45400 49900 45600 4
@@ -189,18 +181,10 @@ footprint=1210
 T 44300 42500 5 10 0 1 0 0 1
 spec=5% 1/2W
 }
-C 45200 42400 1 0 0 capacitor.sym
+C 45200 42400 1 0 0 DoubleCap.sym
 {
-T 45400 43100 5 10 0 0 0 0 1
-device=CAPACITOR
 T 45400 42900 5 10 1 1 0 0 1
 refdes=C1
-T 45400 43300 5 10 0 0 0 0 1
-symversion=0.1
-T 45800 42700 5 10 1 1 0 0 1
-value=0.1uF
-T 45400 43900 5 10 0 0 0 0 1
-footprint=0603
 }
 C 46000 42300 1 0 0 gnd-1.sym
 C 43700 42500 1 0 0 in-1.sym
@@ -311,16 +295,8 @@ spec=0.1%
 N 45300 49400 45300 50200 4
 N 45300 50200 45200 50200 4
 C 46100 49900 1 0 0 gnd-1.sym
-C 47500 46100 1 0 0 capacitor.sym
+C 47500 46100 1 0 0 DoubleCap.sym
 {
-T 47700 46800 5 10 0 0 0 0 1
-device=CAPACITOR
 T 47700 46600 5 10 1 1 0 0 1
 refdes=C3
-T 47700 47000 5 10 0 0 0 0 1
-symversion=0.1
-T 48100 46400 5 10 1 1 0 0 1
-value=0.1uF
-T 47700 47600 5 10 0 0 0 0 1
-footprint=0603
 }

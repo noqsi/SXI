@@ -89,14 +89,16 @@ DriverBoard.16.pdf \
 DriverBoard.17.pdf \
 DriverBoard.18.pdf \
 DriverBoard.19.pdf \
+DriverBoard.20.pdf \
 TCE.pdf \
-J1.tex J2.tex J3.tex J4.tex
+J1.tex J2.tex J3.tex J4.tex J5.tex
 
 # For when typesetting within TeXShop GUI 
 driverfigs: $(DRIVERFIGS)
 
 DriverBoard.pdf: DriverBoard.tex $(DRIVERFIGS)
 	rm -f DriverBoard.aux
+	$(PDFLATEX) DriverBoard.tex
 	$(PDFLATEX) DriverBoard.tex
 	$(PDFLATEX) DriverBoard.tex
 
@@ -137,8 +139,9 @@ DriverBoard.16.sch \
 DriverBoard.17.sch \
 DriverBoard.18.sch \
 DriverBoard.19.sch \
+DriverBoard.20.sch \
 TCE.sch \
-J1.sch J2.sch J3.sch J4.sch
+J1.sch J2.sch J3.sch J4.sch J5.sch
 
 DriverBoard.bom.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 	gnetlist -g bom -o DriverBoard.bom.txt $(TOPSCHEM)
@@ -166,6 +169,7 @@ SXI-EM-DriverBoard/DriverBoard.17.sch \
 SXI-EM-DriverBoard/DriverBoard.18.sch \
 SXI-EM-DriverBoard/DriverBoard.19.sch \
 SXI-EM-DriverBoard/DriverBoard.2.sch \
+SXI-EM-DriverBoard/DriverBoard.20.sch \
 SXI-EM-DriverBoard/DriverBoard.3.sch \
 SXI-EM-DriverBoard/DriverBoard.4.sch \
 SXI-EM-DriverBoard/DriverBoard.5.sch \
@@ -178,6 +182,7 @@ SXI-EM-DriverBoard/J1.tsv \
 SXI-EM-DriverBoard/J2.tsv \
 SXI-EM-DriverBoard/J3.tsv \
 SXI-EM-DriverBoard/J4.tsv \
+SXI-EM-DriverBoard/J5.tsv \
 SXI-EM-DriverBoard/Makefile \
 SXI-EM-DriverBoard/OD-driver.sch \
 SXI-EM-DriverBoard/OD-pump.sch \
@@ -241,8 +246,8 @@ SXI-EM-DriverBoard.tar.gz :
 	cd ..; tar czf SXI-EM-DriverBoard/SXI-EM-DriverBoard.tar.gz $(MANIFEST)
 
 clean : 
-	rm -f *~ Symbols/*~ '#*#' 'Symbols/#*#' *.pdf *.ps *.log output.net \
-	 J1.tex J1.sch J2.tex J2.sch J3.tex J3.sch J4.tex J4.sch \
+	rm -f *~ Symbols/*~ \#*\# Symbols/\#*\# *.pdf *.ps *.log output.net \
+	 J1.tex J1.sch J2.tex J2.sch J3.tex J3.sch J4.tex J4.sch J5.tex J5.sch \
 	 DriverBoard.aux DriverBoard.out DriverBoard.*.txt EM.tar.gz
 
 # $Log$

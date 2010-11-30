@@ -21,20 +21,10 @@ device=DG403
 T 48700 47900 5 10 0 0 0 6 1
 footprint=SO16
 }
-C 44800 44700 1 0 0 capacitor-1.sym
+C 44800 44700 1 0 0 DoubleCap.sym
 {
-T 45000 45400 5 10 0 0 0 0 1
-device=CAPACITOR
 T 45000 45200 5 10 1 1 0 0 1
 refdes=C1
-T 45000 45600 5 10 0 0 0 0 1
-symversion=0.1
-T 45200 44500 5 10 1 1 0 0 1
-value=0.1uF
-T 44800 44700 5 10 0 1 0 0 1
-footprint=0603
-T 44800 44700 5 10 0 1 0 0 1
-spec=25WVDC X7R
 }
 N 47000 43700 47000 44200 4
 N 49000 45000 49200 45000 4
@@ -57,20 +47,10 @@ T 44800 45700 5 10 0 1 0 0 1
 spec=5% 1/2W
 }
 C 44700 44600 1 0 0 gnd-1.sym
-C 43200 44700 1 0 0 capacitor-1.sym
+C 43200 44700 1 0 0 DoubleCap.sym
 {
 T 43400 45200 5 10 1 1 0 0 1
 refdes=C2
-T 43400 45400 5 10 0 0 0 0 1
-device=CAPACITOR
-T 43400 45600 5 10 0 0 0 0 1
-symversion=0.1
-T 43800 44700 5 10 1 1 0 0 1
-value=0.1uF
-T 43200 44700 5 10 0 1 0 0 1
-footprint=0603
-T 43200 44700 5 10 0 1 0 0 1
-spec=25WVDC X7R
 }
 C 43200 45700 1 0 0 resistor.sym
 {
@@ -87,20 +67,10 @@ spec=5% 1/10W
 }
 C 43100 44600 1 0 0 gnd-1.sym
 N 44100 45800 44100 44900 4
-C 41700 44700 1 0 0 capacitor-1.sym
+C 41700 44700 1 0 0 DoubleCap.sym
 {
 T 41900 45200 5 10 1 1 0 0 1
 refdes=C3
-T 41900 45400 5 10 0 0 0 0 1
-device=CAPACITOR
-T 41900 45600 5 10 0 0 0 0 1
-symversion=0.1
-T 41900 44500 5 10 1 1 0 0 1
-value=0.1uF
-T 41700 44700 5 10 0 1 0 0 1
-footprint=0603
-T 41700 44700 5 10 0 1 0 0 1
-spec=25WVDC X7R
 }
 C 41700 45700 1 0 0 resistor.sym
 {

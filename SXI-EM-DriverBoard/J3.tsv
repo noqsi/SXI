@@ -1,93 +1,51 @@
-# $Id$
-# Power and LVDS signals from PE to Driver
-#
-# Layout for using a 51 pin three row connector for a mixture of LVDS
-# and other signals. Keeping the pairs as close as possible allows 17
-# of them, and then 17 single signals remain. This list represents a
-# "herringbone" pattern of pairs, with the singles on the first and
-# third rows.
-#
-# Upper pairs
-J3	1	PCLK+	Pixel Clock
-J3	19	PCLK-
-#--
-J3	3	DVMS+	Driver/video MUX strobe
-J3	21	DVMS-
-#--
-J3	5	TMS+	TCE MUX strobe
-J3	23	TMS-
-#--
-J3	7	DVCD+	Driver/video CMD data
-J3	25	DVCD-
-#--
-J3	9	DVCS+	Driver/video CMD strobe
-J3	27	DVCS-
-#--
-J3	11	TCD+	TCE-CNTL data
-J3	29	TCD-
-#--
-J3	13	TCS+	TCE-CNTL strobe
-J3	31	TCS-
-#--
-J3	15	CCLK+	ASIC Cclk
-J3	33	CCLK-
-#--
-J3	17	CLAMP+	ASIC Clamp
-J3	35	CLAMP-
-#--
-# Lower pairs
-J3	36	SCLK+	Sequencer clock
-J3	20	SCLK-
-#--
-J3	38	SYNC+	Sequencer MUX/DEMUX Sync
-J3	22	SYNC-
-#--
-J3	40	SEQA+	Sequencer multiplexed signal
-J3	24	SEQA-
-J3	42	SEQB+
-J3	26	SEQB-
-#-
-J3	44	VRST+
-J3	28	VRST-
-#--
-J3	46	INT+	ASIC Int
-J3	30	INT-
-##--
-J3	48	DEINT+	ASIC Deint
-J3	32	DEINT-
-##--
-J3	50	ODD+	ASIC Odd
-J3	34	ODD-
-##--	
-# Upper singles
-J3	2	GND	Power and returns
-J3	4	+15V
-J3	6	GND
-J3	8	+15V
-J3	10	GND
-J3	12	-15V
-J3	14	GND
-J3	16	-15V
-J3	18	GND
-# Lower singles
-J3	37	GND
-J3	39	+3.3V
-J3	41	GND
-J3	43	+3.3V
-J3	45	GND
-##--
-#J3	47
-#J3	49
-#J3	51
-##--
-#
-# $Log$
-# Revision 2.1  2010-09-17 17:24:46  jpd
-# Cleaned up EM design directory.
-#
-# Revision 1.2  2010-05-28 14:52:04  jpd
-# DRC found a few real mistakes.
-#
-# Revision 1.1  2010-03-16 00:15:13  jpd
-# Connector pinmaps.
-#
+J3	1	GND	
+J3	2	PCLKtoSlave+	In-0
+J3	3	DVCDtoSlave-	In-0
+J3	4	DVMStoSlave+	In-0
+J3	5		
+J3	6	DVCS2-	In-0
+J3	7	RGtoSlave+	In-0
+J3	8		
+J3	9	ISV2-	In-0
+J3	10	GND	
+J3	11	SEQAtoSlave+	In-0
+J3			
+J3	13	SEQB2+	In-0
+J3	14	SYNCtoSlave-	In-0
+J3	15	GND	
+J3	16		
+J3	17		
+J3	18		
+J3	19	GND	
+J3	20	PCLKtoSlave-	In-0
+J3	21	DVCDtoSlave+	In-0
+J3	22	DVMStoSlave-	In-0
+J3	23		
+J3	24	DVCS2+	In-0
+J3	25	RGtoSlave-	In-0
+J3	26		
+J3	27	ISV2+	In-0
+J3	28	GND	
+J3	29	SEQAtoSlave-	In-0
+J3	30		
+J3	31	SEQB2-	In-0
+J3	32	SYNCtoSlave+	In-0
+J3	33	GND	
+J3	34	GND	
+J3	35	GND	
+J3	36	GND	
+J3	37		
+J3	38		
+J3	39	HKDAT2+	Out-0
+J3	40	HKDAT2-	Out-0
+J3	41		
+J3	42		
+J3	43	GND	
+J3	44	GND	
+J3	45		
+J3	46		
+J3	47		
+J3	48		
+J3	49		
+J3	50		
+J3	51	GND	

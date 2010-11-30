@@ -30,20 +30,10 @@ footprint=1210
 T 41800 48200 5 10 0 1 0 0 1
 spec=5% 1/2W
 }
-C 41800 47200 1 0 0 capacitor-1.sym
+C 41800 47200 1 0 0 DoubleCap.sym
 {
-T 42000 47900 5 10 0 0 0 0 1
-device=CAPACITOR
 T 42000 47700 5 10 1 1 0 0 1
 refdes=C7
-T 42000 48100 5 10 0 0 0 0 1
-symversion=0.1
-T 42200 47000 5 10 1 1 0 0 1
-value=0.1uF
-T 41800 47200 5 10 0 1 0 0 1
-footprint=0603
-T 41800 47200 5 10 0 1 0 0 1
-spec=25WVDC X7R
 }
 C 41700 47100 1 0 0 gnd-1.sym
 C 44000 48200 1 0 1 resistor.sym
@@ -59,20 +49,10 @@ footprint=1210
 T 44000 48200 5 10 0 1 0 6 1
 spec=5% 1/2W
 }
-C 44000 47200 1 0 1 capacitor-1.sym
+C 44000 47200 1 0 1 DoubleCap.sym
 {
-T 43800 47900 5 10 0 0 0 6 1
-device=CAPACITOR
 T 43800 47700 5 10 1 1 0 6 1
 refdes=C8
-T 43800 48100 5 10 0 0 0 6 1
-symversion=0.1
-T 43600 47000 5 10 1 1 0 6 1
-value=0.1uF
-T 44000 47200 5 10 0 1 0 6 1
-footprint=0603
-T 44000 47200 5 10 0 1 0 6 1
-spec=25WVDC X7R
 }
 C 44100 47100 1 0 1 gnd-1.sym
 N 43100 46400 43100 48300 4
@@ -187,20 +167,10 @@ footprint=1210
 T 47300 48200 5 10 0 1 0 0 1
 spec=5% 1/2W
 }
-C 47300 47200 1 0 0 capacitor-1.sym
+C 47300 47200 1 0 0 DoubleCap.sym
 {
-T 47500 47900 5 10 0 0 0 0 1
-device=CAPACITOR
 T 47500 47700 5 10 1 1 0 0 1
 refdes=C9
-T 47500 48100 5 10 0 0 0 0 1
-symversion=0.1
-T 47700 47000 5 10 1 1 0 0 1
-value=0.1uF
-T 47300 47200 5 10 0 1 0 0 1
-footprint=0603
-T 47300 47200 5 10 0 1 0 0 1
-spec=25WVDC X7R
 }
 C 47200 47100 1 0 0 gnd-1.sym
 C 49500 48200 1 0 1 resistor.sym
@@ -216,20 +186,10 @@ footprint=1210
 T 49500 48200 5 10 0 1 0 6 1
 spec=5% 1/2W
 }
-C 49500 47200 1 0 1 capacitor-1.sym
+C 49500 47200 1 0 1 DoubleCap.sym
 {
-T 49300 47900 5 10 0 0 0 6 1
-device=CAPACITOR
 T 49300 47700 5 10 1 1 0 6 1
 refdes=C10
-T 49300 48100 5 10 0 0 0 6 1
-symversion=0.1
-T 49100 47000 5 10 1 1 0 6 1
-value=0.1uF
-T 49500 47200 5 10 0 1 0 6 1
-footprint=0603
-T 49500 47200 5 10 0 1 0 6 1
-spec=25WVDC X7R
 }
 C 49600 47100 1 0 1 gnd-1.sym
 N 48600 46400 48600 48300 4
