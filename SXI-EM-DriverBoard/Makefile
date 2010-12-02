@@ -155,7 +155,7 @@ DriverBoard.bom.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 	gnetlist -g bom -o DriverBoard.bom.txt $(TOPSCHEM)
 
 DriverBoard.net.txt : $(BLOCKSCHEM) $(TOPSCHEM)
-	gnetlist -g calay -o DriverBoard.net.txt $(TOPSCHEM)
+	gnetlist -g pads -o DriverBoard.net.txt $(TOPSCHEM)
 
 DriverBoard.drc.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 	gnetlist -g drc2 -l drc-config.scm -o DriverBoard.drc.txt $(TOPSCHEM)
