@@ -36,7 +36,7 @@ PDFLATEX=pdflatex
 %.sch : %.tsv
 	awk -f pins2gsch.awk $< >$@
 
-all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf DriverBoard-letter.pdf
+all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf
 
 pdf_schematics: \
 BB.pdf\

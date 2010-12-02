@@ -80,4 +80,4 @@ C 52300 45600 1 270 0 busripper-1.sym
 T 43300 40800 5 25 1 1 0 4 1
 title=Housekeeping ADC
 T 52000 40200 9 10 1 0 0 0 1
-19
+20

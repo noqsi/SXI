@@ -87,7 +87,7 @@ P2/4H-1 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-2 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-3 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
 P2/4H-4 & -8 & -7 & -6 & 0.1 & +2 & +3 & +4 & 0.1 & 130 & Serial-driver \\
-IG1V & -6 & -5 & -4 & 0.1 & +5 & +6 & +7 & 0.1 &230 & Serial-driver \\
+ISV & -13 & -12 & -11 & 0.1 & -7 & -6 & -5 & 0.1 &160 & Serial-driver \\
 \hline
 \end{tabular}
  \caption{CCD Clocks.}
@@ -96,22 +96,6 @@ IG1V & -6 & -5 & -4 & 0.1 & +5 & +6 & +7 & 0.1 &230 & Serial-driver \\
 
 Exactly what the capacitances represent isn't clearly defined on the specsheet, although it appears likely that they are gate-gate capacitance for the two phase clocks, and gate-substrate for single ended clocks. More on this in section \ref{ClockDrivers}.
 
-%\begin{table}[h]
-%\centering
-%\begin{tabular}{|l|rrrr|rrrr|r|l|}
-%\hline
-%&\multicolumn{4}{c|}{Low(V)}&\multicolumn{4}{c|}{High(V)}& C(pF)& Driver Circuit \\ 
-%&Min.&Typ.&Max.&Prec.&Min.&Typ.&Max&Prec.&& \\
-%\hline
-%IG1V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver? \\
-%IG2V & -15? & ? & +15? & 0.01? & -15? & ? & +15? & 0.01? & 230 & Serial-driver? \\
-%\hline
-%\end{tabular}
- %\caption{Charge Injection Clocks.}
- %\label{CIClocks}
-%\end{table}
-
-% Table \ref{CIClocks} shows the charge injection clocks. These are separated out as the charge injection strategy will depend on the outcome of charge injection experiments in progress. The drivers will probably be similar to the drivers for the other low capacitance clocks, perhaps with minor modification depending on the final requirements.
 
 \begin{table}[h]
 \centering
@@ -127,39 +111,13 @@ OD-D &-22 &-20& -18& 0.1&1.2&DC-driver \\
 RD &-13& -12 &-11& 0.1&0.001&DC-driver \\
 OG& -7& -5& -3&  0.1&0.001&DC-driver \\
 BB &+20 &+30 &+40 &0.5&0.001&BB \\
-IG2V&-3.5&-3.0&-2.5&0.02&0.001&DC-driver \\
-ISV&-6.1&-5.8&-5.5&0.02&0.001&DC-driver \\
+IG1V&-6.5&-6.0&-5.5&0.02&0.001&DC-driver \\
+IG2V&-3.1&-2.8&-2.5&0.02&0.001&DC-driver \\
 \hline
 \end{tabular}
  \caption{Biases.}
  \label{Biases}
 \end{table}
-
-%ISV may be either a clock or a DC bias (but not both) depending on the outcome of charge injection experiments in progress.
-
-% Experience suggests that a clock driver time constant of 1/10 the clock period  is sufficiently small. 
-
-%The heaviest loads for the Serial-driver block are P1H and P3H, with 12\ V max swings into 320\ pF at 132\ kHz. Output resistance of $<$2.3\ k$\Omega$ and peak current capability of $>$30\ mA will achieve  the required time constant of $<$750\ ns. IG1V and IG2V have larger swings, but they synchronize with the slower vertical clocks, so they need no more peak current.
-
-%The heaviest loads on the Parallel block are the Vertical imaging area clocks, with 12\ V max swings into 100\ nF 
-
-
-%I've pulled these together from a variety of documents: they need verification. The clock requirements  %are much less challenging than I assumed when I designed these blocks.
-
-%Vertical clock voltages: (+2,-6) nominal, high level adjustable (0 to +10), low level adjustable (-10 to 0).
-
-%Two vertical phases, two sections (imaging and storage). Total vertical clock capacitance 20nF. Clock rate 32 kHz. Nominal clock current, derived from the numbers above, is 5 mA.
-%Horizontal clock voltages:  (+6,-5) nominal, high level adjustable (0 to +10), low level adjustable (-10 to 0).
-
-%Three horizontal phases, four sections. Total horizontal clock capacitance 1.28nF. Clock rate 136 kHz. Nominal clock current, derived from the numbers above, is 2 mA.
-
-%Four output drains, operating range -18V to -22V, 1.2mA nominal each. Absolute maximum voltage -25V. Independently adjustable.
-
-%Output gate voltage range -10V to 0, nominal -5.
-
-%Drivers should have capacity of at least twice nominal current.
-
-%ISV, ID: what are current requirements?
 
 
 
@@ -173,21 +131,14 @@ ISV&-6.1&-5.8&-5.5&0.02&0.001&DC-driver \\
    \caption{REF Block}
    \end{figure}
 
-The REF block provides a 2.5V reference voltage for the DAC and driver circuits. The REF43 has flown successfully on a number of missions, including Suzaku. 2.5V seems a good choice for a reference in a system whose low voltage supply is 3.3V. The capacitors implement the recommended bypassing for the REF43.
-R1 provides current limiting and decoupling.
+The REF block provides a 2.5V reference voltage for the DAC and driver circuits. The REF43 has flown successfully on a number of missions, including Suzaku. 2.5V seems a good choice for a reference in a system whose low voltage supply is 3.3V. This device also measures the Driver Board tmperature. 
 
-% Issues:
-% \begin{enumerate}
-% \item
-% Is there a preferred part for this other than the REF196?
-% \item
-% There is no current limit on VL. Should there be one here, or should it be handled at a higher level?
-% \end{enumerate}
+The capacitors implement the recommended bypassing for the REF43.
+R1 provides current limiting and decoupling. U2 buffers and amplifies the temperature measurement output for housekeeping.
+
 
 \subsubsection{DAC}
-% Needed: 2? per CCD, 8? per SXI
-%Two blocks gives us 16 DAC's, enough for (OD*4,RD,RG+-,OG,BB,H+-,V+-,IG+-,ISV). Is that enough, 
-% or do we need three?
+
    \begin{figure}
    \begin{center}
    \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DAC.pdf}
@@ -207,10 +158,6 @@ The BB (Back Bias) block consists of a Cockroft-Walton charge pump voltage multi
    \end{center}
    \caption{BB Block}
    \end{figure}
-%Needed: 1 per CCD, 4 per SXI
-%Half of U1 and its associated components form the driver for the output gate (OG) electrodes. These require almost no current, only leakage, but they are adjacent to the charge sense nodes, so they are sensitive to noise. The filter formed by R6 and C6 is intended to strongly attenuate noise at the video frequency. However, this filter potentially destabilizes the driver circuit: C3 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R5\times C3$ is four times the output time constant $R6\times C6$, the circuit is critically damped, assuming that this time constant is also large compared to the amplifier's unity gain small signal response time. This approach to noise reduction and stabilization is employed in several other driver blocks below.
-
-%Minimum output voltage is $-2.5\times(R5/R7)$ or $-7.5V$ when the DACOG DAC is set to 255. Maximum is $0V$ when DACOG is set to $0$.
 
 U2 switches between $Vp$ (+15V) and ground creating 15V square-wave drive for a charge pump. D1, D2, D3, and their associated capacitors form a three stage charge pump, in series with $Vp$, nominally capable of 60V output if losses are ignored. 
 
@@ -224,7 +171,6 @@ R2 and R3 limit current to U2, protecting it in case of latchup. R14 limits curr
 
 Output filter capacitors have separate return connections here so that they may be connected for best EMI performance at the higher level.
 
-%Issues:%\begin{enumerate}%\item%OG output range doesn't match requirement.%\item%C6 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.%\item%With $\pm15V$ supplies now specified, R10 could be increased to 330k, reducing the translation gain and improving the damping.%\end{enumerate}%
 
 
 
@@ -236,7 +182,7 @@ Output filter capacitors have separate return connections here so that they may 
    \caption{DC-driver Block}
    \end{figure}
 
-This provides negative DC drive for the various bias lines. These lines are potentially a path for noise to reach the CCD video output. The filter formed by R2 and C2 is intended to attenuate noise at the video frequency. RETA should go to the sensor analog ground point, which should have a low impedance to system ground.
+This provides negative DC drive for the various bias lines. It also provides regulated clock levels for the ISV clock. These lines are potentially a path for noise to reach the CCD video output. The filter formed by R2 and C2 is intended to attenuate noise at the video frequency. RETA should go to the sensor analog ground point, which should have a low impedance to system ground.
 However, this filter potentially destabilizes the driver circuit: C1 provides phase-advanced feedback to stabilize the circuit. If the feedback time constant $R1\times C1$ is four times the output time constant $R2\times C2$, the circuit is critically damped, assuming that this time constant is also large compared to the amplifier's unity gain small signal response time, which it is in this case $(120\mu s>>1 \mu s)$. When critically damped, the circuit has two poles with time constant $2\times R2\times C2$.
 
 The LT1078 opamp used can drive $>5$mA, so it has plenty of margin in this circuit: the maximum load for this circuit is 1.2mA when driving one of the output drains. 
@@ -245,8 +191,6 @@ The input is a current into a virtual ground, allowing resistors to set scale an
 
 V+ should normally be 3.3V to prevent positive drive from pulling the opamp input above the positive rail. V- can be -15V if adequate, or the -30V from the OD-pump block if needed.
 
-%Needed: 1 per CCD, 4 per SXI
-%Drives ID and ISV.
 
 
 \subsubsection{OD-pump}
@@ -261,25 +205,6 @@ V+ should normally be 3.3V to prevent positive drive from pulling the opamp inpu
 This charge pump provides -30V (nominal assuming no losses). It is a single stage design, pumping negative charge from a 15V square wave signal using the -15V supply as its "ground". It is intended to be able to drive at least 10 mA. Q3, Q4, and their associated resistors form a current limiter to protect against an output short circuit. R4 and R5 protect U1 against latchup.
 
 
-%\subsection{OD-driver}
-%   \begin{figure}
-%   \begin{center}
- %  \begin{tabular}{c}
-%   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{OD-driver.pdf}
-%   \end{tabular}
-%   \end{center}
-%   \end{figure}
-
-%This provides drive for two output drains. Full scale on the DAC corresponds to -24V on the output. The transistors boost the opamp output current.
-
-%Needed: 2 per CCD, 8 per SXI
-%Drives OD for each output.
-
-%Issues:
-%\begin{enumerate}
-%\item
-%C2 and C4 shown returned to board ground. This may not be the best from a noise perspective. Signal return topology requires some thought.
-%\end{enumerate}
 
 \pagebreak
 \subsection{CCD Clock Drivers}
@@ -307,16 +232,6 @@ Maximum clock swing $\Delta V$ is 12V for all clocks. The dynamic current the po
    \caption{DACtoClock Block}
    \end{figure}
 
-%Needed: 4? per CCD, 16? per SXI
-%Translates DAC voltages to clock voltages. I assume we need:
-%Reset Gate
-%Horizontal
-%Vertical
-%Input Gate
-%But there are questions:
-%I assume voltages for VI==VS==TG. Is this true?
-%I assume voltages for horizantal==SG. Is this true?
-%I assume charge injection voltages for IG1==IG2. Is this true?
 
 This is a pair of amplifiers yielding adjustable outputs of 0 to 7.5V and -10V to -2.5V for drivers. Noise filtering and damping are similar to the DC-driver block above, but with larger capacitance to handle the time-varying load current. These can directly provide the regulated drive for the fast clock drivers: with output current capability $\approx 10$\ mA, they can handle the current demands of a $\approx 6$\ nF load. For the slow (vertical), drivers, these handle level translation but do not provide the large regulated current required.
 
@@ -385,8 +300,6 @@ The first section of U1 buffers 1/10 the heater supply voltage (Vhtr) as a refer
 
 Q1 is an LM195, which will protect itself against overheating. It also has limited transconductance, $\approx\ 1$\ S, which helps stability. C1 provides stabilizing feedback, much more than required for any reasonable heater resistance.
 
-As drawn, this circuit accommodates heater supply voltages up to 20V (limited by U1's output swing). This can be changed by resistor changes if a larger supply is to be used.
-
 \subsection{Housekeeping}
 
 \subsubsection{Housekeeping ADC}
@@ -445,7 +358,7 @@ This drives the reset gate and summing gate. These gates have low capacitance, s
    \caption{TG Driver}
    \end{figure}
    
-The TG driver drives the transfer gate between the vertical and horizontal register of the CCD. The IG1 driver drives the charge injection gate. These are low capacitance gates.
+The TG driver drives the transfer gate between the vertical and horizontal register of the CCD. The ISV driver drives the charge injection electrode. These are low capacitance loads.
   
 
 
@@ -504,7 +417,7 @@ These provide -17 to -23\ V for the output drains. Maximum load per drain is 1.2
   
 The reset drain (RD) driver provides -10 to -14\ V. 
 The output gate (OG) driver provides -2 to -8\ V.
-The charge injection source (IS) driver provides -5 to -7\ V.
+The charge injection gate 1 (IG1) driver provides -5 to -7\ V.
 The charge injection gate 2 (IG2) driver provides -2 to -4\ V.
 The back bias driver provides 0 to 40\ V.
 
@@ -730,6 +643,17 @@ The Driver Board receives digital signals from the PE and video board via LVDS.
 
 Power filters for the Video board are installed on the Driver Board.
 
+\subsection{Slave Jumpers and Non-serialized Clocks}
+   \begin{figure}
+   \begin{center}
+   \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.20.pdf}
+   \end{center}
+   \caption{Slave Jumpers and Non-serialized Clocks}
+   \end{figure}
+
+"Zeroohm" resistors RZ1-RZ14 should be installed on "master" boards. They route the multidrop LVDS signals to the "slave" boards.
+
+U20 is the LVDS receiver for the SG and ISV timing from the sequencer. These signals have critical timing requirements, so they are not multiplexed with the other timing signals.
 
 
 \section{TCE}
@@ -748,13 +672,13 @@ Each driver board will have the footprints for Temperature Control Electronics, 
 
 \section{External interfaces}
 
-The primary reference for the external interfaces of the driver board is the "SXIFE" document. This section lists the connectors and designates their pins.
+For the current overview of the interconnection strategy see 20101125\_hayasida\_SXI-S-FE\_Box.pdf.
 
-\subsection{Interface to Video Board}
+This section lists the connectors on the Driver Board and designates their pins.
 
-Table \ref{J1} shows the pinout of J1. All LVDS signals to and from the video board pass through this connector.
+\subsection{Power}
 
-Table \ref{J2} shows the pinout of J2. CCD clocks and biases, focal plane temperature data and drive, video board power, and video board housekeeping signals pass through this connector.
+Table \ref{J1} shows the pinout of J1. This carrys power from the PE.
 
 %\tsvtable{J1}
 % This one is small so we don't use the template
@@ -765,17 +689,29 @@ Table \ref{J2} shows the pinout of J2. CCD clocks and biases, focal plane temper
 \label{J1}
 \end{table}
 
+\subsection{PE interface}
+
+Table \ref{J2} shows the pinout of J2. This is the LVDS interface to the PE. On a "master" Driver Board, this connects directly to the PE. On a "slave" Driver board, it connects to J3 on its "master" board. Table \ref{J3} shows the pinout of that connector.
+
 \tsvtable{J2}
-
-\subsection{Digital/Power Interface to PE}
-
-Table \ref{J3} shows the pinout of J3, through which power and data pass from the Pixel Electronics to the Driver Board.
-
-Table \ref{J4} shows the pinout of J4, through which data passes from the Driver Board to the Pixel Electronics.
-
 \tsvtable{J3}
+
+\subsection{Sensor Body Interface}
+
+Table \ref{J4} shows the pinout of J4,which carries analog power, CCD drive signals, and analog houskeeping and thermometry signals from the sensor body.
+
 \tsvtable{J4}
 
+Table \ref{J5} slows the pinout of J5, which carries digital interfaces and power to to sensor body.
+
+%\tsvtable{J5}
+% This one is small so we don't use the template
+\begin{table}[h]
+\centering
+\includegraphics[]{J5.tsv.pdf}
+\caption{J5}
+\label{J5}
+\end{table}
 
 \section{DAC and Housekeeping Tables}
 
@@ -798,10 +734,10 @@ DAC & Function & V(0) & V(255) & Resolution \\
 11 & VILO & -2.5 & -10.03 & -0.0295 \\
 12 & VSHI & 0.00 & 7.48 & 0.0293 \\
 13 & VSLH & -2.5 & -10.03 & -0.0295 \\
-14 & ISV & -5.01 & -7.02 & -0.00787 \\
+14 & IG1V & -5.01 & -7.02 & -0.00787 \\
 15 & IG2V & -2.02 & -4.03 & -0.00787 \\
-16 & IG1VHI & 0.00 & 7.48 & 0.0293 \\
-17 & IG1VLO & -2.5 & -10.03 & -0.0295 \\
+16 & ISVHI & 0.00 & -13.35 & 0.0523 \\
+17 & ISVLO & 0.00 & -13.35 & -0.0523 \\
 20 & OD-A & -17.04 & -23.01 & -0.0234 \\
 21 & OD-B & -17.04 & -23.01 & -0.0234 \\
 22 & OD-C & -17.04 & -23.01 & -0.0234 \\
@@ -837,7 +773,7 @@ Channel & Function & Low Voltage & High Voltage & Description\\
 \hline
 06 & OG &  -12.76 & 12.89& Output Gate \\
 \hline
-07 & ISV & -12.76 & 12.89& Charge Input Gate 1\\
+07 & IG1V & -12.76 & 12.89& Charge Input Gate 1\\
 \hline
 10 & +15 & -51.02 & 51.55 & Power Supplies\\
 11 & -15 & -51.02 & 51.55 & \\
@@ -859,8 +795,8 @@ Channel & Function & Low Voltage & High Voltage & Description\\
 24 & TGHI & -12.76 & 12.89& Transfer Gate\\
 25 & TGLO & -12.76 & 12.89& \\
 \hline
-26 & IG1VHI & -12.76 & 12.89& Charge Input Source\\
-27 & IG1VLO & -12.76 & 12.89& \\
+26 & ISVHI & -51.02 & 51.55 & Charge Input Source\\
+27 & ISVLO &-51.02 & 51.55& \\
 \hline
 30 & PHHI & -12.76 & 12.89& Horizontal Clocks\\
 31 & PHLO & -12.76 & 12.89&\\
@@ -874,6 +810,22 @@ Channel & Function & Low Voltage & High Voltage & Description\\
 36 & +2.5ref & -12.76 & 12.89& ADC and DAC Reference Voltage\\
 \hline
 37 & GND & -12.76 & 12.89& Driver Board Ground Plane\\
+\hline
+40 & VT & -424 K& 428 K & Video Board Temperature\\
+\hline
+41 & AR & -12.76 & 12.89& Video Delta-Sigma Modulator Reference Voltage\\
+\hline
+42 & DR &-12.76 & 12.89& Video Bias Compensation Reference Voltage\\
+\hline
+43 & HK-3.3A &-12.76 & 12.89& Analog 3.3V at Sensor Body\\
+\hline
+44 & HK-3.3D &-12.76 & 12.89& Digital 3.3V at Sensor Body\\
+\hline
+45 & HK-2.5D &-12.76 & 12.89& Digital 2.5V at Sensor Body\\
+\hline
+46 & HK-1.5D &-12.76 & 12.89& Digital 1.5V at Sensor Body\\
+\hline
+47 & TCEHK & -1.3 A& 1.3 A & TCE Heater Current\\
 \hline
 \end{tabular}
 \caption{Housekeeping Channels}
