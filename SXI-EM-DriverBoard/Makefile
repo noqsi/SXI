@@ -165,6 +165,7 @@ SXI-EM-DriverBoard/ClockCap.sch \
 SXI-EM-DriverBoard/DAC.sch \
 SXI-EM-DriverBoard/DACtoClock.sch \
 SXI-EM-DriverBoard/DC-driver.sch \
+SXI-EM-DriverBoard/DoubleCap.sch \
 SXI-EM-DriverBoard/DriverBoard.1.sch \
 SXI-EM-DriverBoard/DriverBoard.10.sch \
 SXI-EM-DriverBoard/DriverBoard.11.sch \
@@ -186,6 +187,8 @@ SXI-EM-DriverBoard/DriverBoard.7.sch \
 SXI-EM-DriverBoard/DriverBoard.8.sch \
 SXI-EM-DriverBoard/DriverBoard.9.sch \
 SXI-EM-DriverBoard/DriverBoard.tex \
+SXI-EM-DriverBoard/DriverBoard-content.tex \
+SXI-EM-DriverBoard/DriverBoard-letter.tex \
 SXI-EM-DriverBoard/J1.tsv \
 SXI-EM-DriverBoard/J2.tsv \
 SXI-EM-DriverBoard/J3.tsv \
@@ -211,6 +214,7 @@ SXI-EM-DriverBoard/Symbols/DAC.sym \
 SXI-EM-DriverBoard/Symbols/DAC8800.sym \
 SXI-EM-DriverBoard/Symbols/DACtoClock.sym \
 SXI-EM-DriverBoard/Symbols/DC-driver.sym \
+SXI-EM-DriverBoard/Symbols/DoubleCap.sym \
 SXI-EM-DriverBoard/Symbols/DG403.sym \
 SXI-EM-DriverBoard/Symbols/DS90LV047A.sym \
 SXI-EM-DriverBoard/Symbols/DS90LV048A.sym \
@@ -232,6 +236,7 @@ SXI-EM-DriverBoard/Symbols/SMBT2907-1.sym \
 SXI-EM-DriverBoard/Symbols/SerialDrivers.sym \
 SXI-EM-DriverBoard/Symbols/TempControl.sym \
 SXI-EM-DriverBoard/Symbols/Temperature.sym \
+SXI-EM-DriverBoard/Symbols/ZeroOhm.sym \
 SXI-EM-DriverBoard/Symbols/bav99.sym \
 SXI-EM-DriverBoard/Symbols/capacitor.sym \
 SXI-EM-DriverBoard/Symbols/chip_choke.sym \
