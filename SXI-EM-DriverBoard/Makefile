@@ -255,7 +255,7 @@ SXI-EM-DriverBoard/print.scm \
 SXI-EM-DriverBoard/pins2gsch.awk \
 SXI-EM-DriverBoard/pins2tex.awk
 
-SXI-EM-DriverBoard.tar.gz :
+SXI-EM-DriverBoard.tar.gz : $(MANIFEST)
 	cd ..; tar czf SXI-EM-DriverBoard/SXI-EM-DriverBoard.tar.gz $(MANIFEST)
 
 clean : 
