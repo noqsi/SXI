@@ -255,13 +255,108 @@ SXI-EM-DriverBoard/print.scm \
 SXI-EM-DriverBoard/pins2gsch.awk \
 SXI-EM-DriverBoard/pins2tex.awk
 
-SXI-EM-DriverBoard.tar.gz : $(MANIFEST)
+TARSTUFF=BB.sch \
+ClockCap.sch \
+DAC.sch \
+DACtoClock.sch \
+DC-driver.sch \
+DoubleCap.sch \
+DriverBoard.1.sch \
+DriverBoard.10.sch \
+DriverBoard.11.sch \
+DriverBoard.12.sch \
+DriverBoard.13.sch \
+DriverBoard.14.sch \
+DriverBoard.15.sch \
+DriverBoard.16.sch \
+DriverBoard.17.sch \
+DriverBoard.18.sch \
+DriverBoard.19.sch \
+DriverBoard.2.sch \
+DriverBoard.20.sch \
+DriverBoard.3.sch \
+DriverBoard.4.sch \
+DriverBoard.5.sch \
+DriverBoard.6.sch \
+DriverBoard.7.sch \
+DriverBoard.8.sch \
+DriverBoard.9.sch \
+DriverBoard.tex \
+DriverBoard-content.tex \
+DriverBoard-letter.tex \
+J1.tsv \
+J2.tsv \
+J3.tsv \
+J4.tsv \
+J5.tsv \
+Makefile \
+OD-driver.sch \
+OD-pump.sch \
+ParallelPair.sch \
+ParallelReg.sch \
+REF.sch \
+SerialDrivers.sch \
+Symbols/128S102.sym \
+Symbols/74139.sym \
+Symbols/74157.sym \
+Symbols/74174.sym \
+Symbols/74238.sym \
+Symbols/74595.sym \
+Symbols/74_pwr16.sym \
+Symbols/BB.sym \
+Symbols/Connector.sym \
+Symbols/DAC.sym \
+Symbols/DAC8800.sym \
+Symbols/DACtoClock.sym \
+Symbols/DC-driver.sym \
+Symbols/DoubleCap.sym \
+Symbols/DG403.sym \
+Symbols/DS90LV047A.sym \
+Symbols/DS90LV048A.sym \
+Symbols/IRFR9024N.sym \
+Symbols/IRLR014N.sym \
+Symbols/LM195H.sym \
+Symbols/LT1078S8-pwr.sym \
+Symbols/LT1078S8.sym \
+Symbols/MAX4508.sym \
+Symbols/MAX4509.sym \
+Symbols/Noqsi-title-B.sym \
+Symbols/OD-pump.sym \
+Symbols/ParallelPair.sym \
+Symbols/ParallelReg.sym \
+Symbols/REF.sym \
+Symbols/REF43.sym \
+Symbols/SMBT2222-1.sym \
+Symbols/SMBT2907-1.sym \
+Symbols/SerialDrivers.sym \
+Symbols/TempControl.sym \
+Symbols/Temperature.sym \
+Symbols/ZeroOhm.sym \
+Symbols/bav99.sym \
+Symbols/capacitor.sym \
+Symbols/chip_choke.sym \
+Symbols/hkadc.sym \
+Symbols/npn.sym \
+Symbols/polarcap.sym \
+Symbols/resistor.sym \
+TCE.sch \
+TempControl.sch \
+Temperature.sch \
+attribs \
+drc-config.scm \
+gafrc \
+hkadc.sch \
+print.scm \
+pins2gsch.awk \
+pins2tex.awk
+
+SXI-EM-DriverBoard.tar.gz : $(TARSTUFF)
 	cd ..; tar czf SXI-EM-DriverBoard/SXI-EM-DriverBoard.tar.gz $(MANIFEST)
 
 clean : 
 	rm -f *~ Symbols/*~ \#*\# Symbols/\#*\# *.pdf *.ps *.log output.net \
 	 J1.sch J2.sch J3.sch J4.sch J5.sch \
-	 *.aux *.out DriverBoard.*.txt EM.tar.gz
+	 *.aux *.out DriverBoard.*.txt SXI-EM-DriverBoard.tar.gz
 
 # $Log$
 # Revision 2.1  2010-09-17 17:24:46  jpd
