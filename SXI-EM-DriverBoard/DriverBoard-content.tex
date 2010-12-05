@@ -490,13 +490,13 @@ R47 provides a load for an AD590 temperature sensor on the video board. This cir
    \caption{Command Decoding}
    \end{figure}
 
-The Pixel Electronics send digital commands to the Driver Board, and retrieve housekeeping data, through a serial interface. Some of these flow through the Driver Board to or from the video board. The serial interface operates at the PCLK rate (139\ kHz), and consists of two serial data signals and two control "strobes".
+The Pixel Electronics send digital commands to the Driver Board, and retrieve housekeeping data, through a serial interface. Some of these flow through the Driver Board to or from the video board. The serial interface operates at the PCLK rate (1.1\ MHz), and consists of two serial data signals and two control "strobes".
 
 
 \begin{tabular}{ll}
 PCLK & Serial command clock \\
 DVCD & Driver/video serial command data \\
-HKDAT & Driver/video serial command data \\
+HKDAT & Driver/video serial housekeeping data \\
 DVMS & Driver/video mode strobe \\
 $\overline{\textup{DVCS}}$ & Driver/video command strobe \\
 \end{tabular}
@@ -568,7 +568,7 @@ This will place the channel data in the MUX selection latches and apply the sele
 
 \subsubsection{Housekeeping ADC Mode}
 
-After setting the housekeeping MUX, the controller should wait at least 500\ $\mu$s before initiating a conversion with the housekeeping ADC. A falling edge on $\overline{\textup{DVCS}}$ in Housekeeping ADC Mode initiates the conversion. The ADC yields 16 bits four zero bits followed by 12 data bits, most significant bit first. $\overline{\textup{DVCS}}$ should remain low for the entire 16 cycle conversion time.
+After setting the housekeeping MUX, the controller should wait at least 625\ $\mu$s before initiating a conversion with the housekeeping ADC (the buffer amplifier for the ADC has a very low slew rate). A falling edge on $\overline{\textup{DVCS}}$ in Housekeeping ADC Mode initiates the conversion. The ADC yields 16 bits four zero bits followed by 12 data bits, most significant bit first. $\overline{\textup{DVCS}}$ should remain low for the entire 16 cycle conversion time.
 
 {\large
 \newcounter{hkbit}
@@ -576,7 +576,7 @@ After setting the housekeeping MUX, the controller should wait at least 500\ $\m
 \begin{tikztimingtable}
 PCLK & 36{C} \\
 $\overline{\textup{DVCS}}$ & 2H32L2H \\
-HKDAT & 2U8L12{2D{B\arabic{hkbit}\addtocounter{hkbit}{-1}}}U\\
+HKDAT & 2U8L12{2D{B\arabic{hkbit}\addtocounter{hkbit}{-1}}}2U\\
 DVMS & 36L \\
 \end{tikztimingtable}}
 
@@ -668,7 +668,95 @@ U20 is the LVDS receiver for the SG and ISV timing from the sequencer. These sig
 
 Each driver board will have the footprints for Temperature Control Electronics, but only two of the four boards will populate these with components.
 
+\subsection{Command and Measurement Protocols}
 
+The Pixel Electronics send digital commands to the TCE, and retrieve housekeeping data, through a serial interface. Some of these flow through the Driver Board to or from the video board. The serial interface operates at the PCLK rate (1.1\ MHz), and consists of two serial data signals and two control "strobes".
+
+\begin{tabular}{ll}
+PCLK & Serial command clock \\
+TCD & TCE serial command data \\
+TCEDAT & TCE serial temperature data \\
+TMS & TCE mode strobe \\
+$\overline{\textup{TCS}}$ & TCE command strobe \\
+\end{tabular}
+
+Because the targeted subsystems have different serial protocols, command transmission proceeds in at least two stages. For commands, these are mode control and command transfer. For housekeeping, an additional data transfer stage is required.
+
+In the mode control stage, the PE should transmit 8 bits of mode information followed by a (positive) pulse of TMS. Rising edges of PCLK and TMS control the mode deserialization. For reliable capture of the data bits, the rising edges of PCLK should occur when TCD is stable. The rising edge of TMS should occur after capture of the final data bit, but before the next rising edge of PCLK. $\overline{\textup{TCS}}$ should remain high during mode selection. The following timing diagram obeys these rules robustly:
+
+{\large
+\newcounter{tbitcount}
+\addtocounter{tbitcount}{7}
+\begin{tikztimingtable}
+PCLK & 20{C} \\
+TCD & 2U8{2D{M\arabic{tbitcount}\addtocounter{tbitcount}{-1}}}2U \\
+TMS & 18L2{C} \\
+$\overline{\textup{TCS}}$ & 20H \\
+\end{tikztimingtable}}
+
+Setting the mode in this fashion controls the routing of $\overline{\textup{TCS}}$. Then, the PE transmits information to the subsystem under control of $\overline{\textup{DVCS}}$ using a the protocol appropriate to the subsystem.
+
+The two most significant bit (M7) of the mode byte indicates the selected subsystem.
+
+\begin{tabular}{|l|l|}
+\hline
+Code & Subsystem \\
+\hline
+0 & Heater DAC \\
+\hline
+1 & Temperature ADC \\
+\hline
+\end{tabular}
+
+The two least significant bits (M1, M0) of the mode byte select the temperature to be measured in Temperature ADC Mode.
+
+\begin{tabular}{|l|l|}
+\hline
+Code & Sensor \\
+\hline
+00 & CCD A \\
+\hline
+01 & CCD B \\
+\hline
+10 & Cold Plate \\
+\hline
+\end{tabular}
+
+
+\subsubsection{Heater DAC Mode}
+
+Once you've placed the driver board into Heater DAC mode, $\overline{\textup{TCS}}$ is applied to the $\overline{\textup{LD}}$ pin of the selected DAC. PCLK and TCD are always applied to CLK and SDI of every DAC, but $\overline{\textup{LD}}$ controls whether the DAC responds to them. In the command transfer stage of this mode the timing of PCLK, DVCD, and $\overline{\textup{TCS}}$ should correspond respectively to CLK, SDI, and $\overline{\textup{LD}}$ in the interface protocol of the DAC8800 chip. The DAC8800 transfers serial data on the rising edge of the serial clock (PCLK). A low level on $\overline{\textup{TCS}}$ latches the captured serial data.
+
+{\large
+\newcounter{hdacbit}
+\addtocounter{hdacbit}{7}
+\begin{tikztimingtable}
+PCLK & 27{C} \\
+TCD & 2U3{2L}8{2D{D\arabic{hdacbit}\addtocounter{hdacbit}{-1}}}3U \\
+$\overline{\textup{TCS}}$ & 23.75H0.5L2.75H \\
+TMS & 27L \\
+\end{tikztimingtable}}
+
+Including an allowance for decoding propagation, the falling edge of  $\overline{\textup{TCS}}$  should come at least 50\ ns after the rising edge of PCLK, the $\overline{\textup{TCS}}$ pulse width should be at least 75\ ns, and the rising edge of $\overline{\textup{DVCS}}$ should come at least 100\ ns before the rising edge of PCLK.
+
+Data is transmitted most significant bit first. The first three bits select the DAC within the chip. These must be zero, as shown in the diagram. D7-D0 are the data to be loaded into the DAC.See the DAC8800 data sheet for more details. Loading zero turns the heater off, while loading 255 sets the heatyer to maximum. 
+
+\subsubsection{Temperature ADC Mode}
+
+After setting the temperature selection bits in the mode byte, the controller should wait at least 125\ $\mu$s before initiating a conversion with the temperature ADC (the current control amplifier driving the sensor has a very low slew rate). A falling edge on $\overline{\textup{TCS}}$ in Temperature ADC Mode initiates the conversion. The ADC yields 16 bits four zero bits followed by 12 data bits, most significant bit first. $\overline{\textup{TCS}}$ should remain low for the entire 16 cycle conversion time.
+
+{\large
+\newcounter{tbit}
+\addtocounter{tbit}{11}
+\begin{tikztimingtable}
+PCLK & 36{C} \\
+$\overline{\textup{DVCS}}$ & 2H32L2H \\
+TCEDAT & 2U8L12{2D{B\arabic{tbit}\addtocounter{tbit}{-1}}}2U\\
+TMS & 36L \\
+\end{tikztimingtable}}
+
+
+See the ADC128S102 datasheet for more details.
 
 \section{External interfaces}
 
@@ -813,9 +901,9 @@ Channel & Function & Low Voltage & High Voltage & Description\\
 \hline
 40 & VT & -424 K& 428 K & Video Board Temperature\\
 \hline
-41 & AR & -12.76 & 12.89& Video Delta-Sigma Modulator Reference Voltage\\
+41 & AR & -12.76 & 12.89& Video Delta-Sigma Modulator Reference\\
 \hline
-42 & DR &-12.76 & 12.89& Video Bias Compensation Reference Voltage\\
+42 & DR &-12.76 & 12.89& Video Bias Compensation Reference\\
 \hline
 43 & HK-3.3A &-12.76 & 12.89& Analog 3.3V at Sensor Body\\
 \hline
