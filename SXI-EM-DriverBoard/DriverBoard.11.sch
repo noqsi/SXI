@@ -28,7 +28,7 @@ value=1k
 T 47300 48200 5 10 0 1 0 0 1
 footprint=1210
 T 47300 48200 5 10 0 1 0 0 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 47300 47200 1 0 0 DoubleCap.sym
 {
@@ -47,7 +47,7 @@ value=1k
 T 49500 48200 5 10 0 1 0 6 1
 footprint=1210
 T 49500 48200 5 10 0 1 0 6 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 49500 47200 1 0 1 DoubleCap.sym
 {
@@ -165,7 +165,7 @@ value=1k
 T 52800 48200 5 10 0 1 0 0 1
 footprint=1210
 T 52800 48200 5 10 0 1 0 0 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 52800 47200 1 0 0 DoubleCap.sym
 {
@@ -184,7 +184,7 @@ value=1k
 T 55000 48200 5 10 0 1 0 6 1
 footprint=1210
 T 55000 48200 5 10 0 1 0 6 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 55000 47200 1 0 1 DoubleCap.sym
 {

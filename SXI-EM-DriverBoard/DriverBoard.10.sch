@@ -23,7 +23,7 @@ value=1k
 T 54300 47400 5 10 0 1 0 0 1
 footprint=1210
 T 54300 47400 5 10 0 1 0 0 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 54300 46400 1 0 0 DoubleCap.sym
 {
@@ -398,7 +398,7 @@ value=1k
 T 56500 47400 5 10 0 1 0 6 1
 footprint=1210
 T 56500 47400 5 10 0 1 0 6 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 56500 46400 1 0 1 DoubleCap.sym
 {
@@ -441,7 +441,7 @@ value=1k
 T 45400 49000 5 10 0 1 0 0 1
 footprint=1210
 T 45400 49000 5 10 0 1 0 0 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 45300 47900 1 0 0 gnd-1.sym
 C 47600 49000 1 0 1 resistor.sym
@@ -455,7 +455,7 @@ value=1k
 T 47600 49000 5 10 0 1 0 6 1
 footprint=1210
 T 47600 49000 5 10 0 1 0 6 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 47600 48000 1 0 1 DoubleCap.sym
 {

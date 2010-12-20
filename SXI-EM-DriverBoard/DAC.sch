@@ -56,11 +56,11 @@ device=RESISTOR
 T 45100 49100 5 10 1 1 0 0 1
 refdes=R1
 T 45200 48600 5 10 1 1 0 0 1
-value=470
+value=1k
 T 44900 48800 5 10 0 1 0 0 1
-footprint=2512
+footprint=1210
 T 44900 48800 5 10 0 1 0 0 1
-spec=5% 1W
+spec=5% 1/3W
 }
 C 44300 48800 1 0 0 in-1.sym
 {

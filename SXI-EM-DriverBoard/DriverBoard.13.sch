@@ -28,7 +28,7 @@ value=1k
 T 47400 47700 5 10 0 1 0 0 1
 footprint=1210
 T 47400 47700 5 10 0 1 0 0 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 47400 46700 1 0 0 DoubleCap.sym
 {
@@ -47,7 +47,7 @@ value=1k
 T 49600 47700 5 10 0 1 0 6 1
 footprint=1210
 T 49600 47700 5 10 0 1 0 6 1
-spec=5% 1/2W
+spec=5% 1/3W
 }
 C 49600 46700 1 0 1 DoubleCap.sym
 {

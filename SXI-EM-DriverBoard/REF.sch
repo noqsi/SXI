@@ -100,9 +100,11 @@ device=RESISTOR
 T 45900 47900 5 10 1 1 0 0 1
 refdes=R1
 T 46600 48500 5 10 0 0 0 0 1
-footprint=2512
+footprint=2010
 T 46100 47400 5 10 1 1 0 0 1
-value=470
+value=680
+T 45700 47600 5 10 0 0 0 0 1
+spec=5% 1/2W
 }
 C 48000 45900 1 0 0 REF43.sym
 {
