@@ -1,0 +1,3 @@
+[submodule "lambda-geda"]
+	path = lambda-geda
+	url = git://github.com/xcthulhu/lambda-geda.git
