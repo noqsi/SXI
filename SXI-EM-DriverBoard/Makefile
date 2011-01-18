@@ -19,10 +19,9 @@ MAN=man -Tps -l
 PDFLATEX=pdflatex
 
 # We have a special directory for Latex style files
-TEXINPUTS:=.:./texinclude:
 
 %.tsv.pdf : %.tsv
-	awk -f pins2tex.awk $< | pdflatex -jobname=$< > /dev/null
+	export TEXINPUTS=.:./texinclude: ; awk -f pins2tex.awk $< | $(PDFLATEX) -jobname=$< > /dev/null
 	
 %.pdf : %.ps
 	$(PS2PDF) $< pre_$@
@@ -104,6 +103,7 @@ driverfigs: $(DRIVERFIGS)
 # Make the A4 Documentation
 DriverBoard.pdf: DriverBoard.tex DriverBoard-content.tex $(DRIVERFIGS) 
 	rm -f DriverBoard.aux
+	export TEXINPUTS=.:./texinclude: 
 	$(PDFLATEX) DriverBoard.tex
 	$(PDFLATEX) DriverBoard.tex
 	$(PDFLATEX) DriverBoard.tex
@@ -111,6 +111,7 @@ DriverBoard.pdf: DriverBoard.tex DriverBoard-content.tex $(DRIVERFIGS)
 # Make 8.5" x 11" Documentation
 DriverBoard-letter.pdf: DriverBoard-letter.tex DriverBoard-content.tex $(DRIVERFIGS)
 	rm -f DriverBoard-letter.aux
+	export TEXINPUTS=.:./texinclude: 
 	$(PDFLATEX) DriverBoard-letter.tex
 	$(PDFLATEX) DriverBoard-letter.tex
 	$(PDFLATEX) DriverBoard-letter.tex
