@@ -17,7 +17,7 @@ A2PS=a2ps -1 --medium=A4 --toc -o $@ $^
 PS2PDF=ps2pdf -sPAPERSIZE=a4
 MAN=man -Tps -l
 PDFLATEX=pdflatex
-PDFENV=export TEXINPUTS=.:./texinclude:./texinclude/data
+PDFENV=export TEXINPUTS=.:./texinclude:./texinclude/data:
 
 # We have a special directory for Latex style files
 
@@ -104,18 +104,16 @@ driverfigs: $(DRIVERFIGS)
 # Make the A4 Documentation
 DriverBoard.pdf: DriverBoard.tex DriverBoard-content.tex $(DRIVERFIGS) 
 	rm -f DriverBoard.aux
-	$(PDFENV)
-	$(PDFLATEX) DriverBoard.tex
-	$(PDFLATEX) DriverBoard.tex
-	$(PDFLATEX) DriverBoard.tex
+	$(PDFENV) ; $(PDFLATEX) DriverBoard.tex
+	$(PDFENV) ; $(PDFLATEX) DriverBoard.tex
+	$(PDFENV) ; $(PDFLATEX) DriverBoard.tex
 
 # Make 8.5" x 11" Documentation
 DriverBoard-letter.pdf: DriverBoard-letter.tex DriverBoard-content.tex $(DRIVERFIGS)
 	rm -f DriverBoard-letter.aux
-	$(PDFENV)
-	$(PDFLATEX) DriverBoard-letter.tex
-	$(PDFLATEX) DriverBoard-letter.tex
-	$(PDFLATEX) DriverBoard-letter.tex
+	$(PDFENV) ; $(PDFLATEX) DriverBoard-letter.tex
+	$(PDFENV) ; $(PDFLATEX) DriverBoard-letter.tex
+	$(PDFENV) ; $(PDFLATEX) DriverBoard-letter.tex
 
 BLOCKSCHEM=\
 BB.sch\
