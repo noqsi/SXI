@@ -17,12 +17,13 @@ A2PS=a2ps -1 --medium=A4 --toc -o $@ $^
 PS2PDF=ps2pdf -sPAPERSIZE=a4
 MAN=man -Tps -l
 PDFLATEX=pdflatex
-PDFENV=export TEXINPUTS=.:./texinclude:./texinclude/data:../tikz:
+PDFENV=TEXINPUTS=.:./texinclude:./texinclude/data: ; for i in `find ../tikz -type d -print` ; do TEXINPUTS=$$TEXINPUTS$$i: ; done ; export TEXINPUTS
 
 # We have a special directory for Latex style files
 
 %.tsv.pdf : %.tsv
-	$(PDFENV) ; awk -f pins2tex.awk $< | $(PDFLATEX) -jobname=$< > /dev/null
+	$(PDFENV) ; awk -f pins2tex.awk $< | $(PDFLATEX) > /dev/null
+	mv texput.pdf $@
 	
 %.pdf : %.ps
 	$(PS2PDF) $< pre_$@
