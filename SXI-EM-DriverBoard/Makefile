@@ -41,7 +41,6 @@ PDFENV=TEXINPUTS=.:./texinclude:./texinclude/data: ; for i in `find ../tikz -typ
 	awk -f pins2gsch.awk $< >$@
 
 all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf
-	$(MAKE) -C ../lambda-geda
 
 pdf_schematics: \
 BB.pdf\
@@ -101,6 +100,10 @@ J1.tsv.pdf J2.tsv.pdf J3.tsv.pdf J4.tsv.pdf J5.tsv.pdf
 
 # For when typesetting within TeXShop GUI 
 driverfigs: $(DRIVERFIGS)
+
+# For flattening schematics
+../lambda-geda/flatten-hierarchy: 
+	$(MAKE) -C ../lambda-geda flatten-hierarchy
 
 # Make the A4 Documentation
 DriverBoard.pdf: DriverBoard.tex DriverBoard-content.tex $(DRIVERFIGS) 
@@ -362,7 +365,6 @@ clean :
 	rm -f *~ Symbols/*~ \#*\# Symbols/\#*\# *.pdf *.ps *.log output.net \
 	 J1.sch J2.sch J3.sch J4.sch J5.sch \
 	 *.aux *.out DriverBoard.*.txt SXI-EM-DriverBoard.tar.gz
-	$(MAKE) -C ../lambda-geda clean
 
 # $Log$
 # Revision 2.1  2010-09-17 17:24:46  jpd
