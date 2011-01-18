@@ -18,6 +18,9 @@ PS2PDF=ps2pdf -sPAPERSIZE=a4
 MAN=man -Tps -l
 PDFLATEX=pdflatex
 
+# We have a special directory for Latex style files
+TEXINPUTS:=.:./texinclude:
+
 %.tsv.pdf : %.tsv
 	awk -f pins2tex.awk $< | pdflatex -jobname=$< > /dev/null
 	
