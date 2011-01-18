@@ -1,0 +1,1422 @@
+%%
+%% This is file `tikz-timing.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% tikz-timing.dtx  (with options: `package')
+%% 
+%% Copyright (C) 2009 by Martin Scharrer <martin@scharrer-online.de>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Martin Scharrer.
+%% 
+%% This work consists of the files tikz-timing.dtx, tikz-timing.ins
+%% and the derived file tikz-timing.sty.
+%% 
+\RequirePackage{svn-prov}[2009/05/03]
+\ProvidesPackageSVN
+  {$Id: tikz-timing.dtx 1158 2009-07-28 09:14:00Z martin $}
+  [v0.6a
+   Digital Timing Diagrams using TikZ]
+\DefineFileInfoSVN[tikztiming]
+
+\RequirePackage{tikz}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{decorations.pathmorphing}
+\ifx\collect@body\@undefined
+  \IfFileExists{environ.sty}
+    {\RequirePackage{environ}}
+    {\RequirePackage{amsmath}}
+\fi
+
+\newcommand*\usetikztiminglibrary[2][]{%
+  \edef\tikztiming@library@options{#1}%
+  \@ifnextchar{[}%]
+    {\tikztiming@library{#2}}%
+    {\tikztiming@library{#2}[]}%
+}
+\def\tikztiming@library#1[#2]{%
+  \edef\tikztiming@library@date{#2}%
+  \tikztiming@library@#1,\relax
+}
+
+\def\tikztiming@library@#1,{%
+  \IfFileExists{tikz-timing-#1.sty}%
+    {\RequirePackage[\tikztiming@library@options]{tikz-timing-#1}%
+      [\tikztiming@library@date]}%
+    {\PackageError{tikz-timing}%
+      {No tikz-timing library `#1' found!}%
+      {}{}{}{}%
+    }%
+  \@ifnextchar\relax{}{\tikztiming@library@}%
+}
+
+\def\tikztimingwidth{0.0}
+\newcount\tikztiming@numint
+\newcount\tikztiming@numfrac
+\def\tikztiming@num{1.0}%
+\let\tikztiming@back\empty
+\newlength\tikztiming@xunit
+\newlength\tikztiming@yunit
+
+\newcounter{tikztiming@nrows}%
+\def\tikztiming@rowdist{2}%
+\def\tikztiming@coldist{1}%
+\def\tikztiminglabel#1{#1}%
+
+\def\tikztiming@prefix{tikztiming@trans@}
+
+\tikzset{timing/.style={%
+    x=1.6ex, y=1.6ex,
+    line cap=round, line join=round,
+    /utils/exec={\setlength{\tikztiming@xunit}{1.6ex}\setlength{\tikztiming@yunit}{1.6ex}},
+  }%
+}
+\tikzset{%
+  timing/.cd,
+  initchar/.value required,
+  initchar/.code={\ifx\lastchar\empty\uppercase{\def\lastchar{#1}}\fi},
+  metachar/.code 2 args={\tikztimingmetachar{#1}{#2}},
+  grid/.style={timing,help lines},
+  picture/.style={timing,line width=0.15ex},
+  intext/.style={timing,line width=0.15ex},
+  inline node/.style={shape=coordinate},
+  table/.style={timing,line width=0.15ex,font=\sffamily},
+  coord/.style={coordinate},
+  save/.style={coordinate,/utils/exec=\tikztiming@savesettings},
+  restore/.style={/utils/exec=\tikztiming@restoresettings},
+  name/.style={inner sep=0pt,outer sep=0pt},
+  d/text/.style={timing,scale=0.6,font=\sffamily},
+  d/background/.style={},
+  h/.style={},
+  l/.style={},
+  d/.style={},
+  e/.style={},
+  e/background/.style={},
+  a/.style={->},
+  w/.style={<-},
+  m/.style={black!40!brown},
+  m/decoration/.style={decorate,decoration={zigzag,segment
+  length=.25\tikztiming@xunit,amplitude=.225\tikztiming@yunit}},
+  k/.style={black!40!blue,semitransparent},
+  u/background/.style={fill=gray},
+  u/.style={},
+  o/background/.style={},
+  o/.style={timing/d,line width=0.10ex,dotted},
+  g/.style={},
+  z/.style={blue},
+  t/.style={},
+  c/.style={timing/slope=0.0},
+  x/.style={red},
+  table/grid/.style={timing/grid},
+  table/lines/.style={},
+  table/rules/.style={line width=0.08em,line cap=butt},
+  slope/.code={%
+    \tikztimingsetslope{#1}%
+    \tikztimingsetdslope{2*#1}%
+    \tikztimingsetzslope{#1/2}%
+  },
+  lslope/.code={\tikztimingsetslope{#1}},
+  dslope/.code={\tikztimingsetdslope{#1}},
+  zslope/.code={\tikztimingsetzslope{#1}},
+  coldist/.store in=\tikztiming@coldist,
+  rowdist/.store in=\tikztiming@rowdist,
+}
+\def\texttimingbefore{}
+\def\texttimingafter{}
+\def\texttiminggrid{%
+  \draw[xstep={\timingwidth/2.},ystep={\timingheight/2.},timing/grid] (0,0) grid
+  (\timingwidth*\tikztimingwidth,\timingheight);
+}
+\DeclareRobustCommand*\texttiming[2][]{%
+  \begingroup
+    \tikztiming@init
+    \ifx\relax#1\relax\else
+      \tikztiming@testoptarg#1\relax\relax%
+    \fi
+    \def\@tempa{\begin{tikzpicture}[timing/intext,}%]}[
+    \expandafter\@tempa\settings]
+      \@ifundefined{tikztiming@initcode@\lastchar}%
+        {}%
+        {\@nameuse{tikztiming@initcode@\lastchar}}%
+      \ifx\lastchar\empty\else
+      \@ifundefined{\tikztiming@prefix\lastchar @start}%
+        {\PackageWarning{tikz-timing}{Start value for timing character '\lastchar'
+        is not defined and will be ignored!}{}{}{}}%
+        {\tikztiming@nameaddtostr{\lastchar @start}{}}%
+      \fi
+      \tikztiming@#2\relax
+      %\message{^^J\meaning\tikztiming@str^^J}%
+      \path[use as bounding box] (0,0) rectangle
+      (\timingwidth*\tikztimingwidth,\timingheight);%
+      \texttimingbefore
+      \tikztiming@str;%
+      \node [shape=tikztiming@shape,anchor=origin,name=last texttiming] at (0,0)
+      {};
+      \texttimingafter
+    \end{tikzpicture}%
+  \endgroup
+}
+\def\tikztiming@testoptarg#1#2\relax{%
+  \ifx\relax#2\relax
+    \uppercase{\def\lastchar{#1}}%
+  \else
+    \def\settings{#1#2}%
+  \fi
+}
+\def\tikztiming@init{%
+    \let\lastchar\empty%
+    \let\currentchar\empty
+    \let\settings\empty
+    \def\tikztimingwidth{0.0}%
+    \setcounter{tikztimingtrans}{-1}%
+    \setcounter{tikztimingtranspos}{0}%
+    \def\tikztiming@str{\draw (0,0) coordinate (timing/start base) }%
+}
+\def\timing{%
+  \@ifnextchar{[}%
+    {\timing@}%
+    {\timing@[]}%
+}
+\def\timing@[#1]{%
+  \@ifnextchar{a}%
+    {\timing@at{#1}}%
+    {\PackageWarning{tikz-timing}{The \string\timing\space command awaits now an
+    `at' before the coordinate, like the \string\node\space command is doing.
+    Please update your source code to ensure compatibility with newer
+    versions}{}{}{}%
+     \@ifnextchar{+}%
+      {\timing@@{#1}}%
+      {\@ifnextchar(%)
+        {\timing@@{#1}}%
+        {\timing@@{#1}++(0,0)}%
+      }%
+    }%
+}
+\def\timing@at#1at#2(#3){%
+  \timing@@@{#1}{#2(#3)}%
+}
+\def\timing@@#1#2(#3){%
+  \timing@@@{#1}{#2(#3)}%
+}
+\def\timing@@@#1#2#3{%
+  \begingroup
+    \tikztiming@init
+    \let\tikz@alias=\pgfutil@empty%
+    \begin{scope}[shift={#2},timing,#1]%
+      \@ifnextchar{[}%
+        {\timing@@@init}%
+        {\timing@@@init[]}%
+      #3\relax
+      %\message{^^J\meaning\tikztiming@str^^J}%
+      \tikztiming@str;%
+      \node [shape=tikztiming@shape,anchor=origin,#1] at (0,0) {};
+    \end{scope}%
+  \endgroup
+  \timing@@@end
+}
+\def\timing@@@end#1;{%
+  \ifx;#1;\else
+    \PackageError{tikz-package}{Can not parse timing path}{}{}{}%
+  \fi
+}
+\def\timing@@@init[#1]{%
+  \ifx\relax#1\relax\else
+    \uppercase{\def\lastchar{#1}}%
+  \fi
+  \@ifundefined{tikztiming@initcode@\lastchar}%
+    {}%
+    {\@nameuse{tikztiming@initcode@\lastchar}}%
+  \ifx\lastchar\empty\else
+  \@ifundefined{\tikztiming@prefix\lastchar @start}%
+    {\PackageWarning{tikz-timing}{Start value for timing character '\lastchar'
+    is not defined and will be ignored!}{}{}{}}%
+    {\tikztiming@nameaddtostr{\lastchar @start}{}}%
+  \fi
+  \tikztiming@
+}
+\let\tikztiming@trans@\@gobble
+\def\tikztiming@aftercode@T{%
+  \tikztiming@output@flush
+}
+\def\tikztiming@aftercode@t{%
+  \tikztiming@aftercode@T
+}
+\def\tikztiming@aftercode@C{%
+  %\tikztiming@output@flush
+}
+\def\tikztiming@aftercode@c{%
+  \tikztiming@aftercode@C
+}
+\def\tikztiming@aftercode@G{%
+  \let\lastchar\secondlastchar
+  \let\tikztimingwidth\lasttikztimingwidth
+}
+\def\tikztiming@aftercode@g{%
+  \let\lastchar\secondlastchar
+  \let\tikztimingwidth\lasttikztimingwidth
+}
+\def\tikztiming@aftercode@S{%
+  \let\lastchar\secondlastchar
+}
+\def\tikztiming@aftercode@s{%
+  \let\lastchar\secondlastchar
+}
+\def\tikztiming@beforenextcode@D@edge@{%
+  \if D\currentchar\else
+    \if d\currentchar\else
+      \def\lastchar{D}%
+    \fi
+  \fi
+}
+\def\tikztiming@beforenextcode@d@edge@{%
+  \if D\currentchar\else
+    \if d\currentchar\else
+      \def\lastchar{D}%
+    \fi
+  \fi
+}
+\def\tikztiming@initcode@D{%
+  \def\lastchar{D@edge@}%
+}
+\def\tikztiming@initcode@d{%
+  \def\lastchar{d@edge@}%
+}
+\def\tikztiming@{%
+  \@ifnextchar\bgroup
+    {\tikztiming@testfornum}%
+    {\tikztiming@testfornum}%
+}
+\def\tikztiming@eaddtostr#1{%
+  \begingroup
+    \tikztiming@internaldefs{}%
+    \@temptokena\expandafter{\tikztiming@str}%
+    \xdef\tikztiming@str{%
+      \the\@temptokena
+      #1%
+    }%
+  \endgroup
+}
+\def\tikztiming@addtostr{%
+  \g@addto@macro\tikztiming@str
+}
+\def\tikztiming@output#1#2{%
+  \ifx\relax#2\relax
+    \tikztiming@nameaddtostr{#1}%
+  \else
+    \ifcase0%
+      \ifx\tikztiming@output@bufchara\empty
+        \ifx\tikztiming@output@bufcharb\empty
+          1%
+        \fi
+      \fi\relax
+      % not empty
+      \edef\tikztiming@output@currentchar{#2}%
+      \ifcase0%
+      \expandafter\ifx\csname tikztiming@nocombine@#2\endcsname\relax
+      \ifx\tikztiming@output@currentchar\tikztiming@output@bufcharb
+        1%
+      \fi\fi
+      \relax
+        \tikztiming@output@flush
+        \edef\tikztiming@output@bufchara{#1}%
+        \edef\tikztiming@output@bufcharb{#2}%
+      \or
+        \pgfmathparse{\tikztiming@output@bufnum + \tikztiming@num}%
+        \let\tikztiming@output@bufnum\pgfmathresult
+        \def\tikztiming@num{1.0}%
+      \fi
+    \else % empty
+      \edef\tikztiming@output@bufchara{#1}%
+      \edef\tikztiming@output@bufcharb{#2}%
+      \let\tikztiming@output@bufnum\tikztiming@num
+      \def\tikztiming@num{1.0}%
+    \fi
+  \fi
+}
+\def\tikztiming@output@bufchara{}%
+\def\tikztiming@output@bufcharb{}%
+\def\tikztiming@output@bufnum{0}%
+\def\tikztiming@output@flush{%
+  \begingroup
+    \let\tikztiming@num\tikztiming@output@bufnum
+    \tikztiming@nameaddtostr{%
+      \tikztiming@output@bufchara
+      \tikztiming@output@bufcharb
+    }%
+  \endgroup%
+  \gdef\tikztiming@output@bufchara{}%
+  \gdef\tikztiming@output@bufcharb{}%
+  \global\let\tikztiming@output@bufnum\tikztiming@num
+  \gdef\tikztiming@num{1.0}%
+}
+\def\tikztiming@nameaddtostr#1{%
+  \begingroup
+    \edef\@tempa{\tikztiming@num}%
+    \expandafter\g@addto@macro
+    \expandafter\tikztiming@str
+    \expandafter{\csname\tikztiming@prefix#1\expandafter\endcsname
+    \expandafter{\@tempa} }%
+  \endgroup
+  \def\tikztiming@num{1.0}%
+}
+\newcommand\tikztiming@nameedef[3][A]{%
+  \def\@gtempa##1{#3}%
+  \expandafter\let\csname\tikztiming@prefix#2@general\endcsname\@gtempa
+  \begingroup
+    \tikztiming@internaldefs{#1}%
+    \xdef\@gtempa##1{\@gtempa{\width}}%
+  \endgroup
+  \expandafter\let\csname\tikztiming@prefix#2\endcsname\@gtempa
+  \let\@gtempa\empty
+}
+\newcommand\tikztiming@namelet[2]{%
+  \ifcase0%
+    \@ifundefined{\tikztiming@prefix#2}%
+      {\@ifundefined{\tikztiming@prefix#1}%
+        {0}{1}%
+      }%
+      {1}%
+    \relax
+  \else
+    \expandafter\let
+    \csname\tikztiming@prefix#1\expandafter\endcsname
+    \csname\tikztiming@prefix#2\endcsname
+  \fi
+}
+\def\tikztiming@@end{%
+  \tikztiming@output@flush
+  \global\let\tikztimingwidth\tikztimingwidth
+  \tikztiming@addtostr{ coordinate (timing/end)
+    let \p1 = (timing/start base), \p2 = (timing/end) in
+      coordinate (timing/end base) at (\x2,\y1)
+      coordinate (timing/end top)  at (\x2,1+\y1)
+  }%
+}
+\def\tikztiming@@#1{%
+  \ifx\relax#1\empty
+    \expandafter\tikztiming@@end
+  \else
+    \let\lasttikztimingwidth\tikztimingwidth
+    \tikztiming@iflower{#1}%
+      {\pgfmathparse{\tikztiming@num/2.0}\let\tikztiming@num\pgfmathresult}%
+      {}%
+    \ifx\tikztiming@back\empty\else
+      \pgfmathparse{\tikztiming@num-\tikztiming@back}%
+      \let\tikztiming@num\pgfmathresult
+      \let\tikztiming@back\empty
+    \fi
+    \pgfmathparse{\tikztimingwidth + \tikztiming@num}%
+    \let\tikztimingwidth\pgfmathresult
+    \def\currentchar{#1}%
+    \uppercase{\def\currentcharuc{#1}}%
+    \@ifundefined{tikztiming@beforenextcode@\lastchar}%
+      {}%
+      {\@nameuse{tikztiming@beforenextcode@\lastchar}}%
+    \@ifundefined{tikztiming@beforecode@\currentchar}%
+      {}%
+      {\@nameuse{tikztiming@beforecode@\currentchar}}%
+    \@ifundefined{\tikztiming@prefix\lastchar\currentchar}%
+      {\@ifundefined{\tikztiming@prefix\lastchar\currentcharuc}%
+        {\PackageWarning{tikz-timing}{Timing transition '\lastchar\currentchar'
+        is not defined and will be ignored!}{}{}{}}%
+        {\tikztiming@output{\lastchar}{\currentcharuc}}%
+      }%
+      {\tikztiming@output{\lastchar}{\currentchar}}%
+    \let\secondlastchar\lastchar
+    \let\lastchar\currentcharuc
+    \@ifundefined{tikztiming@aftercode@\currentcharuc}%
+      {}%
+      {\@nameuse{tikztiming@aftercode@\currentcharuc}}%
+    \expandafter
+    \tikztiming@testfortext
+  \fi
+}
+\def\tikztiming@testfortext{%
+  \@ifnextchar\bgroup
+    {\tikztiming@handletext}%
+    {\tikztiming@}%
+}
+\def\tikztiming@handletext#1{%
+  \@ifnextchar{[}%
+    {\tikztiming@handletext@}%
+    {\tikztiming@handletext@[]}%
+  #1\relax
+}
+\def\tikztiming@handletext@[#1]#2\relax{%
+  \begingroup
+  \expandafter\lowercase\expandafter{%
+    \expandafter\def\expandafter\currentcharlc
+    \expandafter{\currentchar}%
+  }%
+  \pgfkeysifdefined{/tikz/timing/\currentcharlc/text/.@cmd}%
+  {%
+  \tikztiming@output@flush
+  \tikztiming@eaddtostr{%
+    node (timing@dend) at +(\dslope/2.0,\height/2.0) {}
+    node [%]
+      shift={($ (timing@dstart)!0.5!(timing@dend) $)},%
+      timing/\currentcharlc/text,%
+  }%
+  \endgroup
+  \tikztiming@addtostr{%[
+      #1%
+      ] {#2}%
+  }%
+  \def\lastchar{D@edge@}%
+  }{%
+    \endgroup
+    \PackageWarning{tikz-timing}{Ignoring text for character
+    '\currentchar'!}{}{}{}%
+  }%
+  \tikztiming@
+}
+\def\tikztiming@defcode#1{%
+  \@namedef{tikztiming@code@\meaning#1}%
+}
+\tikztiming@defcode{,}{%
+  \tikztiming@output@flush
+  \tikztiming@eaddtostr{%
+    \newdraw
+  }%
+  \tikztiming@
+}
+\tikztiming@defcode{;}{%
+  \tikztiming@output@flush
+  \tikztiming@eaddtostr{%
+    \newdrawns
+  }%
+  \tikztiming@
+}
+\tikztiming@defcode{N}{%
+  \@ifnextchar[%]
+    {\tikztiming@addnode@getoptions}%
+    {\tikztiming@addnode@getoptions[]}%
+}
+\tikztiming@defcode{n}{%
+  \@ifnextchar[%]
+    {\tikztiming@addnode@getoptions}%
+    {\tikztiming@addnode@getoptions[]}%
+}
+\def\tikztiming@addnode@getoptions[#1]{%
+  \@ifnextchar(%)
+    {\tikztiming@addnode@getname{#1}}%
+    {\tikztiming@addnode@getname{#1}()}%
+}
+\def\tikztiming@addnode@getname#1(#2){%
+  \@ifnextchar\bgroup
+    {\tikztiming@addnode@{#1}{#2}}%
+    {\tikztiming@addnode@{#1}{#2}{}}%
+}
+\def\tikztiming@addnode@#1#2#3{%
+  \tikztiming@output@flush
+  \begingroup
+    \def\@tempa{#2}%
+    \ifx\@tempa\empty
+      \def\@tempa{ node [timing/inline node,#1] }%
+    \else
+      \def\@tempa{ node [timing/inline node,#1] (#2) }%
+    \fi
+    \expandafter\tikztiming@addtostr\expandafter{\@tempa {#3} }%
+  \endgroup
+  \tikztiming@
+}
+\def\tikztiming@testforcode{%
+  \@ifnextchar{!}%
+    {\tikztiming@testforcode@}%
+    {\@ifundefined{tikztiming@code@\meaning\@let@token}%
+      {\tikztiming@@}%
+      {\csname tikztiming@code@\meaning\@let@token\expandafter
+       \endcsname\@gobble}%
+    }%
+}
+\def\tikztiming@testforcode@#1{%
+  \@ifnextchar\bgroup
+    {\tikztiming@handlecode}%
+    {%
+      \PackageWarning{tikz-timing}{Missing braces after '!' character. Ignoring
+      this character}{}{}{}%
+      \tikztiming@
+    }%
+}
+\tikztiming@defcode{B}{%
+  \pgfmathparse{\tikztiming@back+\tikztiming@num}%
+  \let\tikztiming@back\pgfmathresult
+  \tikztiming@
+}
+\tikztiming@defcode{b}{%
+  \pgfmathparse{\tikztiming@back+\tikztiming@num/2}%
+  \let\tikztiming@back\pgfmathresult
+  \tikztiming@
+}
+\tikztiming@defcode{F}{%
+  \pgfmathparse{\tikztiming@back-\tikztiming@num}%
+  \let\tikztiming@back\pgfmathresult
+  \tikztiming@
+}
+\tikztiming@defcode{f}{%
+  \pgfmathparse{\tikztiming@back-\tikztiming@num/2}%
+  \let\tikztiming@back\pgfmathresult
+  \tikztiming@
+}
+\def\tikztiming@handlecode#1{%
+  \tikztiming@output@flush
+  \tikztiming@addtostr{ #1 }%
+  \tikztiming@
+}
+\tikztiming@defcode[#1]{%
+  \tikztiming@addtostr{ [#1] }%
+  \tikztiming@
+}
+
+\def\tikztiming@testfornum{%
+  \let\tikztiming@numchars\empty
+  \tikztiming@numfrac0\relax
+  \afterassignment
+  \tikztiming@testfornum@
+  \tikztiming@numint0%
+}
+\def\tikztiming@testfornumfrac{%
+  \afterassignment
+  \tikztiming@testfornum@@@
+  \tikztiming@numfrac1%
+}
+\def\tikztiming@numloop{%
+  \ifnum\tikztiming@numint>0%
+    \toks@\expandafter{\tikztiming@numchars}%
+    \xdef\tikztiming@numchars{%
+      \the\toks@
+      \the\@temptokena
+    }%
+    \advance\tikztiming@numint by -1\relax
+    \expandafter\tikztiming@numloop
+  \fi
+}
+\def\tikztiming@testfornum@{%
+  \ifnum0<\tikztiming@numint
+    \let\tikztiming@next\tikztiming@testfornum@@
+  \else
+    \def\tikztiming@next{%
+      \@ifnextchar{.}%
+        {\expandafter\tikztiming@testfornumfrac\@gobble}%
+        {%
+          \tikztiming@numint1\relax
+          \tikztiming@numfrac0\relax
+          \def\tikztiming@num{1.0}%
+          \if@tikztiming@metachar
+            {\def\@tempa{\expandafter\expandafter\expandafter
+            \tikztiming@testfornum@@@@
+            \expandafter\expandafter\expandafter{%
+            \csname tikztiming@metachar@\meaning\@let@token\endcsname}}%
+            \expandafter\@tempa\@gobble
+            }%
+            {\tikztiming@testforcode}%
+        }%
+    }%
+  \fi
+  \tikztiming@next
+}
+\def\tikztiming@testfornum@@{%
+  \@ifnextchar{.}%
+    {\expandafter\tikztiming@testfornumfrac\@gobble}%
+    {\tikztiming@testfornum@@@}%
+}
+\def\tikztiming@testfornum@@@{%
+  \xdef\tikztiming@num{\the\tikztiming@numint.\expandafter\@gobble\the\tikztiming@numfrac}%
+  \@ifnextchar\bgroup
+    {%
+      \expandafter\tikztiming@numfrac\expandafter0\expandafter
+      \@gobble\the\tikztiming@numfrac\relax
+      \ifnum0=\tikztiming@numfrac\else
+        \pgfmathparse{round(\tikztiming@num)}%
+        \PackageWarning{tikz-timing}%
+          {Can not repeat group by a non-integer factor!^^J%
+           Rounding '\tikztiming@num' to '\pgfmathresult'.}{}{}{}%
+        \let\tikztiming@num\pgfmathresult
+      \fi
+      \tikztiming@testfornum@@@@
+    }%
+    {%
+      \if@tikztiming@metachar
+        {\def\@tempa{\expandafter\expandafter\expandafter
+        \tikztiming@testfornum@@@@
+        \expandafter\expandafter\expandafter{%
+        \csname tikztiming@metachar@\meaning\@let@token\endcsname}}%
+        \expandafter\@tempa\@gobble
+        }%
+        {\tikztiming@testforcode}%
+    }%
+}
+\def\tikztimingmetachar#1#2{%
+  \ifx\relax#2\relax
+    \expandafter\let\csname tikztiming@metachar@\meaning#1\endcsname\@undefined
+  \else
+    \@namedef{tikztiming@metachar@\meaning#1}{#2}%
+  \fi
+}
+\def\if@tikztiming@metachar#1#2{%
+  \@ifundefined{tikztiming@metachar@\meaning\@let@token}{#2}{#1}%
+}
+\def\tikztiming@testfornum@@@@#1{%
+  \begingroup
+    \@temptokena{#1}%
+    \tikztiming@numloop%
+  \endgroup
+  \tikztiming@numint1\relax
+  \tikztiming@numfrac0\relax
+  \expandafter\tikztiming@\tikztiming@numchars
+}
+\newcounter{tikztimingrows}
+\def\tikztiming@extracode{\@gobble{EXTRACODE}}%
+
+\newenvironment{tikztimingtable}[1][]{%
+  \begingroup
+  \setcounter{tikztiming@nrows}{0}%
+  \def\tikztiming@maxwidth{0.0}%
+  \let\extracode\tikztiming@extracode
+  \let\tablegrid\tikztiming@tablegrid
+  \let\fulltablegrid\tikztiming@fulltablegrid
+  \let\horlines\tikztiming@horlines
+  \let\vertlines\tikztiming@vertlines
+  \let\tablerules\tikztiming@tablerules
+  \def\rowdist{\tikztiming@rowdist}%
+  \def\coldist{\tikztiming@coldist}%
+  \def\nrows{\the\c@tikztiming@nrows}%
+  \def\twidth{\tikztiming@maxwidth}%
+  \tikzpicture[timing/table,#1]%
+    \coordinate (last row)  at (0,\rowdist);
+    \coordinate (label pos) at (-1*\coldist,0);
+    \coordinate (timing/table/top left) at (0,1);
+    \coordinate (timing/table/bottom right) at (0,0);
+  \collect@body\tikztiming@table
+}{%
+}
+
+\def\tikztiming@table#1{%
+  \tikztimingtable@row#1\endtikztimingtable@
+  \endtikzpicture
+  \endgroup
+}
+
+\def\endtikztimingtable@{\@gobble{ENDTIKSTIMING}}
+
+\long\def\tikztimingextracode#1#2\endtikztimingtable@{%
+  \path let
+     \p1 = (timing/table/top left),
+     \p2 = (timing/table/bottom right)
+   in
+     coordinate (timing/table/bottom left) at (\x1,\y2)
+     coordinate (timing/table/top right) at (\x2,\y1)
+     coordinate (timing/table/size) at (\x2-\x1,\y1-\y2)
+   ;
+  #2%
+}
+\def\tikztiming@emptycell{%
+  \@gobble{tikztiming@emptycell}%
+}
+\def\tikztimingtable@row#1\\{%
+  \tikztimingtable@row@#1&\tikztiming@emptycell&\\
+}
+\def\tikztimingtable@row@#1&#2&#3\\{%
+  \ifx\\#3\\\else
+    \begingroup
+      \def\@tempa{\tikztiming@emptycell&}%
+      \def\@tempb{#3}%
+      \ifx\@tempa\@tempb\else
+        \PackageWarning{tikz-timing}{%
+          To many columns in tikztimingtable row! Only two are allowed%
+        }{}{}{}%
+      \fi
+    \endgroup
+  \fi
+  \ifx\tikztiming@emptycell#2%
+    \def\next{\tikztimingtable@row@@{#1}{}}%
+  \else
+    \def\next{\tikztimingtable@row@@{#1}{#2}}%
+  \fi
+  \next
+}%
+\def\tikztimingtable@row@@#1#2{%
+  \addtocounter{tikztiming@nrows}{1}%
+  \path ($ (last row) + (0,-1*\rowdist) $) coordinate (last row);
+  \path ($ (last row) + (-1*\coldist,0) $) node [anchor=base east,timing/name]
+    {\tikztiminglabel{#1}};
+  \@ifnextchar{[}%
+    {\tikztiming@tabletiming}%
+    {\tikztiming@tabletiming[]}%
+  #2\relax
+  \path let \p1 = (timing/table/bottom right), \p2 = (timing/end base) in
+    coordinate (timing/table/bottom right) at ({max(\x1,\x2)},\y2);
+  %
+  \pgfmathparse{max(\tikztiming@maxwidth,\tikztimingwidth)}%
+  \let\tikztiming@maxwidth\pgfmathresult
+  \@ifnextchar\extracode
+    {%
+      \let\extracode\relax
+      \tikztimingextracode
+    }%
+    {%
+      \@ifnextchar\endtikztimingtable@
+        {\@gobble}{\tikztimingtable@row}%
+    }%
+}
+
+\def\tikztiming@tabletiming[#1]#2\relax{%
+  \let\lastchar\empty
+  \let\settings\empty
+  \ifx\relax#1\relax\else
+    \tikztiming@testoptarg#1\relax\relax
+  \fi
+  \edef\@tempa{\noexpand\timing[name=row\the\c@tikztiming@nrows,\settings]
+    at (last row)}%
+  \expandafter\@tempa\expandafter{\expandafter[\lastchar]#2};
+}
+
+\newcommand*\tikztiming@fulltablegrid[1][]{%
+  \begin{pgfonlayer}{background}
+    \scope[xstep={\timingwidth/2.},ystep={\timingheight/2.},
+    shift={(timing/table/bottom left)},timing/table/grid,#1]
+      \draw (0,0) grid
+        ($ (timing/table/top right) - (timing/table/bottom left) $);
+   \endscope
+  \end{pgfonlayer}
+}
+\newcommand*\tikztiming@tablegrid[1][]{%
+  \begin{pgfonlayer}{background}
+    \scope[xstep={\timingwidth/2.},ystep={\timingheight/2.},timing/table/grid,#1]
+      \foreach \y in {1,...,\nrows} {%
+        \draw {[shift={($ (timing/table/bottom left) + (0,\y*\rowdist) -
+        (0,\rowdist) $)}] let \p1 = (timing/table/bottom right) in (0,0) grid
+        (\x1,1)};
+      }%
+    \endscope
+  \end{pgfonlayer}
+}
+\newcommand*\tikztiming@tablerules[1][]{%
+    \draw [timing/table/rules,#1] let
+      \p1 = (current bounding box.north west),
+      \p2 = (current bounding box.south east),
+      \p3 = (last row)
+    in
+      (\x1-\tabcolsep,\rowdist) -- (\x2+\tabcolsep,\rowdist)
+      ($ (\x1-\tabcolsep,\y3) - (0,\rowdist-1) $) --
+      ($ (\x2+\tabcolsep,\y3) - (0,\rowdist-1) $)
+    ;
+}
+\newcommand*\tikztiming@horlines[2][]{%
+  \begingroup
+    \def\list{#2}%
+    \ifx\list\empty
+      \def\list{1,2,...,\nrows}%
+    \fi
+    \foreach \row in \list%
+      \draw [timing/table/lines,#1] let
+        \p1 = (timing/table/bottom right)
+      in
+        (0,\rowdist-\row*\rowdist) -- +(\x1,0);
+  \endgroup
+}
+\newcommand*\tikztiming@vertlines[2][]{%
+  \begingroup
+    \def\list{#2}%
+    \ifx\list\empty
+      \def\list{0,1,...,\twidth}%
+    \fi
+    \draw [timing/table/lines,#1] let
+        \p1 = ($ (timing/table/bottom right) - (0,2) $)
+      in
+        \foreach \clk in \list {
+          (\clk,+1.5) -- +(0,\y1)
+        }
+    ;
+  \endgroup
+}
+\pgfdeclareshape{tikztiming@shape}{%
+  \savedanchor\northeast{\pgfpointxy{.5*\tikztimingwidth}{.5}}%
+  \savedanchor\northeastborder{\pgfpointxy{.5*\tikztimingwidth+0.1}{.6}}%
+  \savedanchor\startpoint{%
+    \pgfpointanchor{timing/start}{center}%
+    \@tempdima=\pgf@x
+    \@tempdimb=\pgf@y
+    \pgfpointxy{-.5*\tikztimingwidth}{-.5}%
+    \advance\pgf@x by \@tempdima
+    \advance\pgf@y by \@tempdimb
+  }%
+  \savedanchor\endpoint{%
+    \pgfpointanchor{timing/end}{center}%
+    \@tempdima=\pgf@x
+    \@tempdimb=\pgf@y
+    \pgfpointxy{-.5*\tikztimingwidth}{-.5}%
+    \advance\pgf@x by \@tempdima
+    \advance\pgf@y by \@tempdimb
+  }%
+  \anchor{center}{\pgfpointorigin}%
+  \anchor{start}{\startpoint}%
+  \anchor{end}{\endpoint}%
+  %
+  \anchor{origin}{\northeast \pgf@x=-\pgf@x \pgf@y=-\pgf@y }%
+  \anchor{east}{\northeast \pgf@y=0pt }%
+  \anchor{west}{\northeast \pgf@y=0pt \pgf@x=-\pgf@x }%
+  \anchor{north}{\northeast \pgf@x=0pt }%
+  \anchor{north west}{\northeast \pgf@x=-\pgf@x }%
+  \anchor{north east}{\northeast}
+  \anchor{high mid}{\northeast \pgf@x=0pt }%
+  \anchor{high start}{\northeast \pgf@x=-\pgf@x }%
+  \anchor{high end}{\northeast}
+  \anchor{south}{\northeast \pgf@x=0pt \pgf@y=-\pgf@y }%
+  \anchor{south west}{\northeast \pgf@x=-\pgf@x \pgf@y=-\pgf@y }%
+  \anchor{south east}{\northeast \pgf@y=-\pgf@y }%
+  \anchor{low mid}{\northeast \pgf@x=0pt \pgf@y=-\pgf@y }%
+  \anchor{low start}{\northeast \pgf@x=-\pgf@x \pgf@y=-\pgf@y }%
+  \anchor{low end}{\northeast \pgf@y=-\pgf@y }%
+  \anchor{mid}{\pgfpointorigin}%
+  \anchor{mid east}{\northeast \pgf@y=0pt }%
+  \anchor{mid west}{\northeast \pgf@y=0pt \pgf@x=-\pgf@x }%
+  \anchor{mid end}{\northeast \pgf@y=0pt }%
+  \anchor{mid start}{\northeast \pgf@y=0pt \pgf@x=-\pgf@x }%
+  \anchor{base}{\northeast \pgf@x=0pt \pgf@y=-\pgf@y }%
+  \anchor{base west}{\northeast \pgf@x=-\pgf@x \pgf@y=-\pgf@y }%
+  \anchor{base east}{\northeast \pgf@y=-\pgf@y }%
+  \anchorborder{%
+    \@tempdima=\pgf@x
+    \@tempdimb=\pgf@y
+    \pgfpointborderrectangle{\pgfpoint{\@tempdima}{\@tempdimb}}{\northeastborder}%
+  }%
+}
+\def\tikztiming@iflower#1{%
+  \begingroup
+  \edef\@tempa{`#1}%
+  \ifnum\@tempa=\lccode\@tempa
+    \endgroup
+    \expandafter
+    \@firstoftwo
+  \else
+    \endgroup
+    \expandafter
+    \@secondoftwo
+  \fi
+}
+\def\timingwidth{1}%
+\def\timingheight{1}%
+\def\tikztiming@internaldefs#1{%
+  \def\draw{\noexpand\draw}%
+  \def\path{\noexpand\path}%
+  \def\fill{\noexpand\fill}%
+  \def\width{####1*\noexpand\timingwidth}%
+  \def\fwidth{\noexpand\timingwidth}%
+  \def\height{\noexpand\timingheight}%
+  \def\slope{\noexpand\timingslope}%
+  \def\zslope{\noexpand\timingzslope}%
+  \def\dslope{\noexpand\timingdslope}%
+  \def\gslope{0}%
+  \lowercase{%
+  \def\style{timing/#1}%
+  \def\bgstyle{timing/#1/background}%
+  }%
+  \def\newdraw{\tikztiming@newdraw}%
+  \def\newdrawns{\tikztiming@newdraw@nosave}%
+  \def\code##1{ [/utils/exec={\unexpanded{##1}}] }%
+}
+
+\def\tikztimingsetslope#1{%
+  \pgfmathparse{min(1.0,{max(0.0,#1)})}%
+  \let\tikztiming@slope\pgfmathresult
+  \edef\timingslope{\tikztiming@slope*\noexpand\timingwidth}%
+}
+\def\tikztimingsetdslope#1{%
+  \pgfmathparse{min(1.0,{max(0.0,#1)})}%
+  \let\tikztiming@dslope\pgfmathresult
+  \edef\timingdslope{\tikztiming@dslope*\noexpand\timingwidth}%
+}
+\def\tikztimingsetzslope#1{%
+  \pgfmathparse{min(1.0,{max(0.0,#1)})}%
+  \let\tikztiming@zslope\pgfmathresult
+  \edef\timingzslope{\tikztiming@zslope*\noexpand\timingwidth}%
+}
+\tikztimingsetslope{0.10}%
+\tikztimingsetdslope{0.20}%
+\tikztimingsetzslope{0.05}%
+\def\tikztiminguse#1{%
+  \@ifundefined{\tikztiming@prefix#1@general}%
+    {\PackageWarning{Can not use transition macro for '#1'.}{}{}{}}%
+    {\@nameuse{\tikztiming@prefix#1@general}}%
+}
+\def\tikztimingdef#1{%
+  \tikztimingdef@#1\relax%
+}
+\def\tikztimingdef@#1#2\relax#3{%
+  \ifx\relax#2\relax
+    \tikztiming@nameedef[#1]{#1}{#3}%
+  \else
+    \tikztiming@nameedef[#2]{#1#2}{#3}%
+  \fi
+}
+\def\tikztiminglet#1#2{%
+  \tikztiminglet@#1\relax#2\relax
+}
+\def\tikztiminglet@#1#2\relax#3#4\relax{%
+  \tikztiming@namelet{#1#2}{#3#4}%
+  \tikztiming@namelet{#1#2@general}{#3#4@general}%
+  \tikztiming@iflower{#1}{}%
+    {\tikztiming@iflower{#2}%
+      {%
+        \lowercase{\tikztiminglet@{#1}{#2}\relax{#3}{#4}}\relax
+      }%
+      {%
+        \uppercase{\lowercase{%
+        \uppercase{\lowercase{\tikztiminglet@{#1}}{#2}}\relax{#3}}{#4}}\relax
+        \lowercase{\uppercase{%
+        \lowercase{\uppercase{\tikztiminglet@{#1}}{#2}}\relax{#3}}{#4}}\relax
+      }%
+    }%
+}
+\def\tikztiming@chars#1{}
+\def\tikztiming@ifcharexists#1{%
+  \def\tikztiming@ifcharexists@##1,#1,##2\relax{%
+    \ifx\relax##2\relax%
+      \expandafter\@firstoftwo
+    \else
+      \expandafter\@secondoftwo
+    \fi
+  }%
+  \expandafter\tikztiming@ifcharexists@
+  \expandafter,\tikztiming@chars,#1,\relax%
+}
+\def\tikztiming@addchar#1{%
+  \tikztiming@ifcharexists{#1}{%
+    \edef\tikztiming@chars{\tikztiming@chars,#1}%
+  }{}%
+}
+\def\tikztimingchar#1{%
+  \uppercase{%
+  \tikztiming@addchar{#1}%
+  \tikztimingchar@{#1}}%
+}
+\expandafter\def\csname\tikztiming@prefix @start\endcsname#1{}%
+\def\tikztimingchar@#1#2#3{%
+  \tikztiming@nameedef[#1]{#1@start}{#2 coordinate (timing/start) }%
+  \tikztiming@nameedef[#1]{#1}{#2 coordinate (timing/start) #3}%
+  \tikztimingdef{#1#1}{#3}%
+}
+\def\tikztimingalias#1#2{%
+  \uppercase{\tikztimingalias@{#1}{#2}}%
+}
+\def\tikztimingalias@#1#2{%
+  \tikztiming@namelet{#1}{#2}%
+  \tikztiming@namelet{#1@start}{#2@start}%
+  \lowercase{%
+  \tikztiming@namelet{#1}{#2}%
+  \tikztiming@namelet{#1@start}{#2@start}%
+  }%
+  \tikztiminglet{#1#1}{#2#2}%
+  \@for\@tempa:=\tikztiming@chars\do{%
+    \expandafter\tikztiminglet@@
+    \expandafter{\@tempa}{#1}{#2}%
+  }%
+}
+\def\tikztimingecopy#1#2{%
+  \uppercase{\tikztimingecopy@{#1}{#2}}%
+}
+\def\tikztimingecopy@#1#2{%
+  \tikztimingchar{#1}{}{}%
+  \tikztimingdef{#1}{\tikztiminguse{#2}{##1}}%
+  \tikztiming@nameedef[#1]{#1@start}{\tikztiminguse{#2@start}{##1}}%
+  \lowercase{%
+    \@ifundefined{\tikztiming@prefix#2}{}{%
+      \tikztimingdef{#1}{\tikztiminguse{#2}{##1}}%
+      \tikztiming@nameedef[#1]{#1@start}{\tikztiminguse{#2@start}{##1}}%
+    }%
+  }%
+  \tikztimingdef{#1#1}{\tikztiminguse{#2#2}{##1}}%
+  \@for\@tempa:=\tikztiming@chars\do{%
+    \expandafter\tikztimingdef@@
+    \expandafter{\@tempa}{#1}{#2}%
+    \expandafter\lowercase\expandafter{\expandafter\def\expandafter\@tempb
+    \expandafter{\@tempa}}%
+    \@ifundefined{\tikztiming@prefix#2\@tempb}{}{%
+      \expandafter\tikztimingdef@@
+      \expandafter{\@tempb}{#1}{#2}%
+    }%
+  }%
+}
+\def\tikztiminglet@@#1#2#3{%
+  \tikztiminglet@@@#1#2#3%
+  % Should stay, cause no harm:
+  \lowercase{\tikztiminglet@@@#1}#2#3%
+  \lowercase{\tikztiminglet@@@#1#2#3}%
+  \lowercase{\uppercase{\tikztiminglet@@@#1}#2#3}%
+}
+\def\tikztiminglet@@@#1#2#3{%
+  \tikztiminglet{#1#2}{#1#3}%
+  \tikztiminglet{#2#1}{#3#1}%
+}
+
+\def\tikztimingdef@@#1#2#3{%
+  \tikztimingdef{#1#2}{\tikztiminguse{#1#3}{##1}}%
+  \tikztimingdef{#2#1}{\tikztiminguse{#3#1}{##1}}%
+}
+\def\tikztiming@savesettings{%
+  \xdef\tikztiming@saved@settings{%
+    {\tikztiming@slope}%
+    {\tikztiming@dslope}%
+    {\tikztiming@zslope}%
+    {\the\pgflinewidth}%
+  }%
+}
+\def\tikztiming@restoresettings{%
+  \expandafter\tikztiming@restoresettings@
+  \tikztiming@saved@settings\relax
+}
+\def\tikztiming@restoresettings@#1#2#3#4\relax{%
+  \tikztimingsetslope{#1}%
+  \tikztimingsetdslope{#2}%
+  \tikztimingsetzslope{#3}%
+  \pgfsetlinewidth{#4}%
+}
+\def\tikztiming@newdraw{%
+  node [timing/save] (timing@save) {};%
+  \draw [timing/restore] (timing@save) ++(0,0)
+}
+
+\def\tikztiming@newdraw@nosave{%
+  node [timing/coord] (timing@save) {};%
+  \draw (timing@save) ++(0,0)
+}
+
+\tikztimingchar{H}{++(0,\height)}{-- ++(#1,0)}
+
+\tikztimingchar{L}{++(0,0)}{-- ++(#1,0)}
+
+\tikztimingchar{Z}{++(0,\height/2.)}{%
+  \newdraw [\style]
+  -- ++(#1,0)
+}
+
+\tikztimingchar{X}{}{}%
+\tikztimingchar{D}{}{}%
+\tikztimingchar{U}{}{}%
+\tikztimingchar{M}{}{}%
+
+\tikztimingchar{G}{++(0,0)}{-- ++(\gslope,\height) -- ++(\gslope,-\height)}
+\tikztimingchar{S}{++(0,0)}{++(#1,0)}
+
+\tikztimingdef{DD}{
+  node [timing/save] (timing@save) {}; \path [\bgstyle] (timing@save) ++(0,0)
+     +(0.5*\dslope,0.5*\height) -- +(\dslope,0)
+  -- +(#1,0)
+  -- +($ (#1,0) + 0.5*(\dslope,\height) $)
+  -- +(#1,\height)
+  -- +(\dslope,\height) -- cycle;
+  \draw [timing/restore,\style] (timing@save) ++(0,0)
+  node [timing/save] (timing@dstart) at +(\dslope/2.,\height/2.) {}
+  --  +(\dslope,+\height) --  +(#1,+\height) ++(0,+\height)
+  --  +(\dslope,-\height) -- ++(#1,-\height)
+}
+\tikztiming@namelet{D@edge@D}{DD}
+\tikztiming@namelet{D@edge@D@general}{DD@general}
+
+\tikztimingchar{D}{++(0,0)}{
+  node [timing/save] (timing@save) {}; \path [\bgstyle] (timing@save) ++(0,0)
+  -- +(#1,0)
+  -- +($ (#1,0) + 0.5*(\dslope,\height) $)
+  -- +(#1,\height)
+  -- +(0,\height)
+  -- cycle;
+  \draw [timing/restore,\style] (timing@save) ++(0,0)
+  node [timing/save] (timing@dstart) at +(-\dslope/2.,\height/2.0) {}
+  --  +(#1,0) ++(0,+\height)
+  -- ++(#1,0) ++(0,-\height)
+}
+
+\tikztimingdef{DD}{
+  node [timing/save] (timing@save) {}; \path [\bgstyle] (timing@save) ++(0,0)
+  -- +(#1,0)
+  -- +($ (#1,0) + 0.5*(\dslope,\height) $)
+  -- +(#1,\height)
+  -- +(0,\height)
+  -- cycle;
+  \newdraw [\style]
+  --  +(#1,0) ++(0,+\height)
+  -- ++(#1,0) ++(0,-\height)
+}
+
+\tikztiming@namelet{D@edge@@start}{D@start}
+\tikztiming@namelet{d@edge@@start}{d@start}
+
+\def\tikztiming@trans@D@fill#1#2{%
+  node [timing/save] (timing@save) {}; \path [\bgstyle] (timing@save) ++(0,0)
+  -- +(0.5*\dslope,-0.5*\height)
+  -- ++($ (#1,-0.5*\height) - (#2,0) $)
+  -- +(0.5*\dslope,0.5*\height)
+  -- +(0,\height)
+  -- ++($ (#2,\height) - (#1,0) + (0.5*\dslope,0) $)
+  -- cycle;
+  \draw [timing/restore,\style] (timing@save) ++(0,0)
+  node [timing/save] (timing@dstart) {}
+}
+\tikztimingdef{HH}{-- ++(#1,0)}
+\tikztimingdef{LL}{-- ++(#1,0)}
+\tikztimingdef{HL}{-- ++(\slope,-\height) \tikztiminguse{HH}{#1-\slope}}
+\tikztimingdef{LH}{-- ++(\slope, \height) \tikztiminguse{LL}{#1-\slope}}
+
+\tikztimingdef{HG}{-- ++(\gslope,-\height) -- ++(\gslope,+\height)}
+\tikztimingdef{LG}{-- ++(\gslope,+\height) -- ++(\gslope,-\height)}
+\tikztimingdef{ZG}{
+  -- ++(\gslope,-\height/2.0)
+  -- ++(\gslope,+\height)
+  -- ++(\gslope,-\height/2.0)
+}
+\tikztiminglet{DG}{LG}
+
+\tikztiminglet{HS}{S}
+\tikztiminglet{LS}{S}
+\tikztiminglet{ZS}{S}
+\tikztiminglet{DS}{S}
+\tikztiminglet{TS}{S}
+
+\tikztimingdef{LZ}{
+  \newdraw [\style]
+  -- ++(\zslope,+\height/2.) -- ++($ (#1,0) - (\zslope,0) $)
+}
+\tikztimingdef{HZ}{%
+  \newdraw [\style]
+  -- ++(\zslope,-\height/2.) -- ++($ (#1,0) - (\zslope,0) $)
+}
+\tikztimingdef{ZH}{
+    \newdraw
+  -- ++(\zslope,+\height/2.) -- ++($ (#1,0) - (\zslope,0) $)
+}
+\tikztimingdef{ZL}{%
+  \newdraw
+  -- ++(\zslope,-\height/2.) -- ++($ (#1,0) - (\zslope,0) $)
+}
+
+\tikztimingdef{DZ}{
+  -- ++( \dslope/2.,+\height/2.)
+     ++(-\dslope/2.,+\height/2.)
+  -- ++( \dslope/2.,-\height/2.)
+  \newdraw [\style]
+  -- ++($ (#1,0) - (\dslope/2.,0) $)
+}
+
+\tikztimingdef{ZD}{
+  \tikztiming@trans@D@fill{#1}{0}%
+  -- ++(\dslope/2.,\height/2.)  -- ++($ (#1,0) - (\dslope/2.,0) $)
+     ++($ -1*(#1,0) + (0,-\height/2.) $)
+  -- ++(\dslope/2.,-\height/2.) -- ++($ (#1,0) - (\dslope/2.,0) $)
+}
+
+\tikztimingdef{LD}{
+  -- ++(0.5*\dslope,0.5*\height)
+  \tikztiming@trans@D@fill{#1}{0.5*\dslope}%
+  -- ++(0.5*\dslope,0.5*\height)
+  -- ++($ (#1,0) - (\dslope,0) $)
+     ++($ -1*(#1,0) + (0,-\height) $)          ++(\dslope/2.,+\height/2.)
+  -- ++(\dslope/2.,-\height/2.) -- ++($ (#1,0) - (\dslope,0) $)
+}
+
+\tikztimingdef{DL}{
+  -- ++( \dslope/2.,+\height/2.)
+     ++(-\dslope/2.,+\height/2.)
+  -- ++(\dslope/2.,-\height/2.)
+  \newdraw [\style]
+  -- ++(\dslope/2.,-\height/2.)
+  -- ++($ (#1,0) - (\dslope,0) $)
+}
+
+\tikztimingdef{HD}{
+  -- ++(0.5*\dslope,-0.5*\height)
+  \tikztiming@trans@D@fill{#1}{0.5*\dslope}%
+  -- ++(0.5*\dslope,-0.5*\height)
+  -- ++($ (#1,0) - (\dslope,0) $)
+     ++($ -1*(#1,0) + (0,+\height) $)          ++(\dslope/2.,-\height/2.)
+  -- ++(\dslope/2.,+\height/2.) -- ++($ (#1,0) - (\dslope,0) $)
+     ++(0,-\height)
+}
+
+\tikztimingdef{DH}{
+     ++(0,+\height)
+  -- ++(+\dslope/2.,-\height/2.)
+     ++(-\dslope/2.,-\height/2.)
+  -- ++(\dslope/2.,+\height/2.)
+  \newdraw [\style]
+  -- ++(\dslope/2.,+\height/2.)
+  -- ++($ (#1,0) - (\dslope,0) $)
+}
+
+\tikztimingalias{M}{Z}
+\tikztimingchar{M}{++(0,\height/2.)}{
+  \newdraw [\style/decoration,\style]
+  -- ++(#1,0)
+}
+\tikztimingdef{MG}{
+  \newdraw [timing/m]
+  -- ++(\gslope,-\height/2.0)
+  -- ++(\gslope,+\height)
+  -- ++(\gslope,-\height/2.0)
+}
+
+\tikztimingdef{MZ}{
+  \newdraw [\style]
+  \tikztiminguse{ZZ}{#1}
+}
+
+\tikztimingdef{ZM}{
+  \newdraw [\style]
+  \tikztiminguse{MM}{#1}
+}
+
+\tikztimingdef{LM}{
+  \newdraw [\style]
+  -- ++($ (1/8,0) + (0,\height/2) $)
+  \newdraw [\style/decoration,\style]
+  -- ++($ (-1/8,0) + (#1,0) $)
+}
+
+\tikztimingdef{HM}{
+  \newdraw [\style]
+  -- ++($ (1/8,0) + (0,-1*\height/2) $)
+  \newdraw [\style/decoration,\style]
+  -- ++($ (-1/8,0) + (#1,0) $)
+}
+
+\tikztimingdef{DM}{
+  --  +($  (1/8,0) + (0,\height*.50) $)
+      +(0,\height)
+  -- ++($  (1/8,0) + (0,\height*.50) $)
+  \newdraw [\style/decoration,\style]
+  -- ++($ (-1/8,0) + (#1,0) $)
+}
+
+\newcounter{tikztimingtrans}
+\newcounter{tikztimingtranspos}
+
+\tikztimingchar{T}{++(0,0)}{
+  -- ++(#1,0)
+}
+
+\tikztimingdef{HT}{%
+  {[\style]
+  \code{\setcounter{tikztimingtrans}{-1}}
+  -- ++(\slope,\value{tikztimingtrans}*\height) -- ++($ (#1,0) - (\slope,0) $)
+  }
+}
+
+\tikztimingdef{LT}{%
+  {[\style]
+  \code{\setcounter{tikztimingtrans}{+1}}
+  -- ++(\slope,\value{tikztimingtrans}*\height) -- ++($ (#1,0) - (\slope,0) $)
+  }
+}
+
+\tikztimingdef{TL}{%
+  \code{\setcounter{tikztimingtranspos}{\value{tikztimingtrans}}%
+  \addtocounter{tikztimingtranspos}{+1}}
+  -- ++(\slope, -0.5*\value{tikztimingtranspos}*\height) -- ++($ (#1,0) - (\slope,0) $)
+}
+
+\tikztimingdef{TH}{%
+  \code{\setcounter{tikztimingtranspos}{\value{tikztimingtrans}}%
+  \addtocounter{tikztimingtranspos}{-1}}
+  -- ++(\slope, -0.5*\value{tikztimingtranspos}*\height) -- ++($ (#1,0) - (\slope,0) $)
+}
+
+\tikztimingdef{TZ}{%
+  \newdraw [\style]
+  \code{\setcounter{tikztimingtrans}{-\value{tikztimingtrans}}}
+  -- ++(\slope,\value{tikztimingtrans}*\height/2.)
+  -- ++($ (#1,0) - (\slope,0) $)
+}
+
+\tikztimingdef{TG}{%
+  -- +(\gslope,-1*\value{tikztimingtrans}*\height)
+  -- +(\gslope,0)
+}
+
+\tikztimingdef{ZT}{%
+  \newdraw
+  {[\style]
+  \code{\setcounter{tikztimingtrans}{-\value{tikztimingtrans}}}
+  -- ++(\slope,\value{tikztimingtrans}*\height/2.)
+  -- ++($ (#1,0) - (\slope,0) $)
+  }
+}
+
+\tikztimingdef{TT}{%
+  {[\style]
+  \code{\setcounter{tikztimingtrans}{-\value{tikztimingtrans}}}
+  -- ++(\slope,\value{tikztimingtrans}*\height) -- ++($ (#1,0) - (\slope,0) $)
+  }
+}
+
+\tikztimingdef{TD}{
+  \code{\setcounter{tikztimingtrans}{-\value{tikztimingtrans}}}
+  \code{\setcounter{tikztimingtranspos}{\value{tikztimingtrans}}%
+  \addtocounter{tikztimingtranspos}{-1}}
+  -- ++(0.5*\dslope,+0.5*\value{tikztimingtrans} * \height)
+  \tikztiming@trans@D@fill{#1}{0.5*\dslope}%
+  -- ++(0.5*\dslope,+0.5*\value{tikztimingtrans} * \height)
+  -- ++($ (#1,0) - (\dslope,0) $)
+     ++($ -1*(#1,\value{tikztimingtrans}*\height) $)
+     ++(\dslope/2.,+1*\value{tikztimingtrans}*\height/2.)
+  -- ++(\dslope/2.,-1*\value{tikztimingtrans}*\height/2.)
+  -- ++($ (#1,0) - (\dslope,0) $)
+     ++(0,\value{tikztimingtranspos}*\height/2.)
+}
+
+\tikztimingdef{DT}{
+  \code{\setcounter{tikztimingtrans}{-1}}
+  \tikztiminguse{DL}{#1}%
+}
+
+\tikztimingdef{MT}{%
+  \newdraw
+  {[\style]
+  -- ++(\slope,\value{tikztimingtrans}*\height/2.) -- ++($ (#1,0) - (\slope,0) $)
+  }
+}
+
+\tikztimingdef{TM}{%
+  \newdraw [\style]
+  \code{\setcounter{tikztimingtrans}{-\value{tikztimingtrans}}}
+  -- ++($ (1/8,0) + (0,\value{tikztimingtrans}*\height/2) $)
+  \newdraw [\style/decoration,\style]
+  -- ++($ (-1/8,0) + (#1,0) $)
+}
+
+\let\tikztiming@chars@default\tikztiming@chars
+
+
+\tikztimingecopy{C}{T}
+\def\tikztiming@nocombine@T{}%
+\def\tikztiming@nocombine@C{}%
+\def\tikztiming@nocombine@t{}%
+\def\tikztiming@nocombine@c{}%
+\def\tikztiming@nocombine@M{}%
+\def\tikztiming@nocombine@m{}%
+\def\tikztiming@nocombine@W{}%
+\def\tikztiming@nocombine@w{}%
+
+\tikztimingecopy{U}{D}
+\tikztimingdef{UD}{\tikztiminguse{D@edge@D}{#1}}
+\tikztimingdef{DU}{\tikztiminguse{D@edge@D}{#1}}
+
+\tikztimingecopy{X}{Z}
+
+\endinput
+%%
+%% End of file `tikz-timing.sty'.
