@@ -17,11 +17,12 @@ A2PS=a2ps -1 --medium=A4 --toc -o $@ $^
 PS2PDF=ps2pdf -sPAPERSIZE=a4
 MAN=man -Tps -l
 PDFLATEX=pdflatex
+PDFENV=export TEXINPUTS=.:./texinclude:./texinclude/data
 
 # We have a special directory for Latex style files
 
 %.tsv.pdf : %.tsv
-	export TEXINPUTS=.:./texinclude: ; awk -f pins2tex.awk $< | $(PDFLATEX) -jobname=$< > /dev/null
+	$(PDFENV) ; awk -f pins2tex.awk $< | $(PDFLATEX) -jobname=$< > /dev/null
 	
 %.pdf : %.ps
 	$(PS2PDF) $< pre_$@
@@ -103,7 +104,7 @@ driverfigs: $(DRIVERFIGS)
 # Make the A4 Documentation
 DriverBoard.pdf: DriverBoard.tex DriverBoard-content.tex $(DRIVERFIGS) 
 	rm -f DriverBoard.aux
-	export TEXINPUTS=.:./texinclude: 
+	$(PDFENV)
 	$(PDFLATEX) DriverBoard.tex
 	$(PDFLATEX) DriverBoard.tex
 	$(PDFLATEX) DriverBoard.tex
@@ -111,7 +112,7 @@ DriverBoard.pdf: DriverBoard.tex DriverBoard-content.tex $(DRIVERFIGS)
 # Make 8.5" x 11" Documentation
 DriverBoard-letter.pdf: DriverBoard-letter.tex DriverBoard-content.tex $(DRIVERFIGS)
 	rm -f DriverBoard-letter.aux
-	export TEXINPUTS=.:./texinclude: 
+	$(PDFENV)
 	$(PDFLATEX) DriverBoard-letter.tex
 	$(PDFLATEX) DriverBoard-letter.tex
 	$(PDFLATEX) DriverBoard-letter.tex
