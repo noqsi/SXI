@@ -1,3 +1,5 @@
+MAKE=make
+
 all: 
 	$(MAKE) -C lambda-geda all
 	$(MAKE) -C SXI-EM-DriverBoard all

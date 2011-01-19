@@ -1,25 +1,25 @@
-J1	1	
-J1	2	
+J1	1	GND
+J1	2	+15V
 J1	3	
-J1	4	GND	+3.3V return	
+J1	4	GND	+-15V return	
 J1	5	
-J1	6	GND	-15V return	
+J1	6	-15V	
 J1	7	
-J1	8	-15V
+J1	8	GND	+3.3V return
 J1	9	
-J1	10	GND	+15V return	
+J1	10	+3.3V	
 J1	11	
-J1	12	+15V
+J1	12	+3.3M
 J1	13	
-J1	14	
+J1	14	+15V	
 J1	15	
-J1	16	GND	+3.3V return	
+J1	16	GND	+-15V return	
 J1	17	
-J1	18	GND	-15V return	
+J1	18	-15V	
 J1	19	
-J1	20	-15V
+J1	20	GND	+3.3V return	
 J1	21	
-J1	22	GND	+15V return	
+J1	22	+3.3V	
 J1	23	
-J1	24	+15V
+J1	24	MGND
 J1	25	
