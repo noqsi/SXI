@@ -40,7 +40,7 @@ PDFENV=TEXINPUTS=.:./texinclude:./texinclude/data: ; for i in `find ../tikz -typ
 %.sch : %.tsv
 	awk -f pins2gsch.awk $< >$@
 
-all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf
+all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf flattened-schems
 
 pdf_schematics: \
 BB.pdf\
@@ -101,10 +101,6 @@ J1.tsv.pdf J2.tsv.pdf J3.tsv.pdf J4.tsv.pdf J5.tsv.pdf
 # For when typesetting within TeXShop GUI 
 driverfigs: $(DRIVERFIGS)
 
-# For flattening schematics
-../lambda-geda/flatten-hierarchy: 
-	$(MAKE) -C ../lambda-geda flatten-hierarchy
-
 # Make the A4 Documentation
 DriverBoard.pdf: DriverBoard.tex DriverBoard-content.tex $(DRIVERFIGS) 
 	rm -f DriverBoard.aux
@@ -158,6 +154,17 @@ DriverBoard.19.sch \
 DriverBoard.20.sch \
 TCE.sch \
 J1.sch J2.sch J3.sch J4.sch J5.sch
+
+# For flattening schematics
+FLATTEN=../lambda-geda/flatten-hierarchy
+$(FLATTEN): 
+	$(MAKE) -C ../lambda-geda flatten-hierarchy
+
+flattened-schems: $(FLATTEN) $(TOPSCHEM)
+	mkdir -p flattened
+	$(FLATTEN) flattened $(TOPSCHEM)
+	ln -s ../gafrc flattened/gafrc
+	ln -s ../Symbols flattened/Symbols
 
 DriverBoard.bom.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 	gnetlist -g bom -o DriverBoard.bom.txt $(TOPSCHEM)
@@ -362,8 +369,8 @@ SXI-EM-DriverBoard.tar.gz : $(TARSTUFF)
 	cd ..; tar czf SXI-EM-DriverBoard/SXI-EM-DriverBoard.tar.gz $(MANIFEST)
 
 clean : 
-	rm -f *~ Symbols/*~ \#*\# Symbols/\#*\# *.pdf *.ps *.log output.net \
-	 J1.sch J2.sch J3.sch J4.sch J5.sch \
+	rm -rf *~ Symbols/*~ \#*\# Symbols/\#*\# *.pdf *.ps *.log output.net \
+	 J1.sch J2.sch J3.sch J4.sch J5.sch flattened \
 	 *.aux *.out DriverBoard.*.txt SXI-EM-DriverBoard.tar.gz
 
 # $Log$
