@@ -5,7 +5,7 @@ J1	4	GND	+-15V return
 J1	5	
 J1	6	-15V	
 J1	7	
-J1	8	DGND	+3.3V return
+J1	8	+3.3V-PSU-return	+3.3V return
 J1	9	
 J1	10	+3.3V	
 J1	11	
@@ -17,7 +17,7 @@ J1	16	GND	+-15V return
 J1	17	
 J1	18	-15V	
 J1	19	
-J1	20	DGND	+3.3V return	
+J1	20	+3.3V-PSU-return	+3.3V return	
 J1	21	
 J1	22	+3.3V	
 J1	23	

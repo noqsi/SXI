@@ -13,7 +13,7 @@ J2	12	SEQB-	In-0
 J2	13	SEQB2+	Bypass to SXIS-14-p13
 J2	14	SYNC-	In-1 to SXIS-14-p14
 J2	15	SCLK+	In-1 to SXIS-14-p15
-J2	16	DGND	
+J2	16	GND	Extra digital ground if needed
 J2	17		
 J2	18		
 J2	19	SHIELD	
@@ -32,7 +32,7 @@ J2	31	SEQB2-	Bypass to SXIS-14-p31
 J2	32	SYNC+	In-1 to SXIS-14-p32
 J2	33	SCLK-	In-1 to SXIS-14-p33	
 J2	34	SHIELD	
-J2	35	DGND	
+J2	35	GND	Extra digital grond if needed
 J2	36	SHIELD	
 J2	37	HKDAT+	Out-0
 J2	38	HKDAT-	Out-0
