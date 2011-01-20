@@ -596,8 +596,17 @@ In Video Board mode, this Driver Board routes $\overline{\textup{DVCS}}$ to $\ov
    \caption{CCD Clock Decoding}
    \end{figure}
    
-The timing signals for the CCD clocks are transmitted as two 10Mb/s serial streams, strobed by SYNC.
+The timing signals for the CCD clocks are transmitted as two 10Mb/s serial streams, clocked by the rising edge of SCLK, strobed by the rising edge of SYNC.
 
+{\large
+\newcounter{cccbit}
+\addtocounter{cccbit}{7}
+\begin{tikztimingtable}
+SCLK & 20{C} \\
+SEQA & 2U8{2D{A\arabic{cccbit}}}2U\\
+SEQB & 2U8{2D{B\arabic{cccbit}\addtocounter{cccbit}{-1}}}2U\\
+STROBE & 17DLHD \\
+\end{tikztimingtable}}
 
 \subsection{Digital Power/HK Multiplexer}
    \begin{figure}
