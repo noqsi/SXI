@@ -163,8 +163,8 @@ $(FLATTEN):
 flattened-schems: $(FLATTEN) $(TOPSCHEM)
 	mkdir -p flattened
 	$(FLATTEN) flattened $(TOPSCHEM)
-	ln -s ../gafrc flattened/gafrc
-	ln -s ../Symbols flattened/Symbols
+	ln -sf ../gafrc flattened/gafrc
+	ln -sf ../Symbols flattened/Symbols
 
 DriverBoard.bom.txt : $(BLOCKSCHEM) $(TOPSCHEM)
 	gnetlist -g bom -o DriverBoard.bom.txt $(TOPSCHEM)
