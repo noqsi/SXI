@@ -34,7 +34,7 @@ device=RESISTOR
 T 50400 45000 5 10 1 1 0 6 1
 refdes=R75
 T 50300 44500 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 C 50600 45400 1 0 0 polarcap.sym
 {
@@ -58,7 +58,7 @@ device=RESISTOR
 T 51300 45000 5 10 1 1 0 6 1
 refdes=R76
 T 51200 44500 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 N 50600 45600 50600 44800 4
 N 49100 45600 49700 45600 4
@@ -94,7 +94,7 @@ device=RESISTOR
 T 50400 47200 5 10 1 1 0 6 1
 refdes=R73
 T 50300 46700 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 C 48200 47700 1 0 0 chip_choke.sym
 {
@@ -131,7 +131,7 @@ device=RESISTOR
 T 51300 47200 5 10 1 1 0 6 1
 refdes=R74
 T 51200 46700 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 N 50600 47800 50600 47000 4
 N 49100 47800 49700 47800 4
@@ -211,7 +211,7 @@ device=RESISTOR
 T 43700 45300 5 10 1 1 0 6 1
 refdes=R79
 T 43600 44800 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 C 44800 45000 1 0 1 resistor.sym
 {
@@ -220,7 +220,7 @@ device=RESISTOR
 T 44600 45300 5 10 1 1 0 6 1
 refdes=R80
 T 44500 44800 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 N 43900 45900 43900 45100 4
 N 42400 45900 43000 45900 4
@@ -255,7 +255,7 @@ device=RESISTOR
 T 43700 48600 5 10 1 1 0 6 1
 refdes=R77
 T 43600 48100 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 C 41500 49100 1 0 0 chip_choke.sym
 {
@@ -292,7 +292,7 @@ device=RESISTOR
 T 44600 48600 5 10 1 1 0 6 1
 refdes=R78
 T 44500 48100 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 N 43900 49200 43900 48400 4
 N 42400 49200 43000 49200 4
@@ -368,7 +368,7 @@ device=RESISTOR
 T 43700 42900 5 10 1 1 0 6 1
 refdes=R81
 T 43600 42400 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 C 44800 42600 1 0 1 resistor.sym
 {
@@ -377,7 +377,7 @@ device=RESISTOR
 T 44600 42900 5 10 1 1 0 6 1
 refdes=R82
 T 44500 42400 5 10 1 1 0 6 1
-value=100k
+value=47k
 }
 N 43900 43500 43900 42700 4
 N 42400 43500 43000 43500 4
