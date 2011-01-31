@@ -21,9 +21,12 @@ PDFENV=TEXINPUTS=.:./texinclude:./texinclude/data: ; for i in `find ../tikz -typ
 
 # We have a special directory for Latex style files
 
-%.tsv.pdf : %.tsv
+%.tsv.pdf : %.tsv texinclude/preview.sty
 	$(PDFENV) ; awk -f pins2tex.awk $< | $(PDFLATEX) > /dev/null
 	mv texput.pdf $@
+
+texinclude/preview.sty :
+	$(MAKE) -C texinclude preview.sty
 	
 %.pdf : %.ps
 	$(PS2PDF) $< pre_$@
@@ -372,6 +375,7 @@ clean :
 	rm -rf *~ Symbols/*~ \#*\# Symbols/\#*\# *.pdf *.ps *.log output.net \
 	 J1.sch J2.sch J3.sch J4.sch J5.sch flattened \
 	 *.aux *.out DriverBoard.*.txt SXI-EM-DriverBoard.tar.gz
+	$(MAKE) -C texinclude clean
 
 # $Log$
 # Revision 2.1  2010-09-17 17:24:46  jpd
