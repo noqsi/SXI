@@ -5,6 +5,8 @@
 
 S2PS=gschem -p -o $@ -s print.scm $<
 
+all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf flattened-schems
+
 %.sym.ps : %.sym
 	$(S2PS)
 
@@ -42,8 +44,6 @@ texinclude/preview.sty :
 
 %.sch : %.tsv
 	awk -f pins2gsch.awk $< >$@
-
-all : DriverBoard.bom.txt DriverBoard.net.txt DriverBoard.pdf flattened-schems
 
 pdf_schematics: \
 BB.pdf\
