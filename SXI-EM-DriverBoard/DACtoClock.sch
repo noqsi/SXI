@@ -323,7 +323,7 @@ C 53500 45900 1 0 0 capacitor-1.sym
 T 53700 46600 5 10 0 0 0 0 1
 device=CAPACITOR
 T 53700 46400 5 10 1 1 0 0 1
-refdes=C3
+refdes=C4
 T 53700 46800 5 10 0 0 0 0 1
 symversion=0.1
 T 54100 46200 5 10 1 1 0 0 1
