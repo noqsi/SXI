@@ -2,7 +2,7 @@
 
 ; For syms and schematics, we can search:
 ;
-(component-library "../../Components/Symbols")
+(component-library "../Symbols")
 (source-library ".")
 (define default-titleblock "Noqsi-title-B.sym")
 ;
