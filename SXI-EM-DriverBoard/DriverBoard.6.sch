@@ -19,7 +19,7 @@ C 42200 44600 1 0 0 DACtoClock.sym
 T 43700 47400 5 10 1 1 0 3 1
 refdes=X18
 }
-C 46400 44600 1 0 0 ParallelReg.sym
+C 46400 44600 1 0 0 ParallelRegB.sym
 {
 T 48000 47400 5 10 1 1 0 3 1
 refdes=X19

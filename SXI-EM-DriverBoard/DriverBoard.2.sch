@@ -16,7 +16,7 @@ T 50400 40300 9 10 1 0 0 0 1
 2
 T 41100 41100 9 25 1 0 0 0 1
 RG and SG Drivers
-C 42200 44500 1 0 0 DACtoClock.sym
+C 42200 44500 1 0 0 DACtoClockB.sym
 {
 T 43700 47300 5 10 1 1 0 3 1
 refdes=X5
@@ -26,7 +26,7 @@ C 51100 44000 1 0 0 SerialDrivers.sym
 T 53400 47600 5 10 1 1 0 3 1
 refdes=X7
 }
-C 46500 44500 1 0 0 DACtoClock.sym
+C 46500 44500 1 0 0 DACtoClockB.sym
 {
 T 48000 47300 5 10 1 1 0 3 1
 refdes=X6

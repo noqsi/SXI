@@ -48,13 +48,16 @@ texinclude/preview.sty :
 pdf_schematics: \
 BB.pdf\
 DAC.pdf\
+DACtoClockB.pdf\
 DACtoClock.pdf\
 DC-driver.pdf\
+DC-driverB.pdf\
 hkadc.pdf\
 OD-driver.pdf\
 OD-pump.pdf\
 ParallelPair.pdf\
 ParallelReg.pdf\
+ParallelRegB.pdf\
 REF.pdf\
 SerialDrivers.pdf\
 SerialMatrix.pdf\
@@ -68,10 +71,13 @@ DRIVERFIGS=BB.pdf\
 ClockCap.pdf\
 DAC.pdf\
 DACtoClock.pdf\
+DACtoClockB.pdf\
 DC-driver.pdf\
+DC-driverB.pdf\
 OD-driver.pdf\
 ParallelPair.pdf\
 ParallelReg.pdf\
+ParallelRegB.pdf\
 REF.pdf\
 SerialDrivers.pdf\
 OD-pump.pdf \
@@ -123,10 +129,13 @@ BB.sch\
 ClockCap.sch\
 DAC.sch\
 DACtoClock.sch\
+DACtoClockB.sch\
 DC-driver.sch\
+DC-driverB.sch\
 OD-driver.sch\
 ParallelPair.sch\
 ParallelReg.sch\
+ParallelRegB.sch\
 REF.sch\
 SerialDrivers.sch\
 OD-pump.sch \
@@ -182,7 +191,9 @@ MANIFEST=SXI-EM-DriverBoard/BB.sch \
 SXI-EM-DriverBoard/ClockCap.sch \
 SXI-EM-DriverBoard/DAC.sch \
 SXI-EM-DriverBoard/DACtoClock.sch \
+SXI-EM-DriverBoard/DACtoClockB.sch \
 SXI-EM-DriverBoard/DC-driver.sch \
+SXI-EM-DriverBoard/DC-driverB.sch \
 SXI-EM-DriverBoard/DoubleCap.sch \
 SXI-EM-DriverBoard/DriverBoard.1.sch \
 SXI-EM-DriverBoard/DriverBoard.10.sch \
@@ -217,6 +228,7 @@ SXI-EM-DriverBoard/OD-driver.sch \
 SXI-EM-DriverBoard/OD-pump.sch \
 SXI-EM-DriverBoard/ParallelPair.sch \
 SXI-EM-DriverBoard/ParallelReg.sch \
+SXI-EM-DriverBoard/ParallelRegB.sch \
 SXI-EM-DriverBoard/REF.sch \
 SXI-EM-DriverBoard/SerialDrivers.sch \
 SXI-EM-DriverBoard/Symbols/128S102.sym \
@@ -231,7 +243,9 @@ SXI-EM-DriverBoard/Symbols/Connector.sym \
 SXI-EM-DriverBoard/Symbols/DAC.sym \
 SXI-EM-DriverBoard/Symbols/DAC8800.sym \
 SXI-EM-DriverBoard/Symbols/DACtoClock.sym \
+SXI-EM-DriverBoard/Symbols/DACtoClockB.sym \
 SXI-EM-DriverBoard/Symbols/DC-driver.sym \
+SXI-EM-DriverBoard/Symbols/DC-driveBr.sym \
 SXI-EM-DriverBoard/Symbols/DoubleCap.sym \
 SXI-EM-DriverBoard/Symbols/DG403.sym \
 SXI-EM-DriverBoard/Symbols/DS90LV047A.sym \
@@ -247,6 +261,7 @@ SXI-EM-DriverBoard/Symbols/Noqsi-title-B.sym \
 SXI-EM-DriverBoard/Symbols/OD-pump.sym \
 SXI-EM-DriverBoard/Symbols/ParallelPair.sym \
 SXI-EM-DriverBoard/Symbols/ParallelReg.sym \
+SXI-EM-DriverBoard/Symbols/ParallelRegB.sym \
 SXI-EM-DriverBoard/Symbols/REF.sym \
 SXI-EM-DriverBoard/Symbols/REF43.sym \
 SXI-EM-DriverBoard/Symbols/SMBT2222-1.sym \
@@ -277,7 +292,9 @@ TARSTUFF=BB.sch \
 ClockCap.sch \
 DAC.sch \
 DACtoClock.sch \
+DACtoClockB.sch \
 DC-driver.sch \
+DC-driverB.sch \
 DoubleCap.sch \
 DriverBoard.1.sch \
 DriverBoard.10.sch \
@@ -312,6 +329,7 @@ OD-driver.sch \
 OD-pump.sch \
 ParallelPair.sch \
 ParallelReg.sch \
+ParallelRegB.sch \
 REF.sch \
 SerialDrivers.sch \
 Symbols/128S102.sym \
@@ -326,7 +344,9 @@ Symbols/Connector.sym \
 Symbols/DAC.sym \
 Symbols/DAC8800.sym \
 Symbols/DACtoClock.sym \
+Symbols/DACtoClockB.sym \
 Symbols/DC-driver.sym \
+Symbols/DC-driverB.sym \
 Symbols/DoubleCap.sym \
 Symbols/DG403.sym \
 Symbols/DS90LV047A.sym \
@@ -342,6 +362,7 @@ Symbols/Noqsi-title-B.sym \
 Symbols/OD-pump.sym \
 Symbols/ParallelPair.sym \
 Symbols/ParallelReg.sym \
+Symbols/ParallelRegB.sym \
 Symbols/REF.sym \
 Symbols/REF43.sym \
 Symbols/SMBT2222-1.sym \
@@ -378,6 +399,8 @@ clean :
 	$(MAKE) -C texinclude clean
 
 # $Log$
+# Revision 2.2 2011-02-21 K. Hayashida
+#
 # Revision 2.1  2010-09-17 17:24:46  jpd
 # Cleaned up EM design directory.
 #
