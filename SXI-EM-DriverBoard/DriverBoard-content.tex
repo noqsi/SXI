@@ -47,7 +47,7 @@
 \end{center}
 \vspace{5cm}
 
-This work is Copyright 2010 Noqsi Aerospace, Ltd.
+This work is Copyright 2010, 2011 Noqsi Aerospace, Ltd.
 
 This work is licensed under the Creative Commons Attribution-Share Alike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
 
@@ -161,7 +161,7 @@ The BB (Back Bias) block consists of a Cockroft-Walton charge pump voltage multi
 
 U2 switches between $Vp$ (+15V) and ground creating 15V square-wave drive for a charge pump. D1, D2, D3, and their associated capacitors form a three stage charge pump, in series with $Vp$, nominally capable of 60V output if losses are ignored. 
 
-Q1 and Q2 are high voltage transistors making a voltage translation amplifier with gain of about 3.7 (set by $R11/R10$)and an offset roughly equal to the pump output voltage. Applying a negative voltage to R10 thus reduces the output voltage (BB). Half of U1 provides this negative drive. R9 and R10 set the gain at 16, so the maximum output voltage is 40V. The output time constant is $R12\times C10$, or about 1 ms. In this case, the damping effect of C11 is reduced by the gain of the voltage translation stage, so for critical damping the $R9\times C11$ time constant should be $(3.7\times4)$ or 15ms. As drawn, it's 16 ms, for a little overdamping. With the output of U1 at the negative rail, the output is nominally $60V-3.7\times15V$ or about 4.5V, ignoring losses and diode drops. That's well below the required minimum of 20V.
+Q1 and Q2 are high voltage transistors making a voltage translation amplifier with gain of about 3.7 (set by $R11/R10$)and an offset roughly equal to the pump output voltage. Applying a negative voltage to R10 thus reduces the output voltage (BB). Half of U1 provides this negative drive. R9 and R10 set the gain at 16, so the maximum output voltage is 40V. The output time constant is $R12\times C10$, or about 1 ms. In this case, the damping effect of C11 is reduced by the gain of the voltage translation stage, so for critical damping the $R9\times C11$ time constant should be $(3.7\times4)$ or 15ms. As drawn, it's 16 ms, for a little overdamping. With the output of U1 at the negative rail, the output is nominally 14V (the 15V bias on the cascode transistor Q2 prevents lower voltage). That's well below the required minimum of 20V.
 
 43V precision Zener diode D3 limits the output voltage to below the absolute maximum of 45V without preventing an output of the maximum operating voltage of 40V.
 
@@ -842,13 +842,14 @@ DAC & Function & V(0) & V(255) & Resolution \\
 23 & OD-D & -17.04 & -23.01 & -0.0234 \\
 24 & RD & -10.06 & -14.08 & -0.0158 \\
 25 & OG & -2.02 & -7.99 & -0.0234 \\
-26 & BB & 0.00 & 40.86 & 0.160 \\
+26 & BB & 0.00* & 40.86 & 0.160 \\
 27 & unused & & & \\
 \hline
 \end{tabular}
 \caption{DAC controlled voltages}
 \label{DACV}
 \end{table}
+* Setting the BB DAC for a voltage below 14V will yield $\approx$14V.
 
 Table \ref{HKC} shows the housekeeping channels on the Driver Board. Channel numbers are in base 8 (octal). 
 
