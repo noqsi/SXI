@@ -110,7 +110,7 @@ OD-C &-22 &-20& -18& 0.1&1.2&DC-driver \\
 OD-D &-22 &-20& -18& 0.1&1.2&DC-driver \\
 RD &-13& -12 &-11& 0.1&0.001&DC-driver \\
 OG& -7& -5& -3&  0.1&0.001&DC-driver \\
-BB &+20 &+30 &+40 &0.5&0.001&BB \\
+BB &0 &+30 &+40 &0.5&0.001&BB \\
 IG1V&-6.5&-6.0&-5.5&0.02&0.001&DC-driver \\
 IG2V&-3.1&-2.8&-2.5&0.02&0.001&DC-driver \\
 \hline
@@ -161,13 +161,13 @@ The BB (Back Bias) block consists of a Cockroft-Walton charge pump voltage multi
 
 U2 switches between $Vp$ (+15V) and ground creating 15V square-wave drive for a charge pump. D1, D2, D3, and their associated capacitors form a three stage charge pump, in series with $Vp$, nominally capable of 60V output if losses are ignored. 
 
-Q1 and Q2 are high voltage transistors making a voltage translation amplifier with gain of about 3.7 (set by $R11/R10$)and an offset roughly equal to the pump output voltage. Applying a negative voltage to R10 thus reduces the output voltage (BB). Half of U1 provides this negative drive. R9 and R10 set the gain at 16, so the maximum output voltage is 40V. The output time constant is $R12\times C10$, or about 1 ms. In this case, the damping effect of C11 is reduced by the gain of the voltage translation stage, so for critical damping the $R9\times C11$ time constant should be $(3.7\times4)$ or 15ms. As drawn, it's 16 ms, for a little overdamping. With the output of U1 at the negative rail, the output is nominally 14V (the 15V bias on the cascode transistor Q2 prevents lower voltage). That's well below the required minimum of 20V.
+Q1 and Q2 are high voltage transistors making a voltage translation amplifier with gain of about 4.5 (set by $R11/R10$)and an offset roughly equal to the pump output voltage. Applying a negative voltage to R10 thus reduces the output voltage (BB). Half of U1 provides this negative drive. R9 and R10 set the gain at 16, so the maximum output voltage is 40V. The output time constant is $R12\times C10$, or about 1 ms. In this case, the damping effect of C11 is reduced by the gain of the voltage translation stage, so for critical damping the $R9\times C11$ time constant should be $(4.5\times4)$ or 18ms. As drawn, the circuit is slightly underdamped. R10 is small enough that U1 can pull the emitter of Q2 below ground, thus turning Q1 completely off, allowing the output to go down to ground.
 
 43V precision Zener diode D3 limits the output voltage to below the absolute maximum of 45V without preventing an output of the maximum operating voltage of 40V.
 
 The load current on BB is $<1\ \mu$A The voltage regulator and housekeeping circuit pull $100\ \mu$A from the pump.
 
-R2 and R3 limit current to U2, protecting it in case of latchup. R14 limits current to U1, although that's less of a concern: U1 is not CMOS so it should be more resistant to latchup. These resistors also help decouple chip power from power supply noise and ripple. R1 limits surge current through U2.
+R2 and R3 limit current to U2, protecting it in case of latchup. R4 and R14 limitg current to U1, although that's less of a concern: U1 is not CMOS so it should be more resistant to latchup. These resistors also help decouple chip power from power supply noise and ripple. R1 limits surge current through U2.
 
 Output filter capacitors have separate return connections here so that they may be connected for best EMI performance at the higher level.
 
@@ -842,14 +842,13 @@ DAC & Function & V(0) & V(255) & Resolution \\
 23 & OD-D & -17.04 & -23.01 & -0.0234 \\
 24 & RD & -10.06 & -14.08 & -0.0158 \\
 25 & OG & -2.02 & -7.99 & -0.0234 \\
-26 & BB & 0.00* & 40.86 & 0.160 \\
+26 & BB & 0.00 & 40.86 & 0.160 \\
 27 & unused & & & \\
 \hline
 \end{tabular}
 \caption{DAC controlled voltages}
 \label{DACV}
 \end{table}
-* Setting the BB DAC for a voltage below 14V will yield $\approx$14V.
 
 Table \ref{HKC} shows the housekeeping channels on the Driver Board. Channel numbers are in base 8 (octal). 
 
