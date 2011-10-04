@@ -111,8 +111,8 @@ OD-D &-22 &-20& -18& 0.1&1.2&DC-driver \\
 RD &-13& -12 &-11& 0.1&0.001&DC-driver \\
 OG& -7& -5& -3&  0.1&0.001&DC-driver \\
 BB &0 &+30 &+40 &0.5&0.001&BB \\
-IG1V&-6.5&-6.0&-5.5&0.02&0.001&DC-driver \\
-IG2V&-3.1&-2.8&-2.5&0.02&0.001&DC-driver \\
+IG1V&-7.0&-6.0&+3.0&0.04&0.001&DC-driver \\
+IG2V&-7.0&-6.0&+3.0&0.04&0.001&DC-driver \\
 \hline
 \end{tabular}
  \caption{Biases.}
@@ -350,7 +350,7 @@ This drives the reset gate and summing gate. These gates have low capacitance, s
   
 
 
-\subsection{TG and IG1 Driver}
+\subsection{TG and ISV Driver}
    \begin{figure}
    \begin{center}
    \includegraphics[width=\textheight,angle=90,keepaspectratio=true]{DriverBoard.3.pdf}
@@ -417,8 +417,8 @@ These provide -17 to -23\ V for the output drains. Maximum load per drain is 1.2
   
 The reset drain (RD) driver provides -10 to -14\ V. 
 The output gate (OG) driver provides -2 to -8\ V.
-The charge injection gate 1 (IG1) driver provides -5 to -7\ V.
-The charge injection gate 2 (IG2) driver provides -2 to -4\ V.
+The charge injection gate 1 (IG1) driver provides -7 to +3\ V.
+The charge injection gate 2 (IG2) driver provides -7 to +3\ V.
 The back bias driver provides 0 to 40\ V.
 
 
@@ -430,10 +430,10 @@ The back bias driver provides 0 to 40\ V.
    \caption{Power Translation}
    \end{figure}
   
-A small amount of power (total nominally $<1$\ mA, but probably somewhat larger due to dynamic power consumption) is required a +5V by the DG403 switches. The ADC128S102 ADC's need a tightly regulated 5V supply, which serves both as analog power and voltage refence. The LT1078 opamps we are using for other functions have more than enough current capability here and will be highly efficient. The DG403 loads are resistively decoupled, so there will be no capacitive instability issue. The +5ADC is capacitively loaded, so it requires damping components C2 and R18.
+A small amount of power (total nominally $<1$\ mA, but probably somewhat larger due to dynamic power consumption) is required at +5V by the DG403 switches. The ADC128S102 ADC's need a tightly regulated 5V supply, which serves both as analog power and voltage reference. The vertical clock drivers need a slightly reduced supply for the positive side to limit voltage stress on the transistors, so we generate +12\ V here. The input gate drivers need a negative reference voltage, so we generate -2.5\ V here. The LT1078 opamps we are using for other functions have more than enough current capability here and will be highly efficient. The +12V, +5V, and -2.5ref loads are resistively decoupled, so there will be no capacitive instability issue. The +5ADC is capacitively loaded, so it requires damping components C2 and R18.
 
   
-The OD-pump provides $\approx -28$\ V for the output drain drivers, and possibly for charge injection also (TBD).
+The OD-pump provides $\approx -28$\ V for the output drain drivers.
 
 \subsection{Bias and Power Housekeeping}
    \begin{figure}
@@ -832,8 +832,8 @@ DAC & Function & V(0) & V(255) & Resolution \\
 11 & VILO & -2.5 & -10.03 & -0.0295 \\
 12 & VSHI & 0.00 & 7.48 & 0.0293 \\
 13 & VSLH & -2.5 & -10.03 & -0.0295 \\
-14 & IG1V & -5.01 & -7.02 & -0.00787 \\
-15 & IG2V & -2.02 & -4.03 & -0.00787 \\
+14 & IG1V & 3.03 & -6.99 & -0.0393 \\
+15 & IG2V & 3.03 & -6.99 & -0.0393 \\
 16 & ISVHI & 0.00 & -13.35 & 0.0523 \\
 17 & ISVLO & 0.00 & -13.35 & -0.0523 \\
 20 & OD-A & -17.04 & -23.01 & -0.0234 \\
