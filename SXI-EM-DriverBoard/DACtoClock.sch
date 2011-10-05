@@ -1,4 +1,4 @@
-v 20091004 2
+v 20110115 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 {
 T 50000 40500 15 10 1 1 0 0 1
@@ -240,7 +240,7 @@ device=RESISTOR
 T 41700 50200 5 10 1 1 0 0 1
 refdes=R7
 T 41800 49700 5 10 1 1 0 0 1
-value=3.3k
+value=100
 }
 N 42400 49000 42400 50000 4
 C 41200 47900 1 0 0 DoubleCap.sym
@@ -303,7 +303,7 @@ device=RESISTOR
 T 41700 47000 5 10 1 1 0 0 1
 refdes=R8
 T 41800 46500 5 10 1 1 0 0 1
-value=3.3k
+value=100
 }
 C 48100 45400 1 0 0 capacitor-1.sym
 {

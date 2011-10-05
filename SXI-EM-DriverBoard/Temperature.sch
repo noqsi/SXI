@@ -1,4 +1,4 @@
-v 20100214 2
+v 20110115 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 C 42800 46200 1 0 0 in-1.sym
 {
@@ -175,11 +175,11 @@ device=RESISTOR
 T 44500 42800 5 10 1 1 0 0 1
 refdes=R8
 T 44600 42300 5 10 1 1 0 0 1
-value=1k
+value=100
 T 44300 42500 5 10 0 1 0 0 1
 footprint=1210
 T 44300 42500 5 10 0 1 0 0 1
-spec=5% 1/3W
+spec=5% 1/2W
 }
 C 45200 42400 1 0 0 DoubleCap.sym
 {

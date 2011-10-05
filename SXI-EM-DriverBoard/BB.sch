@@ -396,7 +396,7 @@ device=RESISTOR
 T 42900 49200 5 10 1 1 0 0 1
 refdes=R14
 T 43000 48700 5 10 1 1 0 0 1
-value=3.3k
+value=100
 }
 C 55900 47400 1 0 0 out-1.sym
 {
@@ -559,7 +559,7 @@ device=RESISTOR
 T 41700 47500 5 10 1 1 0 0 1
 refdes=R4
 T 41800 47000 5 10 1 1 0 0 1
-value=3.3k
+value=100
 }
 N 42400 47900 42400 47300 4
 C 40900 47200 1 0 0 in-1.sym

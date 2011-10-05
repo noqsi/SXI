@@ -1,4 +1,4 @@
-v 20091004 2
+v 20110115 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 C 43900 47400 1 0 0 capacitor-1.sym
 {
@@ -247,7 +247,7 @@ device=RESISTOR
 T 45100 44600 5 10 1 1 0 0 1
 refdes=R3
 T 45200 44100 5 10 1 1 0 0 1
-value=3.3k
+value=100
 }
 C 44900 41100 1 0 0 resistor.sym
 {
@@ -256,7 +256,7 @@ device=RESISTOR
 T 45100 41400 5 10 1 1 0 0 1
 refdes=R4
 T 45200 40900 5 10 1 1 0 0 1
-value=3.3k
+value=100
 }
 C 53200 45100 1 0 0 capacitor-1.sym
 {
