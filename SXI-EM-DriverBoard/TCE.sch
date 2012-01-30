@@ -1,4 +1,4 @@
-v 20091004 2
+v 20111231 2
 C 40000 40000 0 0 0 Noqsi-title-B.sym
 {
 T 50000 40500 5 10 1 1 0 0 1
@@ -156,7 +156,7 @@ C 54500 48400 1 0 0 Connector.sym
 T 54800 48700 5 10 1 1 0 4 1
 refdes=J2
 T 54700 48400 5 10 0 0 0 0 1
-footprint=TBD
+footprint=MDM51S
 T 54500 48400 5 10 0 0 0 0 1
 device=TCEconnector
 }
