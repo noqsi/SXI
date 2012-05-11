@@ -23,8 +23,8 @@ PDFENV=TEXINPUTS=.:./texinclude:./texinclude/data: ; for i in `find ../tikz -typ
 
 # We have a special directory for Latex style files
 
-%.tsv.pdf : %.tsv texinclude/preview.sty
-	$(PDFENV) ; awk -f pins2tex.awk $< | $(PDFLATEX) > /dev/null
+%.tsv.pdf : %.tsv texinclude/preview.sty aliases.sed
+	$(PDFENV) ; sed -f aliases.sed  $< | awk -f pins2tex.awk | $(PDFLATEX) > /dev/null
 	mv texput.pdf $@
 
 texinclude/preview.sty :
